@@ -23,6 +23,7 @@ interface OfertasContextType {
   ofertas: Oferta[];
   adicionarOferta: (oferta: Omit<Oferta, "ativosHoje" | "ativosOntem" | "variacao" | "dataCriacao" | "ativo">) => Promise<void>;
   alternarAtivo: (idx: number, ativo: boolean) => Promise<void>;
+  excluirOferta: (id: string) => Promise<void>;
   loading: boolean;
 }
 
@@ -40,6 +41,9 @@ export function OfertasProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
     fetchOfertas();
+    // Polling: atualiza a cada 60 segundos
+    const interval = setInterval(fetchOfertas, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   async function adicionarOferta(oferta: Omit<Oferta, "ativosHoje" | "ativosOntem" | "variacao" | "dataCriacao" | "ativo">) {
@@ -62,8 +66,13 @@ export function OfertasProvider({ children }: { children: ReactNode }) {
     if (!error && data) setOfertas(ofertas.map((o, i) => i === idx ? { ...o, ativo } : o));
   }
 
+  async function excluirOferta(id: string) {
+    const { error } = await supabase.from("ofertas").delete().eq("id", id);
+    if (!error) setOfertas(ofertas.filter(o => o.id !== id));
+  }
+
   return (
-    <OfertasContext.Provider value={{ ofertas, adicionarOferta, alternarAtivo, loading }}>
+    <OfertasContext.Provider value={{ ofertas, adicionarOferta, alternarAtivo, excluirOferta, loading }}>
       {children}
     </OfertasContext.Provider>
   );

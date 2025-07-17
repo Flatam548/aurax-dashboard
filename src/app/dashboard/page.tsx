@@ -8,7 +8,7 @@ import ModalNovaOferta from "../../components/ModalNovaOferta";
 import { useOfertas, Oferta } from "../../lib/OfertasContext";
 
 const Dashboard = () => {
-  const { ofertas, adicionarOferta, alternarAtivo, loading } = useOfertas();
+  const { ofertas, adicionarOferta, alternarAtivo, excluirOferta, loading } = useOfertas();
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
@@ -88,11 +88,18 @@ const Dashboard = () => {
                       ofertas[idx].ativosHoje = data.ativosHoje;
                       setFeedback('Oferta atualizada!');
                     } else {
-                      setFeedback('Erro ao atualizar oferta.');
+                      setFeedback(data.error || 'Erro ao atualizar oferta.');
                     }
-                  } catch {
+                  } catch (e) {
                     setFeedback('Erro ao atualizar oferta.');
                   }
+                  setTimeout(() => setFeedback(null), 2000);
+                }}
+                onExcluirOferta={async () => {
+                  if (!oferta.id) return;
+                  setFeedback('Excluindo oferta...');
+                  await excluirOferta(oferta.id);
+                  setFeedback('Oferta excluída!');
                   setTimeout(() => setFeedback(null), 2000);
                 }}
               />

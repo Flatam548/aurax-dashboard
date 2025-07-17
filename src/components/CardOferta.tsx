@@ -37,7 +37,11 @@ const CardOferta = ({
   return (
     <div className="bg-[#23234a] rounded-2xl shadow-md p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full border border-[#2d2d5a]">
       <div className="flex justify-between items-center">
-        <div className="text-lg font-semibold text-white">{nome}</div>
+        <div className="flex items-center gap-2">
+          <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-green-500' : 'bg-red-500'}`}></span>
+          <div className="text-lg font-semibold text-white">{nome}</div>
+          <span className={`ml-2 text-xs font-bold ${ativosHoje > 0 ? 'text-green-400' : 'text-red-400'}`}>{ativosHoje > 0 ? 'Ativo' : 'Inativo'}</span>
+        </div>
         <span className="bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-xs text-white px-3 py-1 rounded-full">{tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
