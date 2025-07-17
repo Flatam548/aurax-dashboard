@@ -1,0 +1,23 @@
+name: Scrape Meta Ads e atualizar Supabase
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # Executa todo dia às 6h da manhã (horário de Brasília = UTC+3)
+  workflow_dispatch: # Permite rodar manualmente também
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Instalar dependências
+        run: npm install
+      - name: Rodar script de scraping
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: node scrapeMetaAds.js
