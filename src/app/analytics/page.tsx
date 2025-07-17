@@ -18,12 +18,6 @@ type Oferta = {
   dataCriacao: string;
 };
 
-type Historico = {
-  oferta_id: string;
-  data: string;
-  ativos: number;
-};
-
 export default function AnalyticsPage() {
   const [series, setSeries] = useState<{ nome: string; data: (number|null)[] }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +40,7 @@ export default function AnalyticsPage() {
           const dataDia = new Date(dataMin);
           dataDia.setDate(dataDia.getDate() + i);
           const dataStr = dataDia.toISOString().slice(0, 10);
-          const hist = historico.find(h => h.oferta_id === oferta.id && h.data === dataStr);
+          const hist = historico.find((h: any) => h.oferta_id === oferta.id && h.data === dataStr);
           dias.push(hist ? hist.ativos : null);
         }
         return { nome: oferta.nome, data: dias };
@@ -58,8 +52,8 @@ export default function AnalyticsPage() {
   }, []);
 
   // Monta os dados para o gráfico (um objeto por dia)
-  const chartData = Array.from({ length: 15 }, (_, i) => {
-    const obj: any = { dia: `Dia ${i + 1}` };
+  const chartData: Record<string, number | string | null>[] = Array.from({ length: 15 }, (_, i) => {
+    const obj: Record<string, number | string | null> = { dia: `Dia ${i + 1}` };
     series.forEach(serie => {
       obj[serie.nome] = serie.data[i] ?? null;
     });
