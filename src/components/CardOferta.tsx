@@ -9,8 +9,6 @@ type CardOfertaProps = {
   dataCriacao: string;
   urlMeta?: string;
   urlSite?: string;
-  onBiblioteca?: () => void;
-  onSite?: () => void;
   ativo?: boolean;
   onToggleAtivo?: (checked: boolean) => void;
 };
@@ -24,8 +22,6 @@ const CardOferta = ({
   dataCriacao,
   urlMeta,
   urlSite,
-  onBiblioteca,
-  onSite,
   ativo = true,
   onToggleAtivo,
 }: CardOfertaProps) => {

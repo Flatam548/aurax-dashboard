@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Oferta } from "../lib/OfertasContext";
 
 type ModalNovaOfertaProps = {
   open: boolean;
   onClose: () => void;
-  onCreate: (oferta: any) => void;
+  onCreate: (oferta: Omit<Oferta, "ativosHoje" | "ativosOntem" | "variacao" | "dataCriacao" | "ativo">) => void;
 };
 
 const idiomasDisponiveis = ["Português", "Inglês", "Espanhol", "Francês", "Alemão", "Italiano"];

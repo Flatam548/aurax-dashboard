@@ -4,14 +4,14 @@ import Sidebar from "../../components/Sidebar";
 import Topbar from "../../components/Topbar";
 import CardOferta from "../../components/CardOferta";
 import ModalNovaOferta from "../../components/ModalNovaOferta";
-import { useOfertas } from "../../lib/OfertasContext";
+import { useOfertas, Oferta } from "../../lib/OfertasContext";
 
 const Dashboard = () => {
   const { ofertas, adicionarOferta, alternarAtivo, loading } = useOfertas();
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  const handleNovaOferta = async (novaOferta: any) => {
+  const handleNovaOferta = async (novaOferta: Omit<Oferta, "ativosHoje" | "ativosOntem" | "variacao" | "dataCriacao" | "ativo">) => {
     await adicionarOferta(novaOferta);
     setFeedback("Oferta criada com sucesso!");
     setTimeout(() => setFeedback(null), 2000);
