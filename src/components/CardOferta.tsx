@@ -2,7 +2,7 @@ import React from "react";
 
 type CardOfertaProps = {
   nome: string;
-  tag?: string;
+  tags: string[];
   ativosHoje: number;
   ativosOntem: number;
   variacao?: string;
@@ -15,7 +15,7 @@ type CardOfertaProps = {
 
 const CardOferta = ({
   nome,
-  tag,
+  tags,
   ativosHoje,
   ativosOntem,
   variacao,
@@ -26,7 +26,7 @@ const CardOferta = ({
   onToggleAtivo,
 }: CardOfertaProps) => {
   const variacaoSafe = variacao ?? "0%";
-  const tagSafe = tag ?? "";
+  const tagSafe = tags && tags.length > 0 ? tags[0] : "";
   return (
     <div className="bg-[#23234a] rounded-2xl shadow-md p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full border border-[#2d2d5a]">
       <div className="flex justify-between items-center">

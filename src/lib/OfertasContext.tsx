@@ -6,7 +6,7 @@ import { supabase } from "./supabaseClient";
 export interface Oferta {
   id?: string;
   nome: string;
-  tag: string;
+  // tag: string; // Remover esta linha
   ativosHoje: number;
   ativosOntem: number;
   variacao: string;
@@ -14,7 +14,7 @@ export interface Oferta {
   ativo: boolean;
   urlMeta?: string;
   idiomas?: string[];
-  tags?: string[];
+  tags: string[]; // Tornar obrigatório
   urlSite?: string;
   urlCheckout?: string;
 }
