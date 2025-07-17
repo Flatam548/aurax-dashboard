@@ -1,4 +1,4 @@
-// Commit para forçar novo deploy na Vercel
+// Novo commit para testar variáveis de ambiente do Supabase
 'use client';
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
