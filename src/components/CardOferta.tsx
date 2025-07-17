@@ -40,7 +40,6 @@ const CardOferta = ({
         <div className="flex items-center gap-2">
           <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-green-500' : 'bg-red-500'}`}></span>
           <div className="text-lg font-semibold text-white">{nome}</div>
-          <span className={`ml-2 text-xs font-bold ${ativosHoje > 0 ? 'text-green-400' : 'text-red-400'}`}>{ativosHoje > 0 ? 'Ativo' : 'Inativo'}</span>
         </div>
         <span className="bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-xs text-white px-3 py-1 rounded-full">{tagSafe}</span>
         <button
@@ -88,15 +87,6 @@ const CardOferta = ({
         >
           {loading ? 'Atualizando...' : ok ? 'Atualizado!' : 'Atualizar agora'}
         </button>
-        <label className="flex items-center cursor-pointer ml-auto">
-          <input
-            type="checkbox"
-            className="form-checkbox accent-[#a259ff]"
-            checked={ativo}
-            onChange={e => onToggleAtivo?.(e.target.checked)}
-          />
-          <span className="ml-2 text-xs text-white">Ativo</span>
-        </label>
       </div>
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
