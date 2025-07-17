@@ -1,3 +1,4 @@
+// Forçando novo deploy após configurar variáveis de ambiente
 'use client';
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
