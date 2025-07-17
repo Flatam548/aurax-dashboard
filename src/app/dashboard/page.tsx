@@ -73,28 +73,6 @@ const Dashboard = () => {
               <CardOferta
                 key={(oferta.id || oferta.nome) + oferta.dataCriacao}
                 {...oferta}
-                onToggleAtivo={checked => handleToggleAtivo(idx, checked)}
-                onAtualizarOferta={async () => {
-                  if (!oferta.id || !oferta.urlMeta) return;
-                  setFeedback('Atualizando oferta...');
-                  try {
-                    const res = await fetch('/api/scrapeOferta', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: oferta.id, urlMeta: oferta.urlMeta })
-                    });
-                    const data = await res.json();
-                    if (data.ativosHoje !== undefined) {
-                      ofertas[idx].ativosHoje = data.ativosHoje;
-                      setFeedback('Oferta atualizada!');
-                    } else {
-                      setFeedback(data.error || 'Erro ao atualizar oferta.');
-                    }
-                  } catch (e) {
-                    setFeedback('Erro ao atualizar oferta.');
-                  }
-                  setTimeout(() => setFeedback(null), 2000);
-                }}
                 onExcluirOferta={async () => {
                   if (!oferta.id) return;
                   setFeedback('Excluindo oferta...');

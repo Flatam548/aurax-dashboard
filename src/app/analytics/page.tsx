@@ -1,12 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, ReferenceLine } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
 import { createClient } from '@supabase/supabase-js';
-
-const chartColors = [
-  "#a259ff", "#6a0dad", "#c084fc", "#7c3aed", "#818cf8", "#f472b6", "#facc15", "#f59e42", "#f87171", "#38bdf8"
-];
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -36,26 +32,26 @@ export default function AnalyticsPage() {
       if (ofertasData && ofertasData.length > 0 && !selectedId) setSelectedId(ofertasData[0].id);
     }
     fetchData();
-  }, []);
+  }, [selectedId]);
 
   // Dados da oferta selecionada
   const oferta = ofertas.find(o => o.id === selectedId);
-  let chartData: Record<string, any>[] = [];
-  let datasReais: string[] = [];
+  const chartData: Record<string, unknown>[] = [];
+  const datasReais: string[] = [];
   if (oferta) {
     const dataMin = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
-    chartData = Array.from({ length: 15 }, (_, i) => {
+    for (let i = 0; i < 15; i++) {
       const dataDia = new Date(dataMin);
       dataDia.setDate(dataDia.getDate() + i);
       const dataStr = dataDia.toISOString().slice(0, 10);
       const hist = historico.find(h => h.oferta_id === oferta.id && h.data === dataStr);
       datasReais.push(dataDia.toLocaleDateString('pt-BR'));
-      return {
+      chartData.push({
         dia: `Dia ${i + 1}`,
         dataReal: dataDia.toLocaleDateString('pt-BR'),
         Ativos: hist ? hist.ativos : 0
-      };
-    });
+      });
+    }
   }
 
   return (

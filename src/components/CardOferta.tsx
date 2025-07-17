@@ -9,9 +9,6 @@ type CardOfertaProps = {
   dataCriacao: string;
   urlMeta?: string;
   urlSite?: string;
-  ativo?: boolean;
-  onToggleAtivo?: (checked: boolean) => void;
-  onAtualizarOferta?: () => Promise<void>;
   onExcluirOferta?: () => Promise<void>;
 };
 
@@ -24,15 +21,10 @@ const CardOferta = ({
   dataCriacao,
   urlMeta,
   urlSite,
-  ativo = true,
-  onToggleAtivo,
-  onAtualizarOferta,
   onExcluirOferta,
 }: CardOfertaProps) => {
   const variacaoSafe = variacao ?? "0%";
   const tagSafe = tags && tags.length > 0 ? tags[0] : "";
-  const [loading, setLoading] = React.useState(false);
-  const [ok, setOk] = React.useState(false);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
   return (
     <div className="bg-[#23234a] rounded-2xl shadow-md p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full border border-[#2d2d5a]">
