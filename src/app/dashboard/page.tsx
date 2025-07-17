@@ -16,6 +16,28 @@ const Dashboard = () => {
     await adicionarOferta(novaOferta);
     setFeedback("Oferta criada com sucesso!");
     setTimeout(() => setFeedback(null), 2000);
+    // Buscar a oferta recém-criada (pelo nome e urlMeta, que são únicos)
+    const nova = ofertas.find(o => o.nome === novaOferta.nome && o.urlMeta === novaOferta.urlMeta);
+    if (nova && nova.id && nova.urlMeta) {
+      setFeedback('Atualizando anúncios da nova oferta...');
+      try {
+        const res = await fetch('/api/scrapeOferta', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: nova.id, urlMeta: nova.urlMeta })
+        });
+        const data = await res.json();
+        if (data.ativosHoje !== undefined) {
+          nova.ativosHoje = data.ativosHoje;
+          setFeedback('Nova oferta atualizada!');
+        } else {
+          setFeedback('Erro ao atualizar nova oferta.');
+        }
+      } catch {
+        setFeedback('Erro ao atualizar nova oferta.');
+      }
+      setTimeout(() => setFeedback(null), 2000);
+    }
   };
 
   const handleToggleAtivo = async (idx: number, checked: boolean) => {
@@ -52,6 +74,27 @@ const Dashboard = () => {
                 key={(oferta.id || oferta.nome) + oferta.dataCriacao}
                 {...oferta}
                 onToggleAtivo={checked => handleToggleAtivo(idx, checked)}
+                onAtualizarOferta={async () => {
+                  if (!oferta.id || !oferta.urlMeta) return;
+                  setFeedback('Atualizando oferta...');
+                  try {
+                    const res = await fetch('/api/scrapeOferta', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: oferta.id, urlMeta: oferta.urlMeta })
+                    });
+                    const data = await res.json();
+                    if (data.ativosHoje !== undefined) {
+                      ofertas[idx].ativosHoje = data.ativosHoje;
+                      setFeedback('Oferta atualizada!');
+                    } else {
+                      setFeedback('Erro ao atualizar oferta.');
+                    }
+                  } catch {
+                    setFeedback('Erro ao atualizar oferta.');
+                  }
+                  setTimeout(() => setFeedback(null), 2000);
+                }}
               />
             ))}
           </div>

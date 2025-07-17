@@ -11,6 +11,7 @@ type CardOfertaProps = {
   urlSite?: string;
   ativo?: boolean;
   onToggleAtivo?: (checked: boolean) => void;
+  onAtualizarOferta?: () => Promise<void>;
 };
 
 const CardOferta = ({
@@ -24,9 +25,12 @@ const CardOferta = ({
   urlSite,
   ativo = true,
   onToggleAtivo,
+  onAtualizarOferta,
 }: CardOfertaProps) => {
   const variacaoSafe = variacao ?? "0%";
   const tagSafe = tags && tags.length > 0 ? tags[0] : "";
+  const [loading, setLoading] = React.useState(false);
+  const [ok, setOk] = React.useState(false);
   return (
     <div className="bg-[#23234a] rounded-2xl shadow-md p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full border border-[#2d2d5a]">
       <div className="flex justify-between items-center">
@@ -51,6 +55,19 @@ const CardOferta = ({
           className="bg-[#1a1a2e] border border-[#6a0dad] text-[#a259ff] px-4 py-2 rounded-lg font-medium hover:bg-[#23234a] transition"
         >
           Site
+        </button>
+        <button
+          onClick={async () => {
+            if (!onAtualizarOferta) return;
+            setLoading(true); setOk(false);
+            await onAtualizarOferta();
+            setLoading(false); setOk(true);
+            setTimeout(() => setOk(false), 2000);
+          }}
+          className="bg-[#a259ff] text-white px-3 py-2 rounded-lg font-medium hover:bg-[#6a0dad] transition text-xs"
+          disabled={loading}
+        >
+          {loading ? 'Atualizando...' : ok ? 'Atualizado!' : 'Atualizar agora'}
         </button>
         <label className="flex items-center cursor-pointer ml-auto">
           <input
