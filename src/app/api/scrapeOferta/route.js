@@ -16,12 +16,9 @@ export async function POST(req) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
-  // Script Puppeteer para rodar no browserless
+  // Script Puppeteer para rodar no browserless (sem require, usando contexto global)
   const script = `
-    const puppeteer = require('puppeteer');
-    (async () => {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
+    async ({ page, context }) => {
       await page.goto('${urlMeta}', { waitUntil: 'networkidle2', timeout: 60000 });
       await new Promise(resolve => setTimeout(resolve, 7000));
       try {
@@ -55,22 +52,31 @@ export async function POST(req) {
           resultados = match ? parseInt(match[1], 10) : null;
         }
       } catch (e) {}
-      await browser.close();
-      return resultados;
-    })();
+      return { ativosHoje: resultados };
+    }
   `;
 
   // Chama o browserless
   let ativosHoje = null;
+  let browserlessError = null;
   try {
     const res = await fetch(BROWSERLESS_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/javascript' },
       body: script,
     });
-    ativosHoje = await res.json();
+    const data = await res.json();
+    if (typeof data === 'object' && data !== null && 'ativosHoje' in data) {
+      ativosHoje = data.ativosHoje;
+    } else {
+      browserlessError = JSON.stringify(data);
+    }
   } catch (e) {
-    return NextResponse.json({ error: 'Erro ao rodar scraping no browserless', details: e.message }, { status: 500 });
+    browserlessError = e.message;
+  }
+
+  if (browserlessError) {
+    return NextResponse.json({ error: 'Erro ao rodar scraping no browserless', details: browserlessError }, { status: 500 });
   }
 
   if (id && ativosHoje !== null) {
