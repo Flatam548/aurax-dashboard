@@ -2,7 +2,7 @@ name: Scrape Meta Ads e atualizar Supabase
 
 on:
   schedule:
-    - cron: '0 9 * * *' # Executa todo dia às 6h da manhã (horário de Brasília = UTC+3)
+    - cron: '0 9 * * *' # Executa todo dia às 6h da manhã (UTC+3)
   workflow_dispatch: # Permite rodar manualmente também
 
 jobs:

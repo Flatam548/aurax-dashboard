@@ -78,7 +78,30 @@ export async function POST(req) {
   }
 
   if (id && ativosHoje !== null) {
-    await supabase.from('ofertas').update({ ativosHoje }).eq('id', id);
+    // Busca o valor do dia anterior
+    const ontem = new Date();
+    ontem.setDate(ontem.getDate() - 1);
+    const dataOntem = ontem.toISOString().slice(0, 10);
+    let ativosOntem = 0;
+    try {
+      const { data: historicoOntem } = await supabase
+        .from('historico_ofertas')
+        .select('ativos')
+        .eq('oferta_id', id)
+        .eq('data', dataOntem)
+        .single();
+      if (historicoOntem && historicoOntem.ativos !== undefined) {
+        ativosOntem = historicoOntem.ativos;
+      }
+    } catch {}
+    // Atualiza ativosHoje e ativosOntem na oferta
+    await supabase.from('ofertas').update({ ativosHoje, ativosOntem }).eq('id', id);
+    // Salva histórico do dia
+    const hoje = new Date();
+    const dataHoje = hoje.toISOString().slice(0, 10);
+    await supabase
+      .from('historico_ofertas')
+      .upsert({ oferta_id: id, data: dataHoje, ativos: ativosHoje }, { onConflict: ['oferta_id', 'data'] });
   }
   return NextResponse.json({ ativosHoje });
 } 

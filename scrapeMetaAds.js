@@ -84,10 +84,35 @@ async function scrapeAnunciosAtivos(url) {
 }
 
 async function atualizarAtivosHoje(idOferta, ativosHoje) {
+  // Busca o valor do dia anterior
+  const ontem = new Date();
+  ontem.setDate(ontem.getDate() - 1);
+  const dataOntem = ontem.toISOString().slice(0, 10);
+  let ativosOntem = 0;
+  try {
+    const { data: historicoOntem } = await supabase
+      .from('historico_ofertas')
+      .select('ativos')
+      .eq('oferta_id', idOferta)
+      .eq('data', dataOntem)
+      .single();
+    if (historicoOntem && historicoOntem.ativos !== undefined) {
+      ativosOntem = historicoOntem.ativos;
+    }
+  } catch {}
+
+  // Atualiza ativosHoje e ativosOntem na oferta
   const { error } = await supabase
     .from('ofertas')
-    .update({ ativosHoje })
+    .update({ ativosHoje, ativosOntem })
     .eq('id', idOferta);
+
+  // Salva histórico do dia
+  const hoje = new Date();
+  const dataHoje = hoje.toISOString().slice(0, 10);
+  await supabase
+    .from('historico_ofertas')
+    .upsert({ oferta_id: idOferta, data: dataHoje, ativos: ativosHoje }, { onConflict: ['oferta_id', 'data'] });
 
   if (error) {
     console.error('Erro ao atualizar oferta:', error);
