@@ -73,20 +73,6 @@ const CardOferta = ({
         >
           Site
         </button>
-        <button
-          onClick={async () => {
-            if (!onAtualizarOferta || !urlMeta) return;
-            setLoading(true); setOk(false);
-            await onAtualizarOferta();
-            setLoading(false); setOk(true);
-            setTimeout(() => setOk(false), 2000);
-          }}
-          className={`bg-[#a259ff] text-white px-3 py-2 rounded-lg font-medium hover:bg-[#6a0dad] transition text-xs ${!urlMeta ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={loading || !urlMeta}
-          title={!urlMeta ? 'Cadastre o link da biblioteca para atualizar' : ''}
-        >
-          {loading ? 'Atualizando...' : ok ? 'Atualizado!' : 'Atualizar agora'}
-        </button>
       </div>
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">

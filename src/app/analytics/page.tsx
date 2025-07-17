@@ -12,12 +12,6 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-type Oferta = {
-  id: string;
-  nome: string;
-  dataCriacao: string;
-};
-
 export default function AnalyticsPage() {
   const [series, setSeries] = useState<{ nome: string; data: (number|null)[] }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,10 +22,10 @@ export default function AnalyticsPage() {
       // Busca todas as ofertas
       const { data: ofertas } = await supabase.from('ofertas').select('id, nome, dataCriacao');
       // Busca todo o histórico
-      const { data: historico } = await supabase.from('historico_ofertas').select('oferta_id, data, ativos');
+      const { data: historico } = await supabase.from('historico_ofertas').select('oferta_id, data, ativos') as { data: { oferta_id: string, data: string, ativos: number }[] };
       if (!ofertas || !historico) { setLoading(false); return; }
       // Monta as séries para o gráfico
-      const result: { nome: string; data: (number|null)[] }[] = ofertas.map(oferta => {
+      const result: { nome: string; data: (number|null)[] }[] = ofertas.map((oferta: { id: string, nome: string, dataCriacao: string }) => {
         // Data de mineração/cadastro
         const dataMin = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
         // Pega os 15 primeiros dias
@@ -40,7 +34,7 @@ export default function AnalyticsPage() {
           const dataDia = new Date(dataMin);
           dataDia.setDate(dataDia.getDate() + i);
           const dataStr = dataDia.toISOString().slice(0, 10);
-          const hist = historico.find((h: any) => h.oferta_id === oferta.id && h.data === dataStr);
+          const hist = historico.find(h => h.oferta_id === oferta.id && h.data === dataStr);
           dias.push(hist ? hist.ativos : null);
         }
         return { nome: oferta.nome, data: dias };
