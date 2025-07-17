@@ -1,4 +1,4 @@
-// Forçando novo deploy após configurar variáveis de ambiente
+// Commit para forçar novo deploy na Vercel
 'use client';
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
