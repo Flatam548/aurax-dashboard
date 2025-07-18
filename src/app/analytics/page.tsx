@@ -99,7 +99,6 @@ export default function AnalyticsPage() {
   // Dados da oferta selecionada
   const oferta = ofertas.find(o => o.id === selectedId);
   const chartData: ChartDia[] = [];
-  const datasReais: string[] = [];
   if (oferta) {
     const dataInicio = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
     const hoje = new Date();

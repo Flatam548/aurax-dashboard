@@ -226,12 +226,27 @@ const Dashboard = () => {
         ) : (
           <div className="flex flex-wrap gap-8">
             {(categoriaFiltro ? ofertas.filter(oferta => {
-              const categoria = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
-              return String(categoria) === String(categoriaFiltro);
+              const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+              return categoria === categoriaFiltro;
             }) : ofertas).map((oferta, idx) => {
-              const categoria = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+              const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+              // Não tentar remover 'categoria' do objeto oferta, apenas sobrescrever na chamada
               return (
-                <CardOferta key={oferta.id || idx} {...oferta} id={oferta.id} categoria={String(categoria)} historico7d={historicos7d[oferta.id || ''] || []} onExcluirOferta={async () => await excluirOferta(oferta.id)} />
+                <CardOferta
+                  key={oferta.id || idx}
+                  nome={oferta.nome}
+                  tags={oferta.tags}
+                  ativosHoje={oferta.ativosHoje}
+                  ativosOntem={oferta.ativosOntem}
+                  variacao={oferta.variacao}
+                  dataCriacao={oferta.dataCriacao}
+                  urlMeta={oferta.urlMeta}
+                  urlSite={oferta.urlSite}
+                  id={oferta.id}
+                  categoria={categoria}
+                  historico7d={historicos7d[oferta.id || ''] || []}
+                  onExcluirOferta={async () => await excluirOferta(oferta.id ?? "")}
+                />
               );
             })}
           </div>

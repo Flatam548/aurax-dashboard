@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
-const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
-
 interface OfertaExp { id: string; nome: string; categoria?: string; experimento?: string; criativo?: string; }
 interface HistoricoExp { ativos: number; }
 

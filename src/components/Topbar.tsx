@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const Topbar = () => (
   <header className="sticky top-0 z-10 bg-white border-b border-[#e5e7eb] flex items-center justify-between px-8 py-4 ml-64">
@@ -9,7 +10,13 @@ const Topbar = () => (
     />
     <div className="flex gap-6 items-center">
       <span className="font-bold text-[#2563eb] font-inter">Usuário</span>
-      <img src="/avatar.png" className="w-8 h-8 rounded-full border-2 border-[#2563eb]" alt="Avatar" />
+      <Image
+        src="/avatar.png"
+        alt="Avatar"
+        width={32}
+        height={32}
+        className="w-8 h-8 rounded-full border-2 border-[#2563eb]"
+      />
     </div>
   </header>
 );

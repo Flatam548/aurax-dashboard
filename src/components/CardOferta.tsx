@@ -20,7 +20,7 @@ function Sparkline({ data, color }: SparklineProps) {
         />
         <RechartsTooltip formatter={(v: number) => `${v} ativos`} labelFormatter={(_, p) => `Dia ${p && p[0]?.payload ? p[0].payload.dia || '' : ''}`} />
         {/* Destaque no valor de hoje */}
-        <Line type="monotone" dataKey="valor" stroke={color} strokeWidth={0} dot={(props) => props.index === todayIdx ? <Dot {...props} r={6} fill={color} stroke="#fff" strokeWidth={2} /> : null} />
+        <Line type="monotone" dataKey="valor" stroke={color} strokeWidth={0} dot={(props) => props.index === todayIdx ? <Dot {...props} r={6} fill={color} stroke="#fff" strokeWidth={2} /> : <g />} />
       </LineChart>
     </ResponsiveContainer>
   );
@@ -49,8 +49,7 @@ const CardOferta = ({
   urlSite,
   onExcluirOferta,
   ...props
-}: CardOfertaProps & { id?: string; categoria?: string; historico7d?: { valor: number }[] }) => {
-  const variacaoSafe = variacao ?? "0%";
+}: CardOfertaProps & { id?: string; categoria: string; historico7d?: { valor: number }[] }) => {
   const tagSafe = tags && tags.length > 0 ? tags[0] : "";
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [ativosOntemReal, setAtivosOntemReal] = useState<number>(ativosOntem || 0);

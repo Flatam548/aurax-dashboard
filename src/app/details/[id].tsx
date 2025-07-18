@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
-const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
-
 interface OfertaDetalhe { id: string; nome: string; categoria?: string; data_criacao?: string; }
 interface HistoricoDia { data: string; ativos: number; notas?: string; tags?: string[]; }
 interface Comparativo { id: string; nome: string; }
