@@ -12,6 +12,7 @@ interface OfertaDashboard extends Oferta {
 }
 import { supabase } from "../../lib/supabaseClient";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as PieTooltip } from "recharts";
+import Image from "next/image";
 
 const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
 
@@ -160,8 +161,8 @@ const Dashboard = () => {
       <main className="flex-1 ml-64 p-8">
         <Topbar />
         <div className="flex flex-col gap-6 mb-10">
-          <div className="flex flex-wrap gap-6 items-center justify-between">
-            <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6 items-center justify-between flex-col lg:flex-row">
+            <div className="flex gap-6 flex-1 min-w-0">
               <div className="bg-gradient-to-br from-[#8000ff] to-[#00ffe0] border-2 border-[#8000ff] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
                 <span className="text-xs text-[#e0e7ff]">Total de Ofertas</span>
                 <span className="text-2xl font-orbitron drop-shadow-lg">{ofertas.length}</span>
@@ -178,7 +179,7 @@ const Dashboard = () => {
                 <span className="text-2xl font-orbitron drop-shadow-lg">{getMediaCrescimentoPercentual(historicos7d)}</span>
               </div>
             </div>
-            <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-4 py-2 flex flex-col items-center shadow-lg min-w-[220px]">
+            <div className="w-full lg:w-auto mt-6 lg:mt-0 flex-shrink-0">
               <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
               <ResponsiveContainer width="100%" height={120}>
                 <PieChart>
@@ -224,31 +225,33 @@ const Dashboard = () => {
         {loading ? (
           <div className="text-white text-lg mt-12 animate-pulse">Carregando ofertas...</div>
         ) : (
-          <div className="flex flex-wrap gap-8">
-            {(categoriaFiltro ? ofertas.filter(oferta => {
-              const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
-              return categoria === categoriaFiltro;
-            }) : ofertas).map((oferta, idx) => {
-              const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
-              // Não tentar remover 'categoria' do objeto oferta, apenas sobrescrever na chamada
-              return (
-                <CardOferta
-                  key={oferta.id || idx}
-                  nome={oferta.nome}
-                  tags={oferta.tags}
-                  ativosHoje={oferta.ativosHoje}
-                  ativosOntem={oferta.ativosOntem}
-                  variacao={oferta.variacao}
-                  dataCriacao={oferta.dataCriacao}
-                  urlMeta={oferta.urlMeta}
-                  urlSite={oferta.urlSite}
-                  id={oferta.id}
-                  categoria={categoria}
-                  historico7d={historicos7d[oferta.id || ''] || []}
-                  onExcluirOferta={async () => await excluirOferta(oferta.id ?? "")}
-                />
-              );
-            })}
+          <div className="overflow-x-auto pb-4">
+            <div className="flex flex-wrap gap-8 min-w-[340px]">
+              {(categoriaFiltro ? ofertas.filter(oferta => {
+                const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+                return categoria === categoriaFiltro;
+              }) : ofertas).map((oferta, idx) => {
+                const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+                // Não tentar remover 'categoria' do objeto oferta, apenas sobrescrever na chamada
+                return (
+                  <CardOferta
+                    key={oferta.id || idx}
+                    nome={oferta.nome}
+                    tags={oferta.tags}
+                    ativosHoje={oferta.ativosHoje}
+                    ativosOntem={oferta.ativosOntem}
+                    variacao={oferta.variacao}
+                    dataCriacao={oferta.dataCriacao}
+                    urlMeta={oferta.urlMeta}
+                    urlSite={oferta.urlSite}
+                    id={oferta.id}
+                    categoria={categoria}
+                    historico7d={historicos7d[oferta.id || ''] || []}
+                    onExcluirOferta={async () => await excluirOferta(oferta.id ?? "")}
+                  />
+                );
+              })}
+            </div>
           </div>
         )}
       </main>
