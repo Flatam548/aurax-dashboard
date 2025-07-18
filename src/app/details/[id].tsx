@@ -6,14 +6,18 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 
 const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
 
+interface OfertaDetalhe { id: string; nome: string; categoria?: string; data_criacao?: string; }
+interface HistoricoDia { data: string; ativos: number; notas?: string; tags?: string[]; }
+interface Comparativo { id: string; nome: string; }
+
 export default function DetalhesOfertaPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [oferta, setOferta] = useState<any>(null);
-  const [historico, setHistorico] = useState<any[]>([]);
+  const [oferta, setOferta] = useState<OfertaDetalhe | null>(null);
+  const [historico, setHistorico] = useState<HistoricoDia[]>([]);
   const [notas, setNotas] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [uploadUrl, setUploadUrl] = useState("");
-  const [comparativo, setComparativo] = useState<any[]>([]);
+  const [comparativo, setComparativo] = useState<Comparativo[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -88,7 +92,7 @@ export default function DetalhesOfertaPage({ params }: { params: { id: string } 
         <div className="mt-8">
           <h3 className="text-lg font-bold text-[#ff00cc] mb-2">Comparativo com outras ofertas ({oferta?.categoria})</h3>
           <ul className="list-disc ml-6 text-[#00ffe0]">
-            {comparativo.map((o: any) => (
+            {comparativo.map((o) => (
               <li key={o.id}>{o.nome}</li>
             ))}
           </ul>

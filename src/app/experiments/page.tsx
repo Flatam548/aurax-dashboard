@@ -4,17 +4,20 @@ import { supabase } from "../../lib/supabaseClient";
 
 const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
 
+interface OfertaExp { id: string; nome: string; categoria?: string; experimento?: string; criativo?: string; }
+interface HistoricoExp { ativos: number; }
+
 export default function ExperimentsPage() {
-  const [ofertas, setOfertas] = useState<any[]>([]);
-  const [experimentos, setExperimentos] = useState<Record<string, string>>(/* ofertaId: "A" | "B" */ {});
+  const [ofertas, setOfertas] = useState<OfertaExp[]>([]);
+  const [experimentos, setExperimentos] = useState<Record<string, string>>({});
   const [criativos, setCriativos] = useState<Record<string, string>>({});
-  const [historicos, setHistoricos] = useState<Record<string, any[]>>({});
+  const [historicos, setHistoricos] = useState<Record<string, HistoricoExp[]>>({});
 
   useEffect(() => {
     async function fetchOfertas() {
       const { data } = await supabase.from("ofertas").select("id, nome, categoria, experimento");
       setOfertas(data || []);
-      const histObj: Record<string, any[]> = {};
+      const histObj: Record<string, HistoricoExp[]> = {};
       for (const oferta of data || []) {
         const { data: hist } = await supabase.from("historico_ofertas").select("ativos").eq("oferta_id", oferta.id).order("data", { ascending: true });
         histObj[oferta.id] = hist || [];

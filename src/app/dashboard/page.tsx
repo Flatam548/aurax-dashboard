@@ -52,7 +52,7 @@ function getNotificacoes(ofertas: Oferta[], historicos7d: Record<string, { valor
 }
 
 const Dashboard = () => {
-  const { ofertas, adicionarOferta, alternarAtivo, excluirOferta, loading } = useOfertas();
+  const { ofertas, adicionarOferta, excluirOferta, loading } = useOfertas();
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [historicos7d, setHistoricos7d] = useState<Record<string, { valor: number }[]>>({});
@@ -93,7 +93,7 @@ const Dashboard = () => {
           .eq("oferta_id", oferta.id)
           .in("data", datas);
         historicosObj[oferta.id] = datas.map(dataStr => {
-          const dia = hist?.find((d: any) => d.data === dataStr);
+          const dia = hist?.find((d: { data: string; ativos: number }) => d.data === dataStr);
           return { valor: dia ? dia.ativos : 0 };
         });
       }
@@ -172,7 +172,7 @@ const Dashboard = () => {
                 <PieChart>
                   <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25}
                     label={({ name }) => name} isAnimationActive>
-                    {getCategoriaStats(ofertas).map((entry, i) => (
+                    {getCategoriaStats(ofertas).map((entry) => (
                       <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
