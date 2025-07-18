@@ -36,7 +36,10 @@ export default function DetalhesOfertaPage({ params }: { params: { id: string } 
   }, [params.id]);
 
   // Timeline de picos
-  const pico = historico.reduce((max, h) => h.ativos > max.ativos ? h : max, { ativos: 0 });
+  const pico = historico.reduce(
+    (max, h) => h.ativos > max.ativos ? h : max,
+    historico[0] || { ativos: 0, data: "" }
+  );
   const variacaoAcumulada = historico.length > 1 ? (((historico[historico.length-1].ativos - historico[0].ativos) / (historico[0].ativos || 1)) * 100).toFixed(1) : "0";
 
   // Upload handler (simples)
