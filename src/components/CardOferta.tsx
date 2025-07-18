@@ -7,7 +7,8 @@ const categoriaColors = {
   default: "#00ffe0"
 };
 
-function Sparkline({ data, color }) {
+type SparklineProps = { data: { valor: number }[]; color: string; };
+function Sparkline({ data, color }: SparklineProps) {
   return (
     <ResponsiveContainer width="100%" height={40}>
       <LineChart data={data} margin={{ top: 10, bottom: 10, left: 0, right: 0 }}>
