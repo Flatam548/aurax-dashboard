@@ -101,10 +101,10 @@ export default function AnalyticsPage() {
   const chartData: ChartDia[] = [];
   const datasReais: string[] = [];
   if (oferta) {
-    // Use a data de cadastro da oferta como ponto inicial
     const dataInicio = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
     const historicoOferta = historico
       .filter(h => h.oferta_id === oferta.id)
+      .map(h => ({ ...h, data: h.data.slice(0, 10) })) // Normaliza a data
       .sort((a, b) => a.data.localeCompare(b.data));
     let ultimoIndex = -1;
     for (let i = 0; i < 15; i++) {
