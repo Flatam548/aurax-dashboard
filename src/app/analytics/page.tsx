@@ -106,11 +106,13 @@ export default function AnalyticsPage() {
       .filter(h => h.oferta_id === oferta.id)
       .map(h => ({ ...h, data: h.data.slice(0, 10) })) // Normaliza a data
       .sort((a, b) => a.data.localeCompare(b.data));
+    console.log('Datas do histórico:', historicoOferta.map(h => h.data));
     let ultimoIndex = -1;
     for (let i = 0; i < 15; i++) {
       const dataDia = new Date(dataInicio);
       dataDia.setDate(dataInicio.getDate() + i);
       const dataStr = dataDia.toISOString().slice(0, 10);
+      console.log('Buscando dataStr:', dataStr);
       const hist = historicoOferta.find(h => h.data === dataStr);
       chartData.push({
         dia: `Dia ${i + 1}`,
