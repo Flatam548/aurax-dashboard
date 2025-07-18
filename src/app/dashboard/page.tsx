@@ -160,6 +160,16 @@ const Dashboard = () => {
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
         <Topbar />
+        <div className="w-full max-w-7xl flex justify-end mb-4">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="bg-gradient-to-r from-[#2563eb] to-[#00ffe0] text-white font-bold px-6 py-2 rounded-lg shadow hover:scale-105 transition flex items-center gap-2"
+          >
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Nova Oferta
+          </button>
+        </div>
+        <ModalNovaOferta open={modalOpen} onClose={() => setModalOpen(false)} onCreate={handleNovaOferta} />
         <div className="w-full max-w-7xl flex flex-col gap-8 items-center">
           <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center">
             <div className="flex gap-6 flex-1 justify-center">
