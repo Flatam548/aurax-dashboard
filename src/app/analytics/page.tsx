@@ -14,6 +14,8 @@ type Oferta = {
   id: string;
   nome: string;
   dataCriacao: string;
+  ativosHoje: number;
+  ativosOntem: number;
 };
 
 interface HistoricoDia {
@@ -21,12 +23,44 @@ interface HistoricoDia {
   data: string;
   ativos: number;
 }
+
 interface ChartDia {
   dia: string;
   dataReal: string;
   Ativos: number;
   dataStr: string;
   isHoje?: boolean;
+}
+
+// Função para gerar dados de exemplo quando não há histórico
+function gerarDadosExemplo(dataInicio: Date, diasPassados: number): ChartDia[] {
+  const chartData: ChartDia[] = [];
+  const hoje = new Date();
+  
+  for (let i = 0; i < diasPassados; i++) {
+    const dataDia = new Date(dataInicio);
+    dataDia.setDate(dataInicio.getDate() + i);
+    const dataStr = dataDia.toISOString().slice(0, 10);
+    
+    // Gera dados realistas baseados no dia
+    let ativos = 0;
+    if (i >= 2) { // Começa a ter dados a partir do 3º dia
+      const baseValue = Math.floor(Math.random() * 50) + 10; // 10-60 ativos base
+      const crescimento = Math.min(i * 0.3, 1.5); // Crescimento gradual
+      const variacao = (Math.random() - 0.5) * 0.4; // Variação de ±20%
+      ativos = Math.max(0, Math.floor(baseValue * (1 + crescimento) * (1 + variacao)));
+    }
+    
+    chartData.push({
+      dia: `Dia ${i + 1}`,
+      dataReal: dataDia.toLocaleDateString('pt-BR'),
+      Ativos: ativos,
+      dataStr,
+      isHoje: dataStr === hoje.toISOString().slice(0, 10)
+    });
+  }
+  
+  return chartData;
 }
 
 function Heatmap({ chartData }: { chartData: ChartDia[] }) {
@@ -67,12 +101,25 @@ function Insights({ chartData }: { chartData: ChartDia[] }) {
   const ultimos = chartData.slice(-3);
   const media = ultimos.length ? (ultimos.reduce((acc, d) => acc + d.Ativos, 0) / ultimos.length) : 0;
   const previsao = Math.round(media * 5);
+  
+  // Calcula crescimento percentual
+  const hoje = chartData[chartData.length-1]?.Ativos ?? 0;
+  const ontem = chartData[chartData.length-2]?.Ativos ?? 0;
+  const crescimento = ontem > 0 ? ((hoje - ontem) / ontem) * 100 : 0;
+  
   return (
     <div className="mt-4 mb-2 flex flex-col items-center">
       <button className="bg-gradient-to-r from-[#8000ff] to-[#00ffe0] text-[#1a002a] px-6 py-2 rounded-lg font-bold shadow hover:opacity-90 transition mb-2">
         Insights
       </button>
-      <div className="text-[#00ff99] font-mono text-sm">Se continuar assim, previsão de <b>{previsao}</b> ativos em 5 dias.</div>
+      <div className="text-[#00ff99] font-mono text-sm mb-1">
+        Se continuar assim, previsão de <b>{previsao}</b> ativos em 5 dias.
+      </div>
+      {crescimento !== 0 && (
+        <div className={`text-sm font-mono ${crescimento > 0 ? 'text-[#00ff99]' : 'text-[#ff6b6b]'}`}>
+          Crescimento: {crescimento > 0 ? '+' : ''}{crescimento.toFixed(1)}% vs ontem
+        </div>
+      )}
     </div>
   );
 }
@@ -86,46 +133,74 @@ export default function AnalyticsPage() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const { data: ofertasData } = await supabase.from('ofertas').select('id, nome, dataCriacao');
-      const { data: historicoData } = await supabase.from('historico_ofertas').select('oferta_id, data, ativos');
-      setOfertas(ofertasData || []);
-      setHistorico(historicoData || []);
-      setLoading(false);
-      if (ofertasData && ofertasData.length > 0 && !selectedId) setSelectedId(ofertasData[0].id);
+      try {
+        const { data: ofertasData, error: ofertasError } = await supabase
+          .from('ofertas')
+          .select('id, nome, dataCriacao, ativosHoje, ativosOntem');
+        
+        const { data: historicoData, error: historicoError } = await supabase
+          .from('historico_ofertas')
+          .select('oferta_id, data, ativos');
+        
+        if (ofertasError) {
+          console.error('Erro ao buscar ofertas:', ofertasError);
+        }
+        if (historicoError) {
+          console.error('Erro ao buscar histórico:', historicoError);
+        }
+        
+        setOfertas(ofertasData || []);
+        setHistorico(historicoData || []);
+        
+        if (ofertasData && ofertasData.length > 0 && !selectedId) {
+          setSelectedId(ofertasData[0].id);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
-  }, [selectedId]);
+  }, []);
 
   // Dados da oferta selecionada
   const oferta = ofertas.find(o => o.id === selectedId);
   const chartData: ChartDia[] = [];
+  
   if (oferta) {
-    const dataInicio = new Date(oferta.dataCriacao); // Corrigido: formato ISO YYYY-MM-DD
+    const dataInicio = new Date(oferta.dataCriacao);
     const hoje = new Date();
     const diasPassados = Math.min(
       Math.floor((hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24)) + 1,
       15
     );
+    
+    // Busca histórico específico da oferta
     const historicoOferta = historico
       .filter(h => h.oferta_id === oferta.id)
       .map(h => ({ ...h, data: h.data.slice(0, 10) }))
       .sort((a, b) => a.data.localeCompare(b.data));
-    let ultimoIndex = -1;
-    for (let i = 0; i < diasPassados; i++) {
-      const dataDia = new Date(dataInicio);
-      dataDia.setDate(dataInicio.getDate() + i);
-      const dataStr = dataDia.toISOString().slice(0, 10);
-      const hist = historicoOferta.find(h => h.data === dataStr);
-      chartData.push({
-        dia: `Dia ${i + 1}`,
-        dataReal: dataDia.toLocaleDateString('pt-BR'),
-        Ativos: hist ? hist.ativos : 0,
-        dataStr
-      });
-      if (hist && hist.ativos > 0) ultimoIndex = chartData.length - 1;
-    }
-    if (ultimoIndex !== -1) {
-      chartData[ultimoIndex].isHoje = true;
+    
+    // Se não há dados de histórico, gera dados de exemplo
+    if (historicoOferta.length === 0) {
+      chartData.push(...gerarDadosExemplo(dataInicio, diasPassados));
+    } else {
+      // Usa dados reais do histórico
+      for (let i = 0; i < diasPassados; i++) {
+        const dataDia = new Date(dataInicio);
+        dataDia.setDate(dataInicio.getDate() + i);
+        const dataStr = dataDia.toISOString().slice(0, 10);
+        const hist = historicoOferta.find(h => h.data === dataStr);
+        
+        chartData.push({
+          dia: `Dia ${i + 1}`,
+          dataReal: dataDia.toLocaleDateString('pt-BR'),
+          Ativos: hist ? hist.ativos : 0,
+          dataStr,
+          isHoje: dataStr === hoje.toISOString().slice(0, 10)
+        });
+      }
     }
   }
 
@@ -149,6 +224,11 @@ export default function AnalyticsPage() {
           </div>
           {loading ? (
             <div className="text-[#18181b] text-lg">Carregando dados...</div>
+          ) : ofertas.length === 0 ? (
+            <div className="text-center py-8">
+              <div className="text-[#6b7280] text-lg mb-4">Nenhuma oferta encontrada</div>
+              <div className="text-sm text-[#6b7280]">Adicione ofertas no dashboard para ver os dados de analytics</div>
+            </div>
           ) : (
             <>
               <ResponsiveContainer width="100%" height={420}>
@@ -201,7 +281,12 @@ export default function AnalyticsPage() {
               <Heatmap chartData={chartData} />
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
-              <div className="text-sm mt-4" style={{ color: '#6b7280' }}>Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais &quot;quentes&quot; e o gráfico de barras compara hoje vs ontem.</div>
+              <div className="text-sm mt-4" style={{ color: '#6b7280' }}>
+                {historico.length === 0 ? 
+                  "Dados de exemplo exibidos. Execute o script de scraping para obter dados reais." :
+                  "O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais 'quentes' e o gráfico de barras compara hoje vs ontem."
+                }
+              </div>
             </>
           )}
         </div>
