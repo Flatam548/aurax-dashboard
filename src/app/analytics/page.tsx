@@ -39,15 +39,21 @@ export default function AnalyticsPage() {
   const chartData: Record<string, unknown>[] = [];
   const datasReais: string[] = [];
   if (oferta) {
-    const dataMin = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
-    for (let i = 0; i < 15; i++) {
-      const dataDia = new Date(dataMin);
-      dataDia.setDate(dataDia.getDate() + i);
+    // Buscar os 15 dias mais recentes do histórico para a oferta
+    const historicoOferta = historico
+      .filter(h => h.oferta_id === oferta.id)
+      .sort((a, b) => a.data.localeCompare(b.data));
+    // Garante que sempre teremos 15 dias, preenchendo com 0 se faltar
+    const ultimos15Dias = [];
+    const hoje = new Date();
+    for (let i = 14; i >= 0; i--) {
+      const dataDia = new Date(hoje);
+      dataDia.setDate(hoje.getDate() - i);
       const dataStr = dataDia.toISOString().slice(0, 10);
-      const hist = historico.find(h => h.oferta_id === oferta.id && h.data === dataStr);
+      const hist = historicoOferta.find(h => h.data === dataStr);
       datasReais.push(dataDia.toLocaleDateString('pt-BR'));
       chartData.push({
-        dia: `Dia ${i + 1}`,
+        dia: `Dia ${15 - i}`,
         dataReal: dataDia.toLocaleDateString('pt-BR'),
         Ativos: hist ? hist.ativos : 0
       });

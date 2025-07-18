@@ -53,12 +53,22 @@ const Dashboard = () => {
         <Topbar />
         <div className="flex justify-between items-center mt-8 mb-6">
           <h1 className="text-3xl font-bold text-white">Ofertas</h1>
-          <button
-            className="bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:opacity-90 transition"
-            onClick={() => setModalOpen(true)}
-          >
-            + Adicionar Nova Oferta
-          </button>
+          <div className="flex gap-4 items-center">
+            <div className="bg-[#23234a] rounded-xl px-4 py-2 text-white font-semibold flex flex-col items-center shadow border border-[#2d2d5a]">
+              <span className="text-xs text-[#a259ff]">Ativos Hoje</span>
+              <span className="text-lg">{ofertas.reduce((acc, o) => acc + (o.ativosHoje || 0), 0)}</span>
+            </div>
+            <div className="bg-[#23234a] rounded-xl px-4 py-2 text-white font-semibold flex flex-col items-center shadow border border-[#2d2d5a]">
+              <span className="text-xs text-[#a259ff]">Ativos Ontem</span>
+              <span className="text-lg">{ofertas.reduce((acc, o) => acc + (o.ativosOntem || 0), 0)}</span>
+            </div>
+            <button
+              className="bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:opacity-90 transition"
+              onClick={() => setModalOpen(true)}
+            >
+              + Adicionar Nova Oferta
+            </button>
+          </div>
         </div>
         {feedback && (
           <div className="mb-4 px-4 py-2 rounded-lg bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-white font-semibold shadow animate-pulse w-fit">
