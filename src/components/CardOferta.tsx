@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type CardOfertaProps = {
   nome: string;
@@ -22,10 +22,25 @@ const CardOferta = ({
   urlMeta,
   urlSite,
   onExcluirOferta,
-}: CardOfertaProps) => {
+  ...props
+}: CardOfertaProps & { id?: string }) => {
   const variacaoSafe = variacao ?? "0%";
   const tagSafe = tags && tags.length > 0 ? tags[0] : "";
-  const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [ativosOntemReal, setAtivosOntemReal] = useState<number>(ativosOntem || 0);
+
+  useEffect(() => {
+    async function fetchAtivosOntem() {
+      if (!props.id) return;
+      const ontem = new Date();
+      ontem.setDate(ontem.getDate() - 1);
+      const dataOntem = ontem.toISOString().slice(0, 10);
+      const res = await fetch(`/api/historicoOferta?id=${props.id}&data=${dataOntem}`);
+      const data = await res.json();
+      setAtivosOntemReal(data.ativos ?? 0);
+    }
+    fetchAtivosOntem();
+  }, [props.id, ativosHoje]);
   return (
     <div className="bg-[#23234a] rounded-2xl shadow-md p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full border border-[#2d2d5a]">
       <div className="flex justify-between items-center">
@@ -48,7 +63,7 @@ const CardOferta = ({
       </div>
       <div className="flex gap-4 text-sm text-[#a259ff]">
         <div>Ativos Hoje: <span className="text-white font-bold">{ativosHoje}</span></div>
-        <div>Ontem: <span className="text-white font-bold">{ativosOntem}</span></div>
+        <div>Ontem: <span className="text-white font-bold">{ativosOntemReal}</span></div>
         <div>Variação: <span className={variacaoSafe.startsWith("-") ? "text-red-400 font-bold" : "text-green-400 font-bold"}>{variacaoSafe}</span></div>
       </div>
       <div className="text-xs text-gray-400">Criado em: {dataCriacao}</div>
