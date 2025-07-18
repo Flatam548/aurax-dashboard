@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { LineChart, Line, ResponsiveContainer, Tooltip as RechartsTooltip, Dot } from "recharts";
+import { FaBook, FaGlobe, FaInfoCircle, FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 const categoriaColors = {
   Tarot: "#8000ff",
@@ -9,10 +10,17 @@ const categoriaColors = {
 
 type SparklineProps = { data: { valor: number }[]; color: string; };
 function Sparkline({ data, color }: SparklineProps) {
+  const max = Math.max(...data.map(d => d.valor));
+  const todayIdx = data.length - 1;
   return (
     <ResponsiveContainer width="100%" height={40}>
       <LineChart data={data} margin={{ top: 10, bottom: 10, left: 0, right: 0 }}>
-        <Line type="monotone" dataKey="valor" stroke={color} strokeWidth={2} dot={false} isAnimationActive={true} />
+        <Line type="monotone" dataKey="valor" stroke={color} strokeWidth={2} dot={false} isAnimationActive={true}
+          activeDot={{ r: 6, fill: color, stroke: '#fff', strokeWidth: 2 }}
+        />
+        <RechartsTooltip formatter={(v: number) => `${v} ativos`} labelFormatter={(_, p) => `Dia ${p && p[0]?.payload ? p[0].payload.dia || '' : ''}`} />
+        {/* Destaque no valor de hoje */}
+        <Line type="monotone" dataKey="valor" stroke={color} strokeWidth={0} dot={(props) => props.index === todayIdx ? <Dot {...props} r={6} fill={color} stroke="#fff" strokeWidth={2} /> : null} />
       </LineChart>
     </ResponsiveContainer>
   );
@@ -61,14 +69,20 @@ const CardOferta = ({
     }
     fetchAtivosOntem();
   }, [props.id, ativosHoje]);
+
+  const variacaoPercentual = ativosOntemReal > 0 ? (((ativosHoje - ativosOntemReal) / ativosOntemReal) * 100).toFixed(1) + "%" : "0%";
+  const variacaoNum = Number(variacaoPercentual.replace('%',''));
+  const pico7d = Math.max(...historicoSpark.map(h => h.valor));
+  const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
+
   return (
-    <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full transition hover:shadow-lg hover:border-[#2563eb]">
+    <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full transition hover:shadow-xl hover:border-[#2563eb] hover:scale-[1.03] duration-200">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#2563eb]' : 'bg-red-500'}`}></span>
           <div className="text-lg font-bold font-orbitron" style={{ color: '#2563eb' }}>{nome}</div>
         </div>
-        <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#e0e7ff] text-[#2563eb]">{props.categoria || tagSafe}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-bold shadow-md" style={{ background: corNeon, color: '#fff', textShadow: '0 0 6px ' + corNeon }}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
           className="ml-2 p-1 rounded hover:bg-red-100/10 transition"
@@ -81,33 +95,41 @@ const CardOferta = ({
           </svg>
         </button>
       </div>
-      <Sparkline data={historicoSpark} color={'#2563eb'} />
-      <div className="flex gap-4 text-sm" style={{ color: '#2563eb' }}>
+      <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={'#2563eb'} />
+      <div className="flex gap-4 text-sm items-center" style={{ color: '#2563eb' }}>
         <div>Hoje: <span style={{ color: '#18181b' }} className="font-bold">{ativosHoje}</span></div>
         <div>Ontem: <span style={{ color: '#18181b' }} className="font-bold">{ativosOntemReal}</span></div>
-        <div>Variação: <span className={variacaoSafe.startsWith("-") ? "text-red-400 font-bold" : "font-bold"} style={{ color: variacaoSafe.startsWith("-") ? '#FF6AC2' : '#2563eb' }}>{variacaoSafe}</span></div>
+        <div className="flex items-center gap-1">Variação:
+          {variacaoNum < 0 ? <FaChevronDown className="text-red-400" /> : <FaChevronUp className="text-green-500" />}
+          <span className={variacaoNum < 0 ? "text-red-400 font-bold" : "text-green-500 font-bold"}>{variacaoPercentual}</span>
+        </div>
       </div>
-      <div className="text-xs" style={{ color: '#6b7280' }}>Criado em: {dataCriacao}</div>
+      <div className="flex gap-2 text-xs items-center" style={{ color: '#6b7280' }}>
+        <span>Criado em: {dataCriacao}</span>
+        <span className="ml-2">Pico 7d: <span className="font-bold" style={{ color: '#2563eb' }}>{pico7d}</span> (Dia {diaPico+1})</span>
+      </div>
       <div className="flex gap-2 mt-2">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
         >
-          Biblioteca
+          <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
         >
-          Site
+          <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
         >
-          Detalhes
+          <FaInfoCircle /> Detalhes
         </button>
       </div>
+      {/* Placeholder para expansão do gráfico de 15 dias */}
+      {/* <button className="text-xs text-[#2563eb] underline mt-2">Ver gráfico 15 dias</button> */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="bg-white rounded-2xl p-6 shadow-xl border border-[#e5e7eb] flex flex-col items-center">

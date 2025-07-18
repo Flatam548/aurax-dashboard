@@ -24,16 +24,18 @@ function getCategoriaStats(ofertas: Oferta[]) {
   return Object.entries(map).map(([name, value], i) => ({ name, value, color: NEON_COLORS[i % NEON_COLORS.length] }));
 }
 
-function getMediaCrescimento(historicos7d: Record<string, { valor: number }[]>) {
+function getMediaCrescimentoPercentual(historicos7d: Record<string, { valor: number }[]>) {
   let soma = 0, count = 0;
   for (const arr of Object.values(historicos7d)) {
     if (!arr || arr.length < 2) continue;
     const v = arr[arr.length-1].valor;
     const v7 = arr[0].valor;
-    soma += v - v7;
-    count++;
+    if (v7 > 0) {
+      soma += ((v - v7) / v7) * 100;
+      count++;
+    }
   }
-  return count ? (soma / count).toFixed(1) : "0";
+  return count ? (soma / count).toFixed(1) + '%' : '0%';
 }
 
 function getNotificacoes(ofertas: Oferta[], historicos7d: Record<string, { valor: number }[]>) {
@@ -56,6 +58,8 @@ const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [historicos7d, setHistoricos7d] = useState<Record<string, { valor: number }[]>>({});
+  // Adicionar useState para filtro de categoria
+  const [categoriaFiltro, setCategoriaFiltro] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchAtivosOntem() {
@@ -145,6 +149,11 @@ const Dashboard = () => {
   //   setTimeout(() => setFeedback(null), 1500);
   // };
 
+  // Calcular variação percentual de Ativos Hoje vs Ontem
+  const ativosHoje = ofertas.reduce((acc, o) => acc + (o.ativosHoje || 0), 0);
+  const ativosOntem = ofertas.reduce((acc, o) => acc + (o.ativosOntem || 0), 0);
+  const variacaoHojeOntem = ativosOntem > 0 ? (((ativosHoje - ativosOntem) / ativosOntem) * 100).toFixed(1) + '%' : '0%';
+
   return (
     <div className="min-h-screen bg-[#1a1a2e] flex">
       <Sidebar />
@@ -153,32 +162,49 @@ const Dashboard = () => {
         <div className="flex flex-col gap-6 mb-10">
           <div className="flex flex-wrap gap-6 items-center justify-between">
             <div className="flex gap-6">
-              <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow">
-                <span className="text-xs text-[#a259ff]">Total de Ofertas</span>
-                <span className="text-2xl font-orbitron">{ofertas.length}</span>
+              <div className="bg-gradient-to-br from-[#8000ff] to-[#00ffe0] border-2 border-[#8000ff] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#e0e7ff]">Total de Ofertas</span>
+                <span className="text-2xl font-orbitron drop-shadow-lg">{ofertas.length}</span>
               </div>
-              <div className="bg-[#23234a] border-2 border-[#00ffe0] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow">
-                <span className="text-xs text-[#00ffe0]">Ativos Hoje</span>
-                <span className="text-2xl font-orbitron">{ofertas.reduce((acc, o) => acc + (o.ativosHoje || 0), 0)}</span>
+              <div className="bg-gradient-to-br from-[#00ffe0] to-[#2563eb] border-2 border-[#00ffe0] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#e0e7ff]">Ativos Hoje</span>
+                <span className="text-2xl font-orbitron drop-shadow-lg">{ativosHoje}</span>
+                <span className={variacaoHojeOntem.startsWith('-') ? 'text-red-400 font-bold text-xs' : 'text-green-400 font-bold text-xs'}>
+                  {variacaoHojeOntem.startsWith('-') ? '▼' : '▲'} {variacaoHojeOntem}
+                </span>
               </div>
-              <div className="bg-[#23234a] border-2 border-[#00ff99] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow">
-                <span className="text-xs text-[#00ff99]">Média Crescimento 7d</span>
-                <span className="text-2xl font-orbitron">{getMediaCrescimento(historicos7d)}</span>
+              <div className="bg-gradient-to-br from-[#00ff99] to-[#2563eb] border-2 border-[#00ff99] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#e0e7ff]">Média Crescimento 7d</span>
+                <span className="text-2xl font-orbitron drop-shadow-lg">{getMediaCrescimentoPercentual(historicos7d)}</span>
               </div>
             </div>
-            <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-4 py-2 flex flex-col items-center shadow min-w-[220px]">
+            <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-4 py-2 flex flex-col items-center shadow-lg min-w-[220px]">
               <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
               <ResponsiveContainer width="100%" height={120}>
                 <PieChart>
-                  <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25}
-                    label={({ name }) => name} isAnimationActive>
+                  <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
+                    label={({ name, percent }) => `${name} (${percent ? (percent*100).toFixed(0) : 0}%)`}
+                    onClick={(_, idx) => setCategoriaFiltro(getCategoriaStats(ofertas)[idx].name)}
+                    >
                     {getCategoriaStats(ofertas).map((entry) => (
-                      <Cell key={entry.name} fill={entry.color} />
+                      <Cell key={entry.name} fill={entry.color} style={{ cursor: 'pointer' }} />
                     ))}
                   </Pie>
-                  <PieTooltip contentStyle={{ background: "#1a002a", border: "1px solid #8000ff", color: "#fff" }} />
+                  <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
+                    <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
+                      <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
+                    </div>
+                  ) : null} />
                 </PieChart>
               </ResponsiveContainer>
+              <div className="flex flex-wrap gap-2 mt-2 justify-center">
+                {getCategoriaStats(ofertas).map((cat, i) => (
+                  <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
+                    className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
+                  >{cat.name}</button>
+                ))}
+                {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
+              </div>
             </div>
           </div>
           {/* Notificações automáticas */}
@@ -198,23 +224,16 @@ const Dashboard = () => {
         {loading ? (
           <div className="text-white text-lg mt-12 animate-pulse">Carregando ofertas...</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {ofertas.map((oferta) => (
-              <CardOferta
-                key={(oferta.id || oferta.nome) + oferta.dataCriacao}
-                {...oferta}
-                id={oferta.id}
-                categoria={(oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || ''}
-                historico7d={oferta.id ? historicos7d[oferta.id] : undefined}
-                onExcluirOferta={async () => {
-                  if (!oferta.id) return;
-                  setFeedback('Excluindo oferta...');
-                  await excluirOferta(oferta.id);
-                  setFeedback('Oferta excluída!');
-                  setTimeout(() => setFeedback(null), 2000);
-                }}
-              />
-            ))}
+          <div className="flex flex-wrap gap-8">
+            {(categoriaFiltro ? ofertas.filter(oferta => {
+              const categoria = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+              return String(categoria) === String(categoriaFiltro);
+            }) : ofertas).map((oferta, idx) => {
+              const categoria = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+              return (
+                <CardOferta key={oferta.id || idx} {...oferta} id={oferta.id} categoria={String(categoria)} historico7d={historicos7d[oferta.id || ''] || []} onExcluirOferta={async () => await excluirOferta(oferta.id)} />
+              );
+            })}
           </div>
         )}
       </main>

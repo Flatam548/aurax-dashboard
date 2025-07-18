@@ -102,17 +102,20 @@ export default function AnalyticsPage() {
   const datasReais: string[] = [];
   if (oferta) {
     const dataInicio = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
+    const hoje = new Date();
+    const diasPassados = Math.min(
+      Math.floor((hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24)) + 1,
+      15
+    );
     const historicoOferta = historico
       .filter(h => h.oferta_id === oferta.id)
-      .map(h => ({ ...h, data: h.data.slice(0, 10) })) // Normaliza a data
+      .map(h => ({ ...h, data: h.data.slice(0, 10) }))
       .sort((a, b) => a.data.localeCompare(b.data));
-    console.log('Datas do histórico:', historicoOferta.map(h => h.data));
     let ultimoIndex = -1;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < diasPassados; i++) {
       const dataDia = new Date(dataInicio);
       dataDia.setDate(dataInicio.getDate() + i);
       const dataStr = dataDia.toISOString().slice(0, 10);
-      console.log('Buscando dataStr:', dataStr);
       const hist = historicoOferta.find(h => h.data === dataStr);
       chartData.push({
         dia: `Dia ${i + 1}`,
