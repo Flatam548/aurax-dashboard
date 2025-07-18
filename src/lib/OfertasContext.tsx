@@ -52,7 +52,7 @@ export function OfertasProvider({ children }: { children: ReactNode }) {
       ativosHoje: 0,
       ativosOntem: 0,
       variacao: "0%",
-      dataCriacao: new Date().toLocaleDateString("pt-BR"),
+      dataCriacao: new Date().toISOString().slice(0, 10),
       ativo: true,
     };
     const { data, error } = await supabase.from("ofertas").insert([nova]).select();
