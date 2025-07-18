@@ -46,6 +46,7 @@ export default function AnalyticsPage() {
     // Garante que sempre teremos 15 dias, preenchendo com 0 se faltar
     const ultimos15Dias = [];
     const hoje = new Date();
+    let ultimoIndex = -1;
     for (let i = 14; i >= 0; i--) {
       const dataDia = new Date(hoje);
       dataDia.setDate(hoje.getDate() - i);
@@ -55,8 +56,14 @@ export default function AnalyticsPage() {
       chartData.push({
         dia: `Dia ${15 - i}`,
         dataReal: dataDia.toLocaleDateString('pt-BR'),
-        Ativos: hist ? hist.ativos : 0
+        Ativos: hist ? hist.ativos : 0,
+        dataStr
       });
+      if (hist && hist.ativos > 0) ultimoIndex = chartData.length - 1;
+    }
+    // Marca apenas o último ponto registrado como destaque
+    if (ultimoIndex !== -1) {
+      chartData[ultimoIndex].isHoje = true;
     }
   }
 
@@ -102,8 +109,14 @@ export default function AnalyticsPage() {
                   dataKey="Ativos"
                   stroke="#a259ff"
                   strokeWidth={4}
-                  dot={{ r: 5, fill: "#a259ff", stroke: "#fff", strokeWidth: 2 }}
-                  activeDot={{ r: 8 }}
+                  dot={({ cx, cy, payload }) => (
+                    payload.isHoje ? (
+                      <circle cx={cx} cy={cy} r={10} fill="#fff" stroke="#a259ff" strokeWidth={4} />
+                    ) : (
+                      <circle cx={cx} cy={cy} r={5} fill="#a259ff" stroke="#fff" strokeWidth={2} />
+                    )
+                  )}
+                  activeDot={{ r: 12, fill: "#a259ff", stroke: "#fff", strokeWidth: 4 }}
                   fillOpacity={1}
                   fill="url(#colorAtivos)"
                   connectNulls

@@ -1,6 +1,6 @@
 // Novo commit para testar variáveis de ambiente do Supabase
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/Sidebar";
 import Topbar from "../../components/Topbar";
 import CardOferta from "../../components/CardOferta";
@@ -11,6 +11,25 @@ const Dashboard = () => {
   const { ofertas, adicionarOferta, alternarAtivo, excluirOferta, loading } = useOfertas();
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [ativosOntemTotal, setAtivosOntemTotal] = useState<number>(0);
+
+  useEffect(() => {
+    async function fetchAtivosOntem() {
+      if (!ofertas.length) return;
+      const ontem = new Date();
+      ontem.setDate(ontem.getDate() - 1);
+      const dataOntem = ontem.toISOString().slice(0, 10);
+      let total = 0;
+      for (const oferta of ofertas) {
+        if (!oferta.id) continue;
+        const res = await fetch(`/api/historicoOferta?id=${oferta.id}&data=${dataOntem}`);
+        const data = await res.json();
+        total += data.ativos ?? 0;
+      }
+      setAtivosOntemTotal(total);
+    }
+    fetchAtivosOntem();
+  }, [ofertas]);
 
   const handleNovaOferta = async (novaOferta: Omit<Oferta, "ativosHoje" | "ativosOntem" | "variacao" | "dataCriacao" | "ativo">) => {
     await adicionarOferta(novaOferta);
@@ -28,7 +47,15 @@ const Dashboard = () => {
         });
         const data = await res.json();
         if (data.ativosHoje !== undefined) {
+          // Atualiza localmente ativosHoje
           nova.ativosHoje = data.ativosHoje;
+          // Busca ativosOntem do histórico
+          const ontem = new Date();
+          ontem.setDate(ontem.getDate() - 1);
+          const dataOntem = ontem.toISOString().slice(0, 10);
+          const historicoRes = await fetch(`/api/historicoOferta?id=${nova.id}&data=${dataOntem}`);
+          const historicoData = await historicoRes.json();
+          nova.ativosOntem = historicoData.ativos ?? 0;
           setFeedback('Nova oferta atualizada!');
         } else {
           setFeedback('Erro ao atualizar nova oferta.');
@@ -60,7 +87,7 @@ const Dashboard = () => {
             </div>
             <div className="bg-[#23234a] rounded-xl px-4 py-2 text-white font-semibold flex flex-col items-center shadow border border-[#2d2d5a]">
               <span className="text-xs text-[#a259ff]">Ativos Ontem</span>
-              <span className="text-lg">{ofertas.reduce((acc, o) => acc + (o.ativosOntem || 0), 0)}</span>
+              <span className="text-lg">{ativosOntemTotal}</span>
             </div>
             <button
               className="bg-gradient-to-r from-[#a259ff] to-[#6a0dad] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:opacity-90 transition"
