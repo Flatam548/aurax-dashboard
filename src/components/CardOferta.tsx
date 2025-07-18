@@ -75,7 +75,7 @@ const CardOferta = ({
   const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
 
   return (
-    <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[320px] max-w-xs w-full transition hover:shadow-xl hover:border-[#2563eb] hover:scale-[1.03] duration-200">
+    <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:border-[#2563eb] hover:scale-[1.03] duration-200">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#2563eb]' : 'bg-red-500'}`}></span>
@@ -107,22 +107,22 @@ const CardOferta = ({
         <span>Criado em: {dataCriacao}</span>
         <span className="ml-2">Pico 7d: <span className="font-bold" style={{ color: '#2563eb' }}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
-      <div className="flex gap-2 mt-2">
+      <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
         >
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
         >
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-4 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition"
+          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
         >
           <FaInfoCircle /> Detalhes
         </button>

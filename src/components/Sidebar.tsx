@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#18181b] border-r border-[#e5e7eb] flex flex-col justify-between z-20">
       <div className="p-6">
-        <Image src="/logo.png" alt="Logo" width={192} height={48} className="h-12 mb-6" />
+        <Image src="/logo.png" alt="Logo" width={80} height={80} className="mx-auto mb-6 object-contain" />
         <nav className="flex flex-col gap-2">
           {links.map(link => (
             <Link

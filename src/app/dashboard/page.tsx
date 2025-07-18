@@ -181,33 +181,35 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-center mt-2">
-            {/* Ofertas por Categoria */}
-            <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
-            <ResponsiveContainer width="100%" height={120}>
-              <PieChart>
-                <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
-                  label={({ name, percent }) => `${name} (${percent ? (percent*100).toFixed(0) : 0}%)`}
-                  onClick={(_, idx) => setCategoriaFiltro(getCategoriaStats(ofertas)[idx].name)}
-                  >
-                  {getCategoriaStats(ofertas).map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} style={{ cursor: 'pointer' }} />
-                  ))}
-                </Pie>
-                <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
-                  <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
-                    <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
-                  </div>
-                ) : null} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex flex-wrap gap-2 mt-2 justify-center">
-              {getCategoriaStats(ofertas).map((cat, i) => (
-                <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
-                  className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
-                >{cat.name}</button>
-              ))}
-              {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
+          {/* Substituir o bloco de Ofertas por Categoria: */}
+          <div className="w-full flex justify-center mt-8 mb-4">
+            <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-6 py-4 flex flex-col items-center shadow-lg min-w-[260px] max-w-xs w-full">
+              <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
+              <ResponsiveContainer width={180} height={140}>
+                <PieChart>
+                  <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
+                    label={({ name, percent }) => `${name} (${percent ? (percent*100).toFixed(0) : 0}%)`}
+                    onClick={(_, idx) => setCategoriaFiltro(getCategoriaStats(ofertas)[idx].name)}
+                    >
+                    {getCategoriaStats(ofertas).map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} style={{ cursor: 'pointer' }} />
+                    ))}
+                  </Pie>
+                  <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
+                    <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
+                      <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
+                    </div>
+                  ) : null} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="flex flex-wrap gap-2 mt-2 justify-center">
+                {getCategoriaStats(ofertas).map((cat, i) => (
+                  <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
+                    className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
+                  >{cat.name}</button>
+                ))}
+                {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
+              </div>
             </div>
           </div>
           {/* Notificações automáticas */}
