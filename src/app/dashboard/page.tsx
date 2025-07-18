@@ -158,11 +158,12 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#1a1a2e] flex">
       <Sidebar />
-      <main className="flex-1 ml-64 p-8">
+      <main className="flex-1 ml-64 p-8 flex flex-col items-center">
         <Topbar />
-        <div className="flex flex-col gap-6 mb-10">
-          <div className="flex flex-wrap gap-6 items-center justify-between flex-col lg:flex-row">
-            <div className="flex gap-6 flex-1 min-w-0">
+        <div className="w-full max-w-7xl flex flex-col gap-8 items-center">
+          <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center">
+            <div className="flex gap-6 flex-1 justify-center">
+              {/* Cards estatísticas */}
               <div className="bg-gradient-to-br from-[#8000ff] to-[#00ffe0] border-2 border-[#8000ff] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
                 <span className="text-xs text-[#e0e7ff]">Total de Ofertas</span>
                 <span className="text-2xl font-orbitron drop-shadow-lg">{ofertas.length}</span>
@@ -179,33 +180,34 @@ const Dashboard = () => {
                 <span className="text-2xl font-orbitron drop-shadow-lg">{getMediaCrescimentoPercentual(historicos7d)}</span>
               </div>
             </div>
-            <div className="w-full lg:w-auto mt-6 lg:mt-0 flex-shrink-0">
-              <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
-              <ResponsiveContainer width="100%" height={120}>
-                <PieChart>
-                  <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
-                    label={({ name, percent }) => `${name} (${percent ? (percent*100).toFixed(0) : 0}%)`}
-                    onClick={(_, idx) => setCategoriaFiltro(getCategoriaStats(ofertas)[idx].name)}
-                    >
-                    {getCategoriaStats(ofertas).map((entry) => (
-                      <Cell key={entry.name} fill={entry.color} style={{ cursor: 'pointer' }} />
-                    ))}
-                  </Pie>
-                  <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
-                    <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
-                      <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
-                    </div>
-                  ) : null} />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="flex flex-wrap gap-2 mt-2 justify-center">
-                {getCategoriaStats(ofertas).map((cat, i) => (
-                  <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
-                    className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
-                  >{cat.name}</button>
-                ))}
-                {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
-              </div>
+          </div>
+          <div className="w-full flex justify-center mt-2">
+            {/* Ofertas por Categoria */}
+            <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
+            <ResponsiveContainer width="100%" height={120}>
+              <PieChart>
+                <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
+                  label={({ name, percent }) => `${name} (${percent ? (percent*100).toFixed(0) : 0}%)`}
+                  onClick={(_, idx) => setCategoriaFiltro(getCategoriaStats(ofertas)[idx].name)}
+                  >
+                  {getCategoriaStats(ofertas).map((entry) => (
+                    <Cell key={entry.name} fill={entry.color} style={{ cursor: 'pointer' }} />
+                  ))}
+                </Pie>
+                <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
+                  <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
+                    <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
+                  </div>
+                ) : null} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="flex flex-wrap gap-2 mt-2 justify-center">
+              {getCategoriaStats(ofertas).map((cat, i) => (
+                <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
+                  className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
+                >{cat.name}</button>
+              ))}
+              {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
             </div>
           </div>
           {/* Notificações automáticas */}
@@ -225,8 +227,8 @@ const Dashboard = () => {
         {loading ? (
           <div className="text-white text-lg mt-12 animate-pulse">Carregando ofertas...</div>
         ) : (
-          <div className="overflow-x-auto pb-4">
-            <div className="flex flex-wrap gap-8 min-w-[340px]">
+          <div className="w-full max-w-7xl flex justify-center">
+            <div className="flex flex-wrap gap-8 justify-center">
               {(categoriaFiltro ? ofertas.filter(oferta => {
                 const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
                 return categoria === categoriaFiltro;
