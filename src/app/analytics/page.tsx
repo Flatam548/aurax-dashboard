@@ -128,15 +128,15 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#18122B] flex">
+    <div className="min-h-screen bg-[#e0e7ff] flex">
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
-        <h1 className="text-3xl font-bold" style={{ color: '#F9F871', fontFamily: 'Orbitron, monospace' }}>Análise de Ofertas - Evolução dos Anúncios Ativos (15 dias)</h1>
-        <div className="w-full max-w-5xl bg-[#232046] border-2 border-[#A3FFD6] rounded-2xl p-8 shadow-[0_0_24px_#00FFD0]">
+        <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#2563eb' }}>Análise de Ofertas - Evolução dos Anúncios Ativos (15 dias)</h1>
+        <div className="w-full max-w-5xl bg-white border border-[#e5e7eb] rounded-2xl p-8 shadow">
           <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <label className="font-semibold text-lg" style={{ color: '#A3FFD6' }}>Selecione a oferta:</label>
+            <label className="font-semibold text-lg" style={{ color: '#2563eb' }}>Selecione a oferta:</label>
             <select
-              className="bg-[#18122B] text-[#F3F3F3] px-4 py-2 rounded-lg border border-[#7C3AED] focus:ring-2 focus:ring-[#A3FFD6] outline-none"
+              className="bg-[#f3f4f6] text-[#18181b] px-4 py-2 rounded-lg border border-[#2563eb] focus:ring-2 focus:ring-[#2563eb] outline-none font-inter"
               value={selectedId || ''}
               onChange={e => setSelectedId(e.target.value)}
             >
@@ -146,38 +146,38 @@ export default function AnalyticsPage() {
             </select>
           </div>
           {loading ? (
-            <div className="text-[#F3F3F3] text-lg">Carregando dados...</div>
+            <div className="text-[#18181b] text-lg">Carregando dados...</div>
           ) : (
             <>
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 40 }}>
                   <defs>
                     <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#00FFD0" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#232046" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#fff" stopOpacity={0.1}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid stroke="#2d2d5a" strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" stroke="#7C3AED" tick={{ fill: "#7C3AED", fontWeight: 600 }} interval={0} />
-                  <YAxis stroke="#A3FFD6" tick={{ fill: "#A3FFD6", fontWeight: 600 }} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: "#232046", border: "1px solid #A3FFD6", color: "#F3F3F3" }} labelFormatter={(label, payload) => {
+                  <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" stroke="#2563eb" tick={{ fill: "#2563eb", fontWeight: 600 }} interval={0} />
+                  <YAxis stroke="#2563eb" tick={{ fill: "#2563eb", fontWeight: 600 }} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: "#fff", border: "1px solid #2563eb", color: "#18181b" }} labelFormatter={(label, payload) => {
                     if (!payload || !payload.length) return label;
                     return `${label} (${payload[0].payload.dataReal})`;
                   }} />
-                  <Legend wrapperStyle={{ color: "#F3F3F3" }} />
+                  <Legend wrapperStyle={{ color: "#18181b" }} />
                   <Line
                     type="monotone"
                     dataKey="Ativos"
-                    stroke="#00FFD0"
+                    stroke="#2563eb"
                     strokeWidth={4}
                     dot={({ cx, cy, payload }) => (
                       payload.isHoje ? (
-                        <circle cx={cx} cy={cy} r={10} fill="#F9F871" stroke="#00FFD0" strokeWidth={4} />
+                        <circle cx={cx} cy={cy} r={10} fill="#F9F871" stroke="#2563eb" strokeWidth={4} />
                       ) : (
-                        <circle cx={cx} cy={cy} r={5} fill="#7C3AED" stroke="#F3F3F3" strokeWidth={2} />
+                        <circle cx={cx} cy={cy} r={5} fill="#2563eb" stroke="#fff" strokeWidth={2} />
                       )
                     )}
-                    activeDot={{ r: 12, fill: "#FF6AC2", stroke: "#F3F3F3", strokeWidth: 4 }}
+                    activeDot={{ r: 12, fill: "#fff", stroke: "#2563eb", strokeWidth: 4 }}
                     fillOpacity={1}
                     fill="url(#colorAtivos)"
                     connectNulls
@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
                       tickLine={false}
                       interval={0}
                       height={40}
-                      tick={{ fill: "#A3FFD6", fontSize: 12, fontWeight: 500, dy: 20 }}
+                      tick={{ fill: "#2563eb", fontSize: 12, fontWeight: 500, dy: 20 }}
                       xAxisId="datas"
                       allowDuplicatedCategory={false}
                     />
@@ -199,7 +199,7 @@ export default function AnalyticsPage() {
               <Heatmap chartData={chartData} />
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
-              <div className="text-sm mt-4" style={{ color: '#A3A3A3' }}>Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais &quot;quentes&quot; e o gráfico de barras compara hoje vs ontem.</div>
+              <div className="text-sm mt-4" style={{ color: '#6b7280' }}>Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais &quot;quentes&quot; e o gráfico de barras compara hoje vs ontem.</div>
             </>
           )}
         </div>

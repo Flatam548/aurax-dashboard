@@ -33,12 +33,12 @@ export default function CalendarPage() {
   const fim = historico[historico.length-1]?.data;
 
   return (
-    <div className="min-h-screen bg-[#18122B] p-8 text-[#F3F3F3]">
-      <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#F9F871' }}>Calendário de Acompanhamento</h1>
+    <div className="min-h-screen bg-[#e0e7ff] p-8 text-[#18181b]">
+      <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#2563eb' }}>Calendário de Acompanhamento</h1>
       <div className="mb-6">
-        <label className="font-semibold text-lg mr-2" style={{ color: '#A3FFD6' }}>Selecione a oferta:</label>
+        <label className="font-semibold text-lg mr-2" style={{ color: '#2563eb' }}>Selecione a oferta:</label>
         <select
-          className="bg-[#18122B] text-[#F3F3F3] px-4 py-2 rounded-lg border border-[#7C3AED] focus:ring-2 focus:ring-[#A3FFD6] outline-none"
+          className="bg-[#f3f4f6] text-[#18181b] px-4 py-2 rounded-lg border border-[#2563eb] focus:ring-2 focus:ring-[#2563eb] outline-none font-inter"
           value={selectedId}
           onChange={e => setSelectedId(e.target.value)}
         >
@@ -47,13 +47,13 @@ export default function CalendarPage() {
           ))}
         </select>
       </div>
-      <div className="bg-[#232046] border-2 border-[#A3FFD6] rounded-2xl shadow-[0_0_24px_#00FFD0] p-8 max-w-2xl mx-auto">
+      <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-8 max-w-2xl mx-auto">
         <div className="flex flex-wrap gap-2 justify-center mb-4">
           {historico.map((h) => (
             <div
               key={h.data}
-              className={`w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 cursor-pointer transition-all duration-300 text-xs font-bold
-                ${h.ativos === pico.ativos ? 'bg-[#F9F871] border-[#00FFD0] text-[#18122B] scale-110' : h.ativos > 0 ? 'bg-[#00FFD0] border-[#7C3AED] text-[#232046] hover:scale-105' : 'bg-[#232046] border-[#2d2d5a] text-[#A3A3A3]'}`}
+              className={`w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 cursor-pointer transition-all duration-200 text-xs font-bold
+                ${h.ativos === pico.ativos ? 'bg-[#2563eb] border-[#2563eb] text-white scale-110' : h.ativos > 0 ? 'bg-[#e0e7ff] border-[#2563eb] text-[#2563eb] hover:scale-105' : 'bg-[#f3f4f6] border-[#e5e7eb] text-[#6b7280]'}`}
               title={`${h.ativos} ativos em ${h.data}`}
             >
               <span>{new Date(h.data).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
@@ -61,11 +61,11 @@ export default function CalendarPage() {
             </div>
           ))}
         </div>
-        <div className="flex justify-between" style={{ color: '#A3FFD6' }}>
+        <div className="flex justify-between" style={{ color: '#2563eb' }}>
           <span>Início: {inicio ? new Date(inicio).toLocaleDateString("pt-BR") : "-"}</span>
           <span>Fim: {fim ? new Date(fim).toLocaleDateString("pt-BR") : "-"}</span>
         </div>
-        <div className="text-xs mt-2" style={{ color: '#A3A3A3' }}>O dia de pico é destacado em amarelo neon. Passe o mouse sobre um dia para ver o número de ativos.</div>
+        <div className="text-xs mt-2" style={{ color: '#6b7280' }}>O dia de pico é destacado em azul vibrante. Passe o mouse sobre um dia para ver o número de ativos.</div>
       </div>
     </div>
   );

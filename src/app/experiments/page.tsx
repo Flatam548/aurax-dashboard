@@ -57,35 +57,33 @@ export default function ExperimentsPage() {
   const melhor = Object.values(grupos).sort((a, b) => b.total - a.total)[0];
 
   return (
-    <div className="min-h-screen bg-[#18122B] p-8 text-[#F3F3F3]">
-      <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#F9F871' }}>Experimentos A/B</h1>
+    <div className="min-h-screen bg-[#e0e7ff] p-8 text-[#18181b]">
+      <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#2563eb' }}>Experimentos A/B</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {ofertas.map(oferta => (
-          <div key={oferta.id} className="bg-[#232046] border-2 border-[#A3FFD6] rounded-2xl shadow-[0_0_24px_#00FFD0] p-6 flex flex-col gap-4">
+          <div key={oferta.id} className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4">
             <div className="flex justify-between items-center">
-              <span className="font-orbitron text-lg" style={{ color: '#00FFD0' }}>{oferta.nome}</span>
-              <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#7C3AED', color: '#18122B' }}>{oferta.categoria}</span>
+              <span className="font-orbitron text-lg" style={{ color: '#2563eb' }}>{oferta.nome}</span>
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#e0e7ff] text-[#2563eb]">{oferta.categoria}</span>
             </div>
             <div className="flex gap-2 mt-2">
               {["A", "B"].map(tipo => (
-                <button key={tipo} onClick={() => marcarExperimento(oferta.id, tipo)} className={`px-4 py-2 rounded-lg font-bold border transition-all duration-200 ${((oferta.experimento || experimentos[oferta.id]) === tipo) ? 'bg-gradient-to-r from-[#7C3AED] to-[#00FFD0] text-[#18122B] scale-105' : 'bg-[#232046] text-[#00FFD0] border-[#7C3AED] hover:scale-105'}`}>Teste {tipo}</button>
+                <button key={tipo} onClick={() => marcarExperimento(oferta.id, tipo)} className={`px-4 py-2 rounded-lg font-bold border transition-all duration-200 font-inter ${((oferta.experimento || experimentos[oferta.id]) === tipo) ? 'bg-[#2563eb] text-white scale-105' : 'bg-[#e0e7ff] text-[#2563eb] border-[#2563eb] hover:scale-105'}`}>Teste {tipo}</button>
               ))}
             </div>
             <div className="mt-2">
-              <label className="block mb-1" style={{ color: '#A3FFD6' }}>Criativo/Copy testado:</label>
-              <textarea value={criativos[oferta.id] || oferta.criativo || ""} onChange={e => salvarCriativo(oferta.id, e.target.value)} className="w-full bg-[#232046] text-[#F3F3F3] rounded-lg p-2 border border-[#A3FFD6] focus:ring-2 focus:ring-[#00FFD0]" rows={2} />
+              <label className="block mb-1" style={{ color: '#2563eb' }}>Criativo/Copy testado:</label>
+              <textarea value={criativos[oferta.id] || oferta.criativo || ""} onChange={e => salvarCriativo(oferta.id, e.target.value)} className="w-full bg-[#f3f4f6] text-[#18181b] rounded-lg p-2 border border-[#e5e7eb] focus:ring-2 focus:ring-[#2563eb] font-inter" rows={2} />
             </div>
-            <div className="mt-2 font-mono" style={{ color: '#00FFD0' }}>{getResultado(oferta.id)}</div>
+            <div className="mt-2 font-mono" style={{ color: '#2563eb' }}>{getResultado(oferta.id)}</div>
           </div>
         ))}
       </div>
       <div className="mt-10">
-        <h2 className="text-xl font-bold mb-2" style={{ color: '#F9F871' }}>Melhor desempenho</h2>
+        <h2 className="text-xl font-bold mb-2 font-orbitron" style={{ color: '#2563eb' }}>Melhor desempenho</h2>
         {melhor ? (
-          <div className="bg-gradient-to-r from-[#00FFD0] to-[#FF6AC2] text-[#18122B] px-6 py-4 rounded-xl font-bold shadow-lg w-fit">
-            Teste {melhor.tipo}: {melhor.nome} ({melhor.total} ativos)
-          </div>
-        ) : <div className="text-[#A3A3A3]">Nenhum experimento finalizado ainda.</div>}
+          <div className="bg-[#2563eb] text-white px-6 py-4 rounded-xl font-bold shadow w-fit">Teste {melhor.tipo}: {melhor.nome} ({melhor.total} ativos)</div>
+        ) : <div className="text-[#6b7280]">Nenhum experimento finalizado ainda.</div>}
       </div>
     </div>
   );
