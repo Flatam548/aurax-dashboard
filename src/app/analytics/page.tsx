@@ -100,7 +100,7 @@ export default function AnalyticsPage() {
   const oferta = ofertas.find(o => o.id === selectedId);
   const chartData: ChartDia[] = [];
   if (oferta) {
-    const dataInicio = new Date(oferta.dataCriacao.split('/').reverse().join('-'));
+    const dataInicio = new Date(oferta.dataCriacao); // Corrigido: formato ISO YYYY-MM-DD
     const hoje = new Date();
     const diasPassados = Math.min(
       Math.floor((hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24)) + 1,
