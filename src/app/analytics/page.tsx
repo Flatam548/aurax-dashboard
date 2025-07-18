@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
 import { createClient } from '@supabase/supabase-js';
+import { BarChart, Bar, Cell } from "recharts";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,6 +15,54 @@ type Oferta = {
   nome: string;
   dataCriacao: string;
 };
+
+function Heatmap({ chartData }: { chartData: any[] }) {
+  return (
+    <div className="flex gap-1 mt-8 mb-4 justify-center">
+      {chartData.map((d, idx) => (
+        <div
+          key={idx}
+          className={`w-6 h-6 rounded transition-all duration-300 border-2 ${d.Ativos > 100 ? 'bg-[#00ff99] border-[#00ff99]' : d.Ativos > 50 ? 'bg-[#00ffe0] border-[#00ffe0]' : d.Ativos > 0 ? 'bg-[#8000ff] border-[#8000ff]' : 'bg-[#23234a] border-[#2d2d5a]'}`}
+          title={`${d.Ativos} ativos em ${d.dataReal}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function BarraHojeOntem({ chartData }: { chartData: any[] }) {
+  const hoje = chartData[chartData.length-1]?.Ativos ?? 0;
+  const ontem = chartData[chartData.length-2]?.Ativos ?? 0;
+  return (
+    <div className="w-full max-w-xs mx-auto mt-6 mb-4">
+      <BarChart width={220} height={120} data={[{ name: 'Ontem', valor: ontem }, { name: 'Hoje', valor: hoje }]}> 
+        <Bar dataKey="valor">
+          <Cell fill="#8000ff" />
+          <Cell fill="#00ffe0" />
+        </Bar>
+      </BarChart>
+      <div className="flex justify-between text-xs text-[#a259ff] mt-1">
+        <span>Ontem: {ontem}</span>
+        <span>Hoje: {hoje}</span>
+      </div>
+    </div>
+  );
+}
+
+function Insights({ chartData }: { chartData: any[] }) {
+  // Previsão simples: média dos últimos 3 dias * 5
+  const ultimos = chartData.slice(-3);
+  const media = ultimos.length ? (ultimos.reduce((acc, d) => acc + d.Ativos, 0) / ultimos.length) : 0;
+  const previsao = Math.round(media * 5);
+  return (
+    <div className="mt-4 mb-2 flex flex-col items-center">
+      <button className="bg-gradient-to-r from-[#8000ff] to-[#00ffe0] text-[#1a002a] px-6 py-2 rounded-lg font-bold shadow hover:opacity-90 transition mb-2">
+        Insights
+      </button>
+      <div className="text-[#00ff99] font-mono text-sm">Se continuar assim, previsão de <b>{previsao}</b> ativos em 5 dias.</div>
+    </div>
+  );
+}
 
 export default function AnalyticsPage() {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
@@ -88,56 +137,61 @@ export default function AnalyticsPage() {
           {loading ? (
             <div className="text-white text-lg">Carregando dados...</div>
           ) : (
-            <ResponsiveContainer width="100%" height={420}>
-              <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 40 }}>
-                <defs>
-                  <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#a259ff" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#23234a" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="#2d2d5a" strokeDasharray="3 3" />
-                <XAxis dataKey="dia" stroke="#a259ff" tick={{ fill: "#a259ff", fontWeight: 600 }} interval={0} />
-                <YAxis stroke="#a259ff" tick={{ fill: "#a259ff", fontWeight: 600 }} allowDecimals={false} />
-                <Tooltip contentStyle={{ background: "#23234a", border: "1px solid #a259ff", color: "#fff" }} labelFormatter={(label, payload) => {
-                  if (!payload || !payload.length) return label;
-                  return `${label} (${payload[0].payload.dataReal})`;
-                }} />
-                <Legend wrapperStyle={{ color: "#fff" }} />
-                <Line
-                  type="monotone"
-                  dataKey="Ativos"
-                  stroke="#a259ff"
-                  strokeWidth={4}
-                  dot={({ cx, cy, payload }) => (
-                    payload.isHoje ? (
-                      <circle cx={cx} cy={cy} r={10} fill="#fff" stroke="#a259ff" strokeWidth={4} />
-                    ) : (
-                      <circle cx={cx} cy={cy} r={5} fill="#a259ff" stroke="#fff" strokeWidth={2} />
-                    )
-                  )}
-                  activeDot={{ r: 12, fill: "#a259ff", stroke: "#fff", strokeWidth: 4 }}
-                  fillOpacity={1}
-                  fill="url(#colorAtivos)"
-                  connectNulls
-                />
-                {/* Datas reais abaixo do gráfico */}
-                {chartData.length > 0 && (
-                  <XAxis
-                    dataKey="dataReal"
-                    axisLine={false}
-                    tickLine={false}
-                    interval={0}
-                    height={40}
-                    tick={{ fill: "#818cf8", fontSize: 12, fontWeight: 500, dy: 20 }}
-                    xAxisId="datas"
-                    allowDuplicatedCategory={false}
+            <>
+              <ResponsiveContainer width="100%" height={420}>
+                <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 40 }}>
+                  <defs>
+                    <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#a259ff" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#23234a" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid stroke="#2d2d5a" strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" stroke="#a259ff" tick={{ fill: "#a259ff", fontWeight: 600 }} interval={0} />
+                  <YAxis stroke="#a259ff" tick={{ fill: "#a259ff", fontWeight: 600 }} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: "#23234a", border: "1px solid #a259ff", color: "#fff" }} labelFormatter={(label, payload) => {
+                    if (!payload || !payload.length) return label;
+                    return `${label} (${payload[0].payload.dataReal})`;
+                  }} />
+                  <Legend wrapperStyle={{ color: "#fff" }} />
+                  <Line
+                    type="monotone"
+                    dataKey="Ativos"
+                    stroke="#a259ff"
+                    strokeWidth={4}
+                    dot={({ cx, cy, payload }) => (
+                      payload.isHoje ? (
+                        <circle cx={cx} cy={cy} r={10} fill="#fff" stroke="#a259ff" strokeWidth={4} />
+                      ) : (
+                        <circle cx={cx} cy={cy} r={5} fill="#a259ff" stroke="#fff" strokeWidth={2} />
+                      )
+                    )}
+                    activeDot={{ r: 12, fill: "#a259ff", stroke: "#fff", strokeWidth: 4 }}
+                    fillOpacity={1}
+                    fill="url(#colorAtivos)"
+                    connectNulls
                   />
-                )}
-              </LineChart>
-            </ResponsiveContainer>
+                  {/* Datas reais abaixo do gráfico */}
+                  {chartData.length > 0 && (
+                    <XAxis
+                      dataKey="dataReal"
+                      axisLine={false}
+                      tickLine={false}
+                      interval={0}
+                      height={40}
+                      tick={{ fill: "#818cf8", fontSize: 12, fontWeight: 500, dy: 20 }}
+                      xAxisId="datas"
+                      allowDuplicatedCategory={false}
+                    />
+                  )}
+                </LineChart>
+              </ResponsiveContainer>
+              <Heatmap chartData={chartData} />
+              <BarraHojeOntem chartData={chartData} />
+              <Insights chartData={chartData} />
+              <div className="text-sm text-gray-300 mt-4">Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais "quentes" e o gráfico de barras compara hoje vs ontem.</div>
+            </>
           )}
-          <div className="text-sm text-gray-300 mt-4">Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias.</div>
         </div>
       </main>
     </div>
