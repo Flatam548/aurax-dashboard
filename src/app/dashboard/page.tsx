@@ -6,6 +6,10 @@ import Topbar from "../../components/Topbar";
 import CardOferta from "../../components/CardOferta";
 import ModalNovaOferta from "../../components/ModalNovaOferta";
 import { useOfertas, Oferta } from "../../lib/OfertasContext";
+// Definição da interface OfertaDashboard
+interface OfertaDashboard extends Oferta {
+  categoria?: string;
+}
 import { supabase } from "../../lib/supabaseClient";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as PieTooltip } from "recharts";
 
@@ -14,7 +18,7 @@ const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
 function getCategoriaStats(ofertas: Oferta[]) {
   const map: Record<string, number> = {};
   for (const oferta of ofertas) {
-    const cat = (oferta as any).categoria || (oferta.tags && oferta.tags[0]) || "Outro";
+    const cat = (oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || "Outro";
     map[cat] = (map[cat] || 0) + 1;
   }
   return Object.entries(map).map(([name, value], i) => ({ name, value, color: NEON_COLORS[i % NEON_COLORS.length] }));
@@ -51,7 +55,6 @@ const Dashboard = () => {
   const { ofertas, adicionarOferta, alternarAtivo, excluirOferta, loading } = useOfertas();
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
-  const [ativosOntemTotal, setAtivosOntemTotal] = useState<number>(0);
   const [historicos7d, setHistoricos7d] = useState<Record<string, { valor: number }[]>>({});
 
   useEffect(() => {
@@ -67,7 +70,7 @@ const Dashboard = () => {
         const data = await res.json();
         total += data.ativos ?? 0;
       }
-      setAtivosOntemTotal(total);
+      // setAtivosOntemTotal(total); // This variable is no longer used
     }
     fetchAtivosOntem();
   }, [ofertas]);
@@ -135,11 +138,12 @@ const Dashboard = () => {
     }
   };
 
-  const handleToggleAtivo = async (idx: number, checked: boolean) => {
-    await alternarAtivo(idx, checked);
-    setFeedback(checked ? "Oferta ativada!" : "Oferta desativada!");
-    setTimeout(() => setFeedback(null), 1500);
-  };
+  // handleToggleAtivo is no longer used
+  // const handleToggleAtivo = async (idx: number, checked: boolean) => {
+  //   await alternarAtivo(idx, checked);
+  //   setFeedback(checked ? "Oferta ativada!" : "Oferta desativada!");
+  //   setTimeout(() => setFeedback(null), 1500);
+  // };
 
   return (
     <div className="min-h-screen bg-[#1a1a2e] flex">
@@ -195,12 +199,12 @@ const Dashboard = () => {
           <div className="text-white text-lg mt-12 animate-pulse">Carregando ofertas...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {ofertas.map((oferta, idx) => (
+            {ofertas.map((oferta) => (
               <CardOferta
                 key={(oferta.id || oferta.nome) + oferta.dataCriacao}
                 {...oferta}
                 id={oferta.id}
-                categoria={(oferta as any).categoria || (oferta.tags && oferta.tags[0]) || ''}
+                categoria={(oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || ''}
                 historico7d={oferta.id ? historicos7d[oferta.id] : undefined}
                 onExcluirOferta={async () => {
                   if (!oferta.id) return;

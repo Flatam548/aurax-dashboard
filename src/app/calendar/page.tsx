@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
-const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
+interface Oferta { id: string; nome: string; }
+interface HistoricoDia { data: string; ativos: number; }
 
 export default function CalendarPage() {
-  const [ofertas, setOfertas] = useState<any[]>([]);
+  const [ofertas, setOfertas] = useState<Oferta[]>([]);
   const [selectedId, setSelectedId] = useState<string>("");
-  const [historico, setHistorico] = useState<any[]>([]);
+  const [historico, setHistorico] = useState<HistoricoDia[]>([]);
 
   useEffect(() => {
     async function fetchOfertas() {
@@ -48,7 +49,7 @@ export default function CalendarPage() {
       </div>
       <div className="bg-[#1a002a] border-2 border-[#8000ff] rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
         <div className="flex flex-wrap gap-2 justify-center mb-4">
-          {historico.map((h, i) => (
+          {historico.map((h) => (
             <div
               key={h.data}
               className={`w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 cursor-pointer transition-all duration-300 text-xs font-bold

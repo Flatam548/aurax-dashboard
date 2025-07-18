@@ -16,7 +16,20 @@ type Oferta = {
   dataCriacao: string;
 };
 
-function Heatmap({ chartData }: { chartData: any[] }) {
+interface HistoricoDia {
+  oferta_id: string;
+  data: string;
+  ativos: number;
+}
+interface ChartDia {
+  dia: string;
+  dataReal: string;
+  Ativos: number;
+  dataStr: string;
+  isHoje?: boolean;
+}
+
+function Heatmap({ chartData }: { chartData: ChartDia[] }) {
   return (
     <div className="flex gap-1 mt-8 mb-4 justify-center">
       {chartData.map((d, idx) => (
@@ -30,7 +43,7 @@ function Heatmap({ chartData }: { chartData: any[] }) {
   );
 }
 
-function BarraHojeOntem({ chartData }: { chartData: any[] }) {
+function BarraHojeOntem({ chartData }: { chartData: ChartDia[] }) {
   const hoje = chartData[chartData.length-1]?.Ativos ?? 0;
   const ontem = chartData[chartData.length-2]?.Ativos ?? 0;
   return (
@@ -49,7 +62,7 @@ function BarraHojeOntem({ chartData }: { chartData: any[] }) {
   );
 }
 
-function Insights({ chartData }: { chartData: any[] }) {
+function Insights({ chartData }: { chartData: ChartDia[] }) {
   // Previsão simples: média dos últimos 3 dias * 5
   const ultimos = chartData.slice(-3);
   const media = ultimos.length ? (ultimos.reduce((acc, d) => acc + d.Ativos, 0) / ultimos.length) : 0;
@@ -66,7 +79,7 @@ function Insights({ chartData }: { chartData: any[] }) {
 
 export default function AnalyticsPage() {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
-  const [historico, setHistorico] = useState<{ oferta_id: string; data: string; ativos: number }[]>([]);
+  const [historico, setHistorico] = useState<HistoricoDia[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -85,7 +98,7 @@ export default function AnalyticsPage() {
 
   // Dados da oferta selecionada
   const oferta = ofertas.find(o => o.id === selectedId);
-  const chartData: Record<string, unknown>[] = [];
+  const chartData: ChartDia[] = [];
   const datasReais: string[] = [];
   if (oferta) {
     // Buscar os 15 dias mais recentes do histórico para a oferta
@@ -93,7 +106,6 @@ export default function AnalyticsPage() {
       .filter(h => h.oferta_id === oferta.id)
       .sort((a, b) => a.data.localeCompare(b.data));
     // Garante que sempre teremos 15 dias, preenchendo com 0 se faltar
-    const ultimos15Dias = [];
     const hoje = new Date();
     let ultimoIndex = -1;
     for (let i = 14; i >= 0; i--) {
@@ -189,7 +201,7 @@ export default function AnalyticsPage() {
               <Heatmap chartData={chartData} />
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
-              <div className="text-sm text-gray-300 mt-4">Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais "quentes" e o gráfico de barras compara hoje vs ontem.</div>
+              <div className="text-sm text-gray-300 mt-4">Selecione uma oferta para analisar. O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais &quot;quentes&quot; e o gráfico de barras compara hoje vs ontem.</div>
             </>
           )}
         </div>
