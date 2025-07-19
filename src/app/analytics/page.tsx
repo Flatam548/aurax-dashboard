@@ -151,6 +151,9 @@ export default function AnalyticsPage() {
         
         setOfertas(ofertasData || []);
         setHistorico(historicoData || []);
+        // Logs para debug
+        console.log('ofertasData:', ofertasData);
+        console.log('historicoData:', historicoData);
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
       } finally {
