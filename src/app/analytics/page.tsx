@@ -208,12 +208,12 @@ export default function AnalyticsPage() {
         isHoje: dataStr === hoje.toISOString().slice(0, 10)
       });
     }
-    // Sobrescreve os valores de hoje e ontem com os dados reais da oferta, se existirem
-    if (chartData.length > 0) {
-      chartData[chartData.length - 1].Ativos = oferta.ativosHoje ?? chartData[chartData.length - 1].Ativos;
+    // Sobrescreve os valores de hoje e ontem com os dados reais da oferta, se existirem e forem diferentes de zero
+    if (chartData.length > 0 && oferta.ativosHoje != null && oferta.ativosHoje !== 0) {
+      chartData[chartData.length - 1].Ativos = oferta.ativosHoje;
     }
-    if (chartData.length > 1) {
-      chartData[chartData.length - 2].Ativos = oferta.ativosOntem ?? chartData[chartData.length - 2].Ativos;
+    if (chartData.length > 1 && oferta.ativosOntem != null && oferta.ativosOntem !== 0) {
+      chartData[chartData.length - 2].Ativos = oferta.ativosOntem;
     }
   }
   // Adiciona log para debug
