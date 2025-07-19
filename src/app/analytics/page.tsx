@@ -204,6 +204,8 @@ export default function AnalyticsPage() {
       chartData[chartData.length - 2].Ativos = oferta.ativosOntem ?? chartData[chartData.length - 2].Ativos;
     }
   }
+  // Adiciona log para debug
+  console.log('chartData:', chartData);
 
   return (
     <div className="min-h-screen bg-[#e0e7ff] flex">
