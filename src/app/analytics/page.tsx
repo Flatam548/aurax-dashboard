@@ -197,6 +197,8 @@ export default function AnalyticsPage() {
       dataDia.setDate(dataInicio.getDate() + i);
       dataDia.setHours(0,0,0,0); // força meia-noite
       const dataStr = dataDia.toISOString().slice(0, 10);
+      // Log para debug da comparação de datas
+      console.log('Comparando:', dataStr, historicoOferta.map(h => h.data));
       const hist = historicoOferta.find(h => h.data === dataStr);
       chartData.push({
         dia: `Dia ${i + 1}`,
