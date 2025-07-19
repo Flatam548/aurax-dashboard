@@ -182,25 +182,26 @@ export default function AnalyticsPage() {
       .map(h => ({ ...h, data: h.data.slice(0, 10) }))
       .sort((a, b) => a.data.localeCompare(b.data));
     
-    // Se não há dados de histórico, gera dados de exemplo
-    if (historicoOferta.length === 0) {
-      chartData.push(...gerarDadosExemplo(dataInicio, diasPassados));
-    } else {
-      // Usa dados reais do histórico
-      for (let i = 0; i < diasPassados; i++) {
-        const dataDia = new Date(dataInicio);
-        dataDia.setDate(dataInicio.getDate() + i);
-        const dataStr = dataDia.toISOString().slice(0, 10);
-        const hist = historicoOferta.find(h => h.data === dataStr);
-        
-        chartData.push({
-          dia: `Dia ${i + 1}`,
-          dataReal: dataDia.toLocaleDateString('pt-BR'),
-          Ativos: hist ? hist.ativos : 0,
-          dataStr,
-          isHoje: dataStr === hoje.toISOString().slice(0, 10)
-        });
-      }
+    // Garante que todos os dias até hoje estejam presentes no chartData
+    for (let i = 0; i < diasPassados; i++) {
+      const dataDia = new Date(dataInicio);
+      dataDia.setDate(dataInicio.getDate() + i);
+      const dataStr = dataDia.toISOString().slice(0, 10);
+      const hist = historicoOferta.find(h => h.data === dataStr);
+      chartData.push({
+        dia: `Dia ${i + 1}`,
+        dataReal: dataDia.toLocaleDateString('pt-BR'),
+        Ativos: hist ? hist.ativos : 0,
+        dataStr,
+        isHoje: dataStr === hoje.toISOString().slice(0, 10)
+      });
+    }
+    // Sobrescreve os valores de hoje e ontem com os dados reais da oferta, se existirem
+    if (chartData.length > 0) {
+      chartData[chartData.length - 1].Ativos = oferta.ativosHoje ?? chartData[chartData.length - 1].Ativos;
+    }
+    if (chartData.length > 1) {
+      chartData[chartData.length - 2].Ativos = oferta.ativosOntem ?? chartData[chartData.length - 2].Ativos;
     }
   }
 
