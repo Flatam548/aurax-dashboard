@@ -59,8 +59,9 @@ const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [historicos7d, setHistoricos7d] = useState<Record<string, { valor: number }[]>>({});
-  // Adicionar useState para filtro de categoria
   const [categoriaFiltro, setCategoriaFiltro] = useState<string | null>(null);
+  // Adicionar estado para texto de busca
+  const [busca, setBusca] = useState('');
 
   useEffect(() => {
     async function fetchAtivosOntem() {
@@ -160,6 +161,16 @@ const Dashboard = () => {
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
         <Topbar />
+        {/* Campo de busca */}
+        <div className="w-full max-w-7xl flex justify-center mb-6">
+          <input
+            type="text"
+            placeholder="Buscar oferta pelo nome..."
+            value={busca}
+            onChange={e => setBusca(e.target.value)}
+            className="w-full max-w-xl px-4 py-2 rounded-lg border-2 border-[#2563eb] focus:ring-2 focus:ring-[#2563eb] outline-none font-inter text-lg"
+          />
+        </div>
         <div className="w-full max-w-7xl flex justify-end mb-4">
           <button
             onClick={() => setModalOpen(true)}
@@ -244,7 +255,10 @@ const Dashboard = () => {
               {(categoriaFiltro ? ofertas.filter(oferta => {
                 const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
                 return categoria === categoriaFiltro;
-              }) : ofertas).map((oferta, idx) => {
+              }) : ofertas)
+              // Filtro de busca por nome
+              .filter(oferta => oferta.nome.toLowerCase().includes(busca.toLowerCase()))
+              .map((oferta, idx) => {
                 const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
                 // Não tentar remover 'categoria' do objeto oferta, apenas sobrescrever na chamada
                 return (
