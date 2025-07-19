@@ -179,7 +179,9 @@ export default function AnalyticsPage() {
     const datasHistorico = historico.filter(h => h.oferta_id === oferta.id).map(h => h.data.slice(0, 10));
     const dataInicioStr = datasHistorico.length > 0 ? datasHistorico.sort()[0] : oferta.dataCriacao;
     const dataInicio = new Date(dataInicioStr);
+    dataInicio.setHours(0,0,0,0); // força meia-noite
     const hoje = new Date();
+    hoje.setHours(0,0,0,0); // força meia-noite
     const diasPassados = Math.min(
       Math.floor((hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24)) + 1,
       15
@@ -193,6 +195,7 @@ export default function AnalyticsPage() {
     for (let i = 0; i < diasPassados; i++) {
       const dataDia = new Date(dataInicio);
       dataDia.setDate(dataInicio.getDate() + i);
+      dataDia.setHours(0,0,0,0); // força meia-noite
       const dataStr = dataDia.toISOString().slice(0, 10);
       const hist = historicoOferta.find(h => h.data === dataStr);
       chartData.push({
