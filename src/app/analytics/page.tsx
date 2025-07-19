@@ -175,19 +175,20 @@ export default function AnalyticsPage() {
   const chartData: ChartDia[] = [];
   
   if (oferta) {
-    const dataInicio = new Date(oferta.dataCriacao);
+    // Garante que a data de início seja o menor dia do histórico ou a data de criação, o que for mais antigo
+    const datasHistorico = historico.filter(h => h.oferta_id === oferta.id).map(h => h.data.slice(0, 10));
+    const dataInicioStr = datasHistorico.length > 0 ? datasHistorico.sort()[0] : oferta.dataCriacao;
+    const dataInicio = new Date(dataInicioStr);
     const hoje = new Date();
     const diasPassados = Math.min(
       Math.floor((hoje.getTime() - dataInicio.getTime()) / (1000 * 60 * 60 * 24)) + 1,
       15
     );
-    
     // Busca histórico específico da oferta
     const historicoOferta = historico
       .filter(h => h.oferta_id === oferta.id)
       .map(h => ({ ...h, data: h.data.slice(0, 10) }))
       .sort((a, b) => a.data.localeCompare(b.data));
-    
     // Garante que todos os dias até hoje estejam presentes no chartData
     for (let i = 0; i < diasPassados; i++) {
       const dataDia = new Date(dataInicio);
