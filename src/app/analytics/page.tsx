@@ -151,10 +151,6 @@ export default function AnalyticsPage() {
         
         setOfertas(ofertasData || []);
         setHistorico(historicoData || []);
-        
-        if (ofertasData && ofertasData.length > 0 && !selectedId) {
-          setSelectedId(ofertasData[0].id);
-        }
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
       } finally {
@@ -163,6 +159,13 @@ export default function AnalyticsPage() {
     }
     fetchData();
   }, []);
+
+  // Garante que sempre haja uma oferta selecionada quando as ofertas mudam
+  useEffect(() => {
+    if (ofertas.length > 0 && (!selectedId || !ofertas.some(o => o.id === selectedId))) {
+      setSelectedId(ofertas[0].id);
+    }
+  }, [ofertas, selectedId]);
 
   // Dados da oferta selecionada
   const oferta = ofertas.find(o => o.id === selectedId);
