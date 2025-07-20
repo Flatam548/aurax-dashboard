@@ -65,14 +65,21 @@ function gerarDadosExemplo(dataInicio: Date, diasPassados: number): ChartDia[] {
 
 function Heatmap({ chartData }: { chartData: ChartDia[] }) {
   return (
-    <div className="flex gap-1 mt-8 mb-4 justify-center">
-      {chartData.map((d, idx) => (
-        <div
-          key={idx}
-          className={`w-6 h-6 rounded transition-all duration-300 border-2 ${d.Ativos > 100 ? 'bg-[#00ff99] border-[#00ff99]' : d.Ativos > 50 ? 'bg-[#00ffe0] border-[#00ffe0]' : d.Ativos > 0 ? 'bg-[#8000ff] border-[#8000ff]' : 'bg-[#23234a] border-[#2d2d5a]'}`}
-          title={`${d.Ativos} ativos em ${d.dataReal}`}
-        />
-      ))}
+    <div className="flex gap-1 mt-8 mb-2 justify-center">
+      {chartData.map((d, idx) => {
+        let color = "#23272a"; // sem ativos
+        if (d.Ativos > 0 && d.Ativos <= 30) color = "#2e2e2e"; // baixo
+        if (d.Ativos > 30 && d.Ativos <= 80) color = "#9ca3af"; // médio
+        if (d.Ativos > 80) color = "#ccff00"; // alto
+        return (
+          <div
+            key={idx}
+            className="w-6 h-6 rounded transition-all duration-300 border-2"
+            style={{ background: color, borderColor: color }}
+            title={`${d.Ativos} ativos em ${d.dataReal}`}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -293,7 +300,16 @@ export default function AnalyticsPage() {
                   )}
                 </LineChart>
               </ResponsiveContainer>
-              <Heatmap chartData={chartData} />
+              {/* Heatmap logo abaixo do gráfico */}
+              <div className="flex flex-col items-center w-full">
+                <Heatmap chartData={chartData} />
+                <div className="flex gap-4 justify-center mt-2 text-xs font-medium text-[#9ca3af]">
+                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#2e2e2e'}}></span> Baixo</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#9ca3af'}}></span> Médio</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#ccff00'}}></span> Alto</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#23272a'}}></span> Sem ativos</div>
+                </div>
+              </div>
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
               <div className="text-sm mt-4" style={{ color: '#6b7280' }}>
