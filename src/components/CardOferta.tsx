@@ -87,7 +87,7 @@ const CardOferta = ({
           ) : (
             <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#ccff00]' : 'bg-red-500'}`}></span>
           )}
-          <div className="text-lg font-bold font-orbitron text-black">{nome}</div>
+          <span className="oferta-title" style={{ fontSize: '1.15rem' }}>{props.nome}</span>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md bg-[#ffe066] text-black`}>{props.categoria || tagSafe}</span>
         <button
