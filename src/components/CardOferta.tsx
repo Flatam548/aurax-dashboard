@@ -75,10 +75,10 @@ const CardOferta = ({
   const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
 
   return (
-    <div className={`rounded-2xl p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 font-inter mb-8
+    <div className={`rounded-2xl p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-2xl hover:scale-[1.03] duration-200 font-inter mb-8
       ${ativosHoje >= 80
-        ? 'fire-border animate-fire-glow bg-gradient-to-br from-[#ffb300] to-[#ff9800] shadow-[0_8px_32px_0_rgba(255,152,0,0.20)]'
-        : 'bg-white border border-[#ccff00] shadow-[0_4px_24px_0_rgba(44,255,0,0.08)]'}
+        ? 'fire-border animate-fire-glow bg-gradient-to-br from-[#ffe066] to-[#ff9800] shadow-[0_12px_40px_0_rgba(255,152,0,0.35)]'
+        : 'bg-white border-2 border-[#ccff00] shadow-[0_8px_32px_0_rgba(44,255,0,0.18)]'}
     `}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -89,12 +89,12 @@ const CardOferta = ({
           ) : (
             <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#ccff00]' : 'bg-red-500'}`}></span>
           )}
-          <div className={`text-lg font-bold font-orbitron text-[#23272a]`}>{nome}</div>
+          <div className={`text-lg font-bold font-orbitron text-black`}>{nome}</div>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? 'bg-[#ffe066] text-[#23272a]' : 'bg-[#f3f4f6] text-[#23272a]'}`}>{props.categoria || tagSafe}</span>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? 'bg-[#ffe066] text-black' : 'bg-[#f3f4f6] text-black'}`}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
-          className={`ml-2 p-1 rounded transition ${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110 border-none'}`}
+          className={`ml-2 p-1 rounded transition font-bold ${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}
           title="Excluir oferta"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-red-400 hover:text-red-600">
@@ -105,8 +105,8 @@ const CardOferta = ({
         </button>
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
-      <div className={`flex gap-4 text-sm items-center text-[#23272a]`}> 
-        <div>Hoje: <span className={`font-bold text-[#23272a]`}>{ativosHoje}</span></div>
+      <div className={`flex gap-4 text-sm items-center text-black font-bold`}> 
+        <div>Hoje: <span className={`font-bold text-black`}>{ativosHoje}</span></div>
         <div>Ontem: <span className={`font-bold text-[#9ca3af]`}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
           {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#22c55e]'} />}
@@ -115,24 +115,24 @@ const CardOferta = ({
       </div>
       <div className="flex gap-2 text-xs items-center text-[#9ca3af]">
         <span>Criado em: {dataCriacao}</span>
-        <span className="ml-2">Pico 7d: <span className={`font-bold text-[#23272a]`}>{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="ml-2">Pico 7d: <span className={`font-bold text-black`}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110 border-none'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110 border-none'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110 border-none'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaInfoCircle /> Detalhes
         </button>

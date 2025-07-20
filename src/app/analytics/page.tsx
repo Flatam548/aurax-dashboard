@@ -235,7 +235,7 @@ export default function AnalyticsPage() {
           <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
             <label className="font-semibold text-lg text-[#23272a]">Selecione a oferta:</label>
             <select
-              className="bg-[#f3f4f6] text-[#23272a] px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter"
+              className="bg-white text-black px-4 py-2 rounded-lg border-2 border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter shadow"
               value={selectedId || ''}
               onChange={e => setSelectedId(e.target.value)}
             >
