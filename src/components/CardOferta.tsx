@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip as RechartsTooltip, Dot } from "recharts";
-import { FaBook, FaGlobe, FaInfoCircle, FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { FaBook, FaGlobe, FaInfoCircle, FaChevronUp, FaChevronDown, FaFire } from "react-icons/fa";
 
 const categoriaColors = {
   Tarot: "#8000ff",
@@ -75,10 +75,16 @@ const CardOferta = ({
   const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
 
   return (
-    <div className="bg-white border border-[#e5e7eb] rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:border-[#2563eb] hover:scale-[1.03] duration-200">
+    <div className={`bg-white rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 ${ativosHoje >= 80 ? 'fire-border animate-fire-glow' : 'border border-[#e5e7eb] hover:border-[#2563eb]'}`}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#2563eb]' : 'bg-red-500'}`}></span>
+          {ativosHoje >= 80 ? (
+            <span className="relative flex items-center">
+              <FaFire className="text-orange-500 animate-bounce" size={18} />
+            </span>
+          ) : (
+            <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#00ff99]' : 'bg-red-500'}`}></span>
+          )}
           <div className="text-lg font-bold font-orbitron" style={{ color: '#2563eb' }}>{nome}</div>
         </div>
         <span className="px-3 py-1 rounded-full text-xs font-bold shadow-md" style={{ background: corNeon, color: '#fff', textShadow: '0 0 6px ' + corNeon }}>{props.categoria || tagSafe}</span>

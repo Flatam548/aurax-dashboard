@@ -156,6 +156,12 @@ const Dashboard = () => {
   const ativosOntem = ofertas.reduce((acc, o) => acc + (o.ativosOntem || 0), 0);
   const variacaoHojeOntem = ativosOntem > 0 ? (((ativosHoje - ativosOntem) / ativosOntem) * 100).toFixed(1) + '%' : '0%';
 
+  // Ordenar ofertas: destaque no topo se ativosHoje >= 80
+  const ofertasOrdenadas = [
+    ...ofertas.filter(o => o.ativosHoje >= 80),
+    ...ofertas.filter(o => o.ativosHoje < 80)
+  ];
+
   return (
     <div className="min-h-screen bg-[#1a1a2e] flex">
       <Sidebar />
@@ -252,10 +258,10 @@ const Dashboard = () => {
         ) : (
           <div className="w-full max-w-7xl flex justify-center">
             <div className="flex flex-wrap gap-8 justify-center">
-              {(categoriaFiltro ? ofertas.filter(oferta => {
+              {(categoriaFiltro ? ofertasOrdenadas.filter(oferta => {
                 const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
                 return categoria === categoriaFiltro;
-              }) : ofertas)
+              }) : ofertasOrdenadas)
               // Filtro de busca por nome
               .filter(oferta => oferta.nome.toLowerCase().includes(busca.toLowerCase()))
               .map((oferta, idx) => {

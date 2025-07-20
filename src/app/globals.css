@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes fire-glow {
+  0% { box-shadow: 0 0 8px 2px #ff9800, 0 0 16px 4px #ff5722; }
+  50% { box-shadow: 0 0 16px 4px #ff5722, 0 0 32px 8px #ffd600; }
+  100% { box-shadow: 0 0 8px 2px #ff9800, 0 0 16px 4px #ff5722; }
+}
+.fire-border {
+  border: 2px solid #ff9800 !important;
+}
+.animate-fire-glow {
+  animation: fire-glow 1.2s infinite alternate;
+}
