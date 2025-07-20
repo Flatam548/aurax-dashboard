@@ -169,3 +169,30 @@ button:hover {
 .animate-fire-glow {
   animation: fire-glow 1.2s infinite alternate;
 }
+
+.metric-card, .metric-card * {
+  color: #23272a !important;
+  font-weight: 700 !important;
+}
+.metric-card button.bg-gradient-to-r {
+  background: linear-gradient(to right, #ccff00, #a3ff12) !important;
+  color: #23272a !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+.metric-card button.bg-gradient-to-r:hover {
+  filter: brightness(1.1);
+}
+.category-card, .category-card * {
+  color: #23272a !important;
+  font-weight: 700 !important;
+}
+.category-card button.bg-gradient-to-r {
+  background: linear-gradient(to right, #ccff00, #a3ff12) !important;
+  color: #23272a !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+.category-card button.bg-gradient-to-r:hover {
+  filter: brightness(1.1);
+}
