@@ -88,16 +88,16 @@ function BarraHojeOntem({ chartData }: { chartData: ChartDia[] }) {
   const hoje = chartData[chartData.length-1]?.Ativos ?? 0;
   const ontem = chartData[chartData.length-2]?.Ativos ?? 0;
   return (
-    <div className="w-full max-w-xs mx-auto mt-6 mb-4">
-      <BarChart width={220} height={120} data={[{ name: 'Ontem', valor: ontem }, { name: 'Hoje', valor: hoje }]}> 
+    <div className="w-full max-w-xs mx-auto mt-6 mb-4 flex flex-col items-center">
+      <BarChart width={180} height={120} data={[{ name: 'Ontem', valor: ontem }, { name: 'Hoje', valor: hoje }]}> 
         <Bar dataKey="valor">
-          <Cell fill="#8000ff" />
-          <Cell fill="#00ffe0" />
+          <Cell fill="#2e2e2e" />
+          <Cell fill="#ccff00" />
         </Bar>
       </BarChart>
-      <div className="flex justify-between text-xs text-[#a259ff] mt-1">
-        <span>Ontem: {ontem}</span>
-        <span>Hoje: {hoje}</span>
+      <div className="flex justify-between w-full px-2 text-xs mt-1">
+        <span className="text-[#9ca3af]">Ontem: <span className="font-bold text-[#9ca3af]">{ontem}</span></span>
+        <span className="text-[#ccff00]">Hoje: <span className="font-bold text-[#ccff00]">{hoje}</span></span>
       </div>
     </div>
   );
