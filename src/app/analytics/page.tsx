@@ -1,3 +1,4 @@
+// Forçar deploy Vercel - alteração de teste
 // Alteração de teste para commit - não afeta a estrutura
 "use client";
 import React, { useEffect, useState } from "react";
