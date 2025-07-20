@@ -108,14 +108,14 @@ const CardOferta = ({
       <div className="flex gap-4 text-sm items-center text-black font-bold"> 
         <div>Hoje: <span className="font-bold text-[#22c55e]">{ativosHoje}</span></div>
         <div>Ontem: <span className="font-bold text-black">{ativosOntemReal}</span></div>
-        <div className="flex items-center gap-1">Variação:
+        <div className="flex items-center gap-1 text-black">Variação:
           {variacaoNum < 0 ? <FaChevronDown className="text-red-500" /> : <FaChevronUp className="text-[#22c55e]" />}
           <span className={variacaoNum < 0 ? 'text-red-500 font-bold' : 'text-[#22c55e] font-bold'}>{variacaoPercentual}</span>
         </div>
       </div>
       <div className="flex gap-2 text-xs items-center text-black font-bold">
-        <span>Criado em: {dataCriacao}</span>
-        <span className="ml-2">Pico 7d: <span className="font-bold text-black">{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="text-black">Criado em: {dataCriacao}</span>
+        <span className="ml-2 text-black">Pico 7d: <span className="font-bold text-black">{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-3 mt-2 flex-wrap justify-between">
         <button
@@ -124,7 +124,7 @@ const CardOferta = ({
             ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
-          <FaBook className="text-xl" /> <span>Biblioteca</span>
+          <FaBook className="text-xl text-black" /> <span className="text-black font-bold">Biblioteca</span>
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
@@ -132,7 +132,7 @@ const CardOferta = ({
             ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
-          <FaGlobe className="text-xl" /> <span>Site</span>
+          <FaGlobe className="text-xl text-black" /> <span className="text-black font-bold">Site</span>
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
@@ -140,7 +140,7 @@ const CardOferta = ({
             ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
-          <FaInfoCircle className="text-xl" /> <span>Detalhes</span>
+          <FaInfoCircle className="text-xl text-black" /> <span className="text-black font-bold">Detalhes</span>
         </button>
       </div>
       {/* Placeholder para expansão do gráfico de 15 dias */}
