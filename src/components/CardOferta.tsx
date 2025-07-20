@@ -89,7 +89,7 @@ const CardOferta = ({
           ) : (
             <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#ccff00]' : 'bg-red-500'}`}></span>
           )}
-          <div className={`text-lg font-bold font-orbitron text-black`}>{nome}</div>
+          <div className="text-lg font-bold font-orbitron text-black">{nome}</div>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md bg-[#ffe066] text-black`}>{props.categoria || tagSafe}</span>
         <button
@@ -117,21 +117,30 @@ const CardOferta = ({
         <span>Criado em: {dataCriacao}</span>
         <span className="ml-2">Pico 7d: <span className="font-bold text-black">{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
-      <div className="flex gap-1 mt-2 flex-wrap justify-between">
+      <div className="flex gap-3 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
-          <FaBook /> Biblioteca
+          className={`${ativosHoje >= 80
+            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+        >
+          <FaBook className="text-xl" /> <span>Biblioteca</span>
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
-          <FaGlobe /> Site
+          className={`${ativosHoje >= 80
+            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+        >
+          <FaGlobe className="text-xl" /> <span>Site</span>
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
-          <FaInfoCircle /> Detalhes
+          className={`${ativosHoje >= 80
+            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+        >
+          <FaInfoCircle className="text-xl" /> <span>Detalhes</span>
         </button>
       </div>
       {/* Placeholder para expansão do gráfico de 15 dias */}
