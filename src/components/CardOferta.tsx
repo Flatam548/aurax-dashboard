@@ -91,7 +91,7 @@ const CardOferta = ({
           )}
           <div className={`text-lg font-bold font-orbitron text-black`}>{nome}</div>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? 'bg-[#ffe066] text-black' : 'bg-[#f3f4f6] text-black'}`}>{props.categoria || tagSafe}</span>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md bg-[#ffe066] text-black`}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
           className={`ml-2 p-1 rounded transition font-bold ${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}
@@ -105,35 +105,32 @@ const CardOferta = ({
         </button>
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
-      <div className={`flex gap-4 text-sm items-center text-black font-bold`}> 
-        <div>Hoje: <span className={`font-bold text-black`}>{ativosHoje}</span></div>
-        <div>Ontem: <span className={`font-bold text-[#9ca3af]`}>{ativosOntemReal}</span></div>
+      <div className="flex gap-4 text-sm items-center text-black font-bold"> 
+        <div>Hoje: <span className="font-bold text-black">{ativosHoje}</span></div>
+        <div>Ontem: <span className="font-bold text-black">{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
           {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#22c55e]'} />}
-          <span className={variacaoNum < 0 ? (ativosHoje >= 80 ? 'text-[#ef4444] font-bold' : 'text-red-400 font-bold') : (ativosHoje >= 80 ? 'text-[#22c55e] font-bold' : 'text-[#22c55e] font-bold')}>{variacaoPercentual}</span>
+          <span className={variacaoNum < 0 ? 'text-red-500 font-bold' : 'text-[#22c55e] font-bold'}>{variacaoPercentual}</span>
         </div>
       </div>
-      <div className="flex gap-2 text-xs items-center text-[#9ca3af]">
+      <div className="flex gap-2 text-xs items-center text-black font-bold">
         <span>Criado em: {dataCriacao}</span>
-        <span className="ml-2">Pico 7d: <span className={`font-bold text-black`}>{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="ml-2">Pico 7d: <span className="font-bold text-black">{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
-        >
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
-        >
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
-        >
+          className={`${ativosHoje >= 80 ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg hover:brightness-110'}`}>
           <FaInfoCircle /> Detalhes
         </button>
       </div>
