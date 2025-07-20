@@ -180,7 +180,7 @@ const Dashboard = () => {
         <div className="w-full max-w-7xl flex justify-end mb-4">
           <button
             onClick={() => setModalOpen(true)}
-            className="bg-gradient-to-r from-[#2563eb] to-[#00ffe0] text-white font-bold px-6 py-2 rounded-lg shadow hover:scale-105 transition flex items-center gap-2"
+            className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] font-bold px-6 py-2 rounded-lg shadow hover:brightness-110 transition flex items-center gap-2 text-lg border border-[#ccff00]"
           >
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             Nova Oferta
@@ -191,27 +191,27 @@ const Dashboard = () => {
           <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center">
             <div className="flex gap-6 flex-1 justify-center">
               {/* Cards estatísticas */}
-              <div className="bg-gradient-to-br from-[#8000ff] to-[#00ffe0] border-2 border-[#8000ff] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
-                <span className="text-xs text-[#e0e7ff]">Total de Ofertas</span>
-                <span className="text-2xl font-orbitron drop-shadow-lg">{ofertas.length}</span>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-6 py-4 text-[#23272a] font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#9ca3af]">Total de Ofertas</span>
+                <span className="text-3xl font-orbitron drop-shadow-lg font-bold">{ofertas.length}</span>
               </div>
-              <div className="bg-gradient-to-br from-[#00ffe0] to-[#2563eb] border-2 border-[#00ffe0] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
-                <span className="text-xs text-[#e0e7ff]">Ativos Hoje</span>
-                <span className="text-2xl font-orbitron drop-shadow-lg">{ativosHoje}</span>
-                <span className={variacaoHojeOntem.startsWith('-') ? 'text-red-400 font-bold text-xs' : 'text-green-400 font-bold text-xs'}>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-6 py-4 text-[#23272a] font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#9ca3af]">Ativos Hoje</span>
+                <span className="text-3xl font-orbitron drop-shadow-lg font-bold">{ativosHoje}</span>
+                <span className={variacaoHojeOntem.startsWith('-') ? 'text-red-500 font-bold text-xs' : 'text-[#22c55e] font-bold text-xs'}>
                   {variacaoHojeOntem.startsWith('-') ? '▼' : '▲'} {variacaoHojeOntem}
                 </span>
               </div>
-              <div className="bg-gradient-to-br from-[#00ff99] to-[#2563eb] border-2 border-[#00ff99] rounded-xl px-6 py-4 text-white font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
-                <span className="text-xs text-[#e0e7ff]">Média Crescimento 7d</span>
-                <span className="text-2xl font-orbitron drop-shadow-lg">{getMediaCrescimentoPercentual(historicos7d)}</span>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-6 py-4 text-[#23272a] font-semibold flex flex-col items-center shadow-lg hover:scale-105 transition duration-200">
+                <span className="text-xs text-[#9ca3af]">Média Crescimento 7d</span>
+                <span className="text-3xl font-orbitron drop-shadow-lg font-bold">{getMediaCrescimentoPercentual(historicos7d)}</span>
               </div>
             </div>
           </div>
           {/* Substituir o bloco de Ofertas por Categoria: */}
           <div className="w-full flex justify-center mt-8 mb-4">
-            <div className="bg-[#23234a] border-2 border-[#8000ff] rounded-xl px-6 py-4 flex flex-col items-center shadow-lg min-w-[260px] max-w-xs w-full">
-              <span className="text-xs text-[#a259ff] mb-2">Ofertas por Categoria</span>
+            <div className="bg-white border-2 border-[#ccff00] rounded-xl px-6 py-4 flex flex-col items-center shadow-lg min-w-[260px] max-w-xs w-full">
+              <span className="text-xs text-[#9ca3af] mb-2">Ofertas por Categoria</span>
               <ResponsiveContainer width={180} height={140}>
                 <PieChart>
                   <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={45} innerRadius={25} isAnimationActive
@@ -223,7 +223,7 @@ const Dashboard = () => {
                     ))}
                   </Pie>
                   <PieTooltip content={({ active, payload }) => active && payload && payload.length ? (
-                    <div className="bg-[#1a002a] border border-[#8000ff] text-white px-2 py-1 rounded shadow">
+                    <div className="bg-[#23272a] border border-[#ccff00] text-[#23272a] px-2 py-1 rounded shadow">
                       <div><b>{payload[0].name}</b>: {payload[0].value} ofertas</div>
                     </div>
                   ) : null} />
@@ -232,10 +232,10 @@ const Dashboard = () => {
               <div className="flex flex-wrap gap-2 mt-2 justify-center">
                 {getCategoriaStats(ofertas).map((cat, i) => (
                   <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
-                    className={`px-2 py-1 rounded text-xs font-bold border ${categoriaFiltro === cat.name ? 'bg-[#8000ff] text-white border-[#fff]' : 'bg-[#e0e7ff] text-[#2563eb] border-[#8000ff]'}`}
+                    className={`px-2 py-1 rounded text-xs font-bold border-none bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110 ${categoriaFiltro === cat.name ? 'ring-2 ring-[#ccff00]' : ''}`}
                   >{cat.name}</button>
                 ))}
-                {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#00ffe0]">Limpar filtro</button>}
+                {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-xs underline text-[#ccff00]">Limpar filtro</button>}
               </div>
             </div>
           </div>

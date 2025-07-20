@@ -230,12 +230,12 @@ export default function AnalyticsPage() {
     <div className="min-h-screen bg-[#18181b] flex">
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
-        <h1 className="text-4xl font-bold mb-8 font-orbitron text-white text-center">Análise de Ofertas<br /><span className="text-lg font-normal text-[#9ca3af]">Evolução dos Anúncios Ativos (15 dias)</span></h1>
-        <div className="w-full max-w-5xl bg-[#23272a] border border-[#2e2e2e] rounded-2xl p-8 shadow">
+        <h1 className="text-4xl font-bold mb-8 font-orbitron text-[#23272a] text-center">Análise de Ofertas<br /><span className="text-lg font-normal text-[#9ca3af]">Evolução dos Anúncios Ativos (15 dias)</span></h1>
+        <div className="w-full max-w-5xl bg-white border-2 border-[#ccff00] rounded-2xl p-8 shadow-lg">
           <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <label className="font-semibold text-lg text-white">Selecione a oferta:</label>
+            <label className="font-semibold text-lg text-[#23272a]">Selecione a oferta:</label>
             <select
-              className="bg-[#2e2e2e] text-white px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter"
+              className="bg-[#f3f4f6] text-[#23272a] px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter"
               value={selectedId || ''}
               onChange={e => setSelectedId(e.target.value)}
             >
@@ -245,7 +245,7 @@ export default function AnalyticsPage() {
             </select>
           </div>
           {loading ? (
-            <div className="text-white text-lg">Carregando dados...</div>
+            <div className="text-[#23272a] text-lg">Carregando dados...</div>
           ) : ofertas.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-[#9ca3af] text-lg mb-4">Nenhuma oferta encontrada</div>
@@ -255,14 +255,14 @@ export default function AnalyticsPage() {
             <>
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 40 }}>
-                  <CartesianGrid stroke="#2e2e2e" strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" stroke="#ccff00" tick={{ fill: "#ccff00", fontWeight: 700, fontSize: 16 }} interval={0} />
-                  <YAxis stroke="#ccff00" tick={{ fill: "#ccff00", fontWeight: 700, fontSize: 16 }} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: "#23272a", border: "1px solid #ccff00", color: "#fff" }} labelFormatter={(label, payload) => {
+                  <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" stroke="#ccff00" tick={{ fill: "#23272a", fontWeight: 700, fontSize: 16 }} interval={0} />
+                  <YAxis stroke="#ccff00" tick={{ fill: "#23272a", fontWeight: 700, fontSize: 16 }} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: "#fff", border: "1px solid #ccff00", color: "#23272a" }} labelFormatter={(label, payload) => {
                     if (!payload || !payload.length) return label;
                     return `${label} (${payload[0].payload.dataReal})`;
                   }} />
-                  <Legend wrapperStyle={{ color: "#fff", fontSize: 16 }} />
+                  <Legend wrapperStyle={{ color: "#23272a", fontSize: 16 }} />
                   <Line
                     type="monotone"
                     dataKey="Ativos"
@@ -272,10 +272,10 @@ export default function AnalyticsPage() {
                       payload.isHoje ? (
                         <circle cx={cx} cy={cy} r={10} fill="#fff" stroke="#ccff00" strokeWidth={4} />
                       ) : (
-                        <circle cx={cx} cy={cy} r={5} fill="#ccff00" stroke="#23272a" strokeWidth={2} />
+                        <circle cx={cx} cy={cy} r={5} fill="#ccff00" stroke="#fff" strokeWidth={2} />
                       )
                     )}
-                    activeDot={{ r: 12, fill: "#23272a", stroke: "#ccff00", strokeWidth: 4 }}
+                    activeDot={{ r: 12, fill: "#fff", stroke: "#ccff00", strokeWidth: 4 }}
                     fillOpacity={1}
                     connectNulls
                   />
@@ -283,17 +283,19 @@ export default function AnalyticsPage() {
               </ResponsiveContainer>
               {/* Heatmap logo abaixo do gráfico */}
               <div className="flex flex-col items-center w-full mt-4">
-                <Heatmap chartData={chartData} />
-                <div className="flex gap-6 justify-center mt-2 text-base font-medium text-[#9ca3af]">
-                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#2e2e2e'}}></span> Baixo</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#9ca3af'}}></span> Médio</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#ccff00'}}></span> Alto</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#23272a'}}></span> Sem ativos</div>
+                <div className="bg-white rounded-xl p-4 border border-[#ccff00] flex flex-col items-center w-fit mx-auto">
+                  <Heatmap chartData={chartData} />
+                  <div className="flex gap-6 justify-center mt-2 text-base font-medium text-[#23272a]">
+                    <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#f3f4f6'}}></span> Baixo</div>
+                    <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#9ca3af'}}></span> Médio</div>
+                    <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#ccff00'}}></span> Alto</div>
+                    <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#e5e7eb'}}></span> Sem ativos</div>
+                  </div>
                 </div>
               </div>
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
-              <div className="text-base mt-4 text-[#9ca3af] text-center">
+              <div className="text-base mt-4 text-[#23272a] text-center">
                 {historico.length === 0 ? 
                   "Dados de exemplo exibidos. Execute o script de scraping para obter dados reais." :
                   "O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais 'quentes' e o gráfico de barras compara hoje vs ontem."
