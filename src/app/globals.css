@@ -112,10 +112,11 @@ button:hover {
 }
 
 /* Cards, containers, modais, etc */
-.card {
+.card, .card * {
   background: #fff !important;
   color: #23272a !important;
   border-color: #ccff00 !important;
+  font-weight: 700 !important;
 }
 .rounded-2xl, .rounded-xl, .shadow, .border, .p-8, .p-6 {
   /* Remover sobrescrita de fundo/texto escuro para permitir cards brancos */
@@ -128,6 +129,7 @@ button:hover {
   background: linear-gradient(to right, #ccff00, #a3ff12) !important;
   color: #23272a !important;
   border: none !important;
+  font-weight: 700 !important;
 }
 .card button.bg-gradient-to-r:hover {
   filter: brightness(1.1);
