@@ -92,7 +92,7 @@ const CardOferta = ({
         <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? 'bg-[#ffe066] text-[#23272a]' : 'bg-[#2e2e2e] text-[#ccff00]'}`}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
-          className="ml-2 p-1 rounded hover:bg-red-100/10 transition"
+          className={`ml-2 p-1 rounded transition ${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'hover:bg-[#ccff00] hover:text-[#23272a]'}`}
           title="Excluir oferta"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-red-400 hover:text-red-600">
@@ -118,19 +118,19 @@ const CardOferta = ({
       <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#23272a] hover:bg-[#ff9800] text-white border-none' : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] hover:brightness-110'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaInfoCircle /> Detalhes
         </button>
