@@ -106,10 +106,10 @@ const CardOferta = ({
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
       <div className="flex gap-4 text-sm items-center text-black font-bold"> 
-        <div>Hoje: <span className="font-bold text-black">{ativosHoje}</span></div>
+        <div>Hoje: <span className="font-bold text-[#22c55e]">{ativosHoje}</span></div>
         <div>Ontem: <span className="font-bold text-black">{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
-          {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#22c55e]'} />}
+          {variacaoNum < 0 ? <FaChevronDown className="text-red-500" /> : <FaChevronUp className="text-[#22c55e]" />}
           <span className={variacaoNum < 0 ? 'text-red-500 font-bold' : 'text-[#22c55e] font-bold'}>{variacaoPercentual}</span>
         </div>
       </div>
@@ -121,7 +121,7 @@ const CardOferta = ({
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
           <FaBook className="text-xl" /> <span>Biblioteca</span>
@@ -129,7 +129,7 @@ const CardOferta = ({
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
           <FaGlobe className="text-xl" /> <span>Site</span>
@@ -137,7 +137,7 @@ const CardOferta = ({
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
           className={`${ativosHoje >= 80
-            ? 'bg-black hover:bg-[#ff9800] text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
         >
           <FaInfoCircle className="text-xl" /> <span>Detalhes</span>
