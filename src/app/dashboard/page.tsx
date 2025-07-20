@@ -253,9 +253,18 @@ const Dashboard = () => {
         ) : (
           <div className="w-full max-w-7xl flex justify-center">
             <div className="flex flex-wrap gap-8 justify-center">
-              {ofertasFiltradas.map(oferta => (
-                <CardOferta key={oferta.id} {...oferta} />
-              ))}
+              {ofertasFiltradas.map((oferta, idx) => {
+                const categoria = ((oferta as any).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+                return (
+                  <CardOferta
+                    key={oferta.id || idx}
+                    {...oferta}
+                    categoria={categoria}
+                    historico7d={historicos7d[oferta.id || ''] || []}
+                    onExcluirOferta={async () => await excluirOferta(oferta.id ?? "")}
+                  />
+                );
+              })}
             </div>
           </div>
         )}
