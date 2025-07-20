@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #e5e7eb;
+  --background: #d1d5db;
   --sidebar: #18181b;
   --foreground: #fff;
   --primary: #ccff00;
@@ -204,5 +204,12 @@ button:hover {
 
 .card-oferta .oferta-title {
   color: #23272a !important;
+  font-weight: 700 !important;
+}
+
+button.bg-gradient-to-r {
+  background: linear-gradient(to right, #ccff00, #a3ff12) !important;
+  color: #23272a !important;
+  border: 2px solid #ccff00 !important;
   font-weight: 700 !important;
 }
