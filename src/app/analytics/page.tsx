@@ -1,3 +1,4 @@
+// Simulação de novo commit para forçar deploy Vercel
 // Forçar deploy Vercel - alteração de teste
 // Alteração de teste para commit - não afeta a estrutura
 "use client";
