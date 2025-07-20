@@ -251,7 +251,9 @@ const Dashboard = () => {
           <div className="w-full max-w-7xl flex justify-center">
             <div className="flex flex-wrap gap-8 justify-center">
               {ofertasFiltradas.map((oferta, idx) => {
-                const categoria = ('categoria' in oferta && oferta.categoria) ? oferta.categoria : (oferta.tags && oferta.tags[0]) || 'Outro';
+                const categoria = ('categoria' in oferta && typeof oferta.categoria === 'string' && oferta.categoria)
+                  ? oferta.categoria
+                  : (Array.isArray(oferta.tags) && oferta.tags.length > 0 && typeof oferta.tags[0] === 'string' ? oferta.tags[0] : 'Outro');
                 return (
                   <CardOferta
                     key={oferta.id || idx}
