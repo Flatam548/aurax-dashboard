@@ -1,3 +1,4 @@
+// Alteração de teste para commit - não afeta a estrutura
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
