@@ -117,6 +117,19 @@ const CardOferta = ({
         <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Criado em: {dataCriacao}</span>
         <span className="ml-2" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Pico 7d: <span style={ativosHoje >= 80 ? {} : { color: '#00ffe0', fontWeight: 700 }}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
+      {/* Garantir que qualquer outro texto secundário também fique preto e bold nos cards normais */}
+      {ativosHoje < 80 && (
+        <style jsx>{`
+          .card-oferta-normal * {
+            color: #23272a !important;
+            font-weight: 700 !important;
+          }
+          .card-oferta-normal .valor-destaque {
+            color: inherit !important;
+            font-weight: inherit !important;
+          }
+        `}</style>
+      )}
       <div className="flex gap-3 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
