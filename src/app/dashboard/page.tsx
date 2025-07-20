@@ -188,30 +188,30 @@ const Dashboard = () => {
         </div>
         <ModalNovaOferta open={modalOpen} onClose={() => setModalOpen(false)} onCreate={handleNovaOferta} />
         <div className="w-full max-w-7xl flex flex-col gap-8 items-center">
-          <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center">
+          <div className="w-full flex flex-col lg:flex-row gap-8 items-center justify-center metric-card">
             <div className="flex gap-6 flex-1 justify-center">
               {/* Cards estatísticas */}
-              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 text-black font-bold flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200">
-                <span className="text-lg text-black font-bold mb-2">Total de Ofertas</span>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200 metric-card">
+                <span className="text-lg mb-2">Total de Ofertas</span>
                 <span className="text-5xl font-orbitron drop-shadow-lg font-extrabold">{ofertas.length}</span>
               </div>
-              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 text-black font-bold flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200">
-                <span className="text-lg text-black font-bold mb-2">Ativos Hoje</span>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200 metric-card">
+                <span className="text-lg mb-2">Ativos Hoje</span>
                 <span className="text-5xl font-orbitron drop-shadow-lg font-extrabold">{ativosHoje}</span>
                 <span className={variacaoHojeOntem.startsWith('-') ? 'text-red-500 font-bold text-lg' : 'text-[#22c55e] font-bold text-lg'}>
                   {variacaoHojeOntem.startsWith('-') ? '▼' : '▲'} {variacaoHojeOntem}
                 </span>
               </div>
-              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 text-black font-bold flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200">
-                <span className="text-lg text-black font-bold mb-2">Média Crescimento 7d</span>
+              <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 flex flex-col items-center shadow-2xl hover:scale-105 transition duration-200 metric-card">
+                <span className="text-lg mb-2">Média Crescimento 7d</span>
                 <span className="text-5xl font-orbitron drop-shadow-lg font-extrabold">{getMediaCrescimentoPercentual(historicos7d)}</span>
               </div>
             </div>
           </div>
           {/* Ofertas por Categoria */}
-          <div className="w-full flex justify-center mt-8 mb-4">
-            <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 flex flex-col items-center shadow-2xl min-w-[320px] max-w-xl w-full">
-              <span className="text-lg text-black font-bold mb-4">Ofertas por Categoria</span>
+          <div className="w-full flex justify-center mt-8 mb-4 category-card">
+            <div className="bg-white border-2 border-[#ccff00] rounded-xl px-10 py-8 flex flex-col items-center shadow-2xl min-w-[320px] max-w-xl w-full category-card">
+              <span className="text-lg mb-4">Ofertas por Categoria</span>
               <ResponsiveContainer width={220} height={180}>
                 <PieChart>
                   <Pie data={getCategoriaStats(ofertas)} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} innerRadius={35} isAnimationActive
@@ -232,7 +232,7 @@ const Dashboard = () => {
               <div className="flex flex-wrap gap-4 mt-4 justify-center">
                 {getCategoriaStats(ofertas).map((cat, i) => (
                   <button key={cat.name} onClick={() => setCategoriaFiltro(cat.name)}
-                    className={`px-4 py-2 rounded text-lg font-bold border-none bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black hover:brightness-110 shadow ${categoriaFiltro === cat.name ? 'ring-2 ring-[#ccff00]' : ''}`}
+                    className={`px-4 py-2 rounded text-lg font-bold border-none bg-gradient-to-r from-[#ccff00] to-[#a3ff12] hover:brightness-110 shadow ${categoriaFiltro === cat.name ? 'ring-2 ring-[#ccff00]' : ''}`}
                   >{cat.name}</button>
                 ))}
                 {categoriaFiltro && <button onClick={() => setCategoriaFiltro(null)} className="ml-2 text-lg underline text-[#ccff00] font-bold">Limpar filtro</button>}
