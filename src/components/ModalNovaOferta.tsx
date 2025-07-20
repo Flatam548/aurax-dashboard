@@ -101,7 +101,7 @@ const ModalNovaOferta = ({ open, onClose, onCreate }: ModalNovaOfertaProps) => {
         </div>
         <div className="flex justify-end gap-4 mt-8">
           <button onClick={onClose} className="bg-[#f3f4f6] text-[#23272a] px-6 py-2 rounded-lg font-semibold hover:bg-[#ccff00] hover:text-[#23272a] transition border border-[#ccff00]">Cancelar</button>
-          <button onClick={handleCreate} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-semibold shadow hover:brightness-110 transition font-bold">Criar Oferta</button>
+          <button onClick={handleCreate} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold border-2 border-[#ccff00]">Criar Oferta</button>
         </div>
       </div>
     </div>

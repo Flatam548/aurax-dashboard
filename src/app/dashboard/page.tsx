@@ -167,16 +167,7 @@ const Dashboard = () => {
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
         <Topbar />
-        {/* Campo de busca */}
-        <div className="w-full max-w-7xl flex justify-center mb-6">
-          <input
-            type="text"
-            placeholder="Buscar oferta pelo nome..."
-            value={busca}
-            onChange={e => setBusca(e.target.value)}
-            className="w-full max-w-xl px-4 py-2 rounded-lg border-2 border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter text-lg bg-white text-black shadow"
-          />
-        </div>
+        {/* Campo de busca REMOVIDO - agora só na Topbar */}
         <div className="w-full max-w-7xl flex justify-end mb-4">
           <button
             onClick={() => setModalOpen(true)}

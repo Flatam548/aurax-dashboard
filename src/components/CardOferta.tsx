@@ -106,8 +106,8 @@ const CardOferta = ({
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
       <div className="flex gap-4 text-sm items-center" style={{ color: '#23272a', fontWeight: 700 }}>
-        <div>Hoje: <span style={{ color: '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
-        <div>Ontem: <span style={{ color: '#9ca3af', fontWeight: 700 }}>{ativosOntemReal}</span></div>
+        <div><span style={{ color: '#23272a', fontWeight: 700 }}>Hoje:</span> <span style={{ color: '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
+        <div><span style={{ color: '#23272a', fontWeight: 700 }}>Ontem:</span> <span style={{ color: '#9ca3af', fontWeight: 700 }}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1" style={{ color: '#23272a', fontWeight: 700 }}>Variação:
           {variacaoNum < 0 ? <FaChevronDown style={{ color: '#ff6b6b', fontWeight: 700 }} /> : <FaChevronUp style={{ color: '#ccff00', fontWeight: 700 }} />}
           <span style={{ color: variacaoNum < 0 ? '#ff6b6b' : '#ccff00', fontWeight: 700 }}>{variacaoPercentual}</span>
@@ -133,28 +133,28 @@ const CardOferta = ({
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
           className={`${ativosHoje >= 80
             ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
-          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 min-w-[140px] justify-center border-2 border-[#ccff00]'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : { background: 'linear-gradient(to right, #ccff00, #a3ff12)', color: '#23272a', border: '2px solid #ccff00', fontWeight: 700 }}
         >
-          <FaBook className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Biblioteca</span>
+          <FaBook className="text-xl" style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }} /> <span style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }}>Biblioteca</span>
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
           className={`${ativosHoje >= 80
             ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
-          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 min-w-[140px] justify-center border-2 border-[#ccff00]'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : { background: 'linear-gradient(to right, #ccff00, #a3ff12)', color: '#23272a', border: '2px solid #ccff00', fontWeight: 700 }}
         >
-          <FaGlobe className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Site</span>
+          <FaGlobe className="text-xl" style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }} /> <span style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }}>Site</span>
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
           className={`${ativosHoje >= 80
             ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
-          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-black h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 min-w-[140px] justify-center border-2 border-[#ccff00]'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : { background: 'linear-gradient(to right, #ccff00, #a3ff12)', color: '#23272a', border: '2px solid #ccff00', fontWeight: 700 }}
         >
-          <FaInfoCircle className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Detalhes</span>
+          <FaInfoCircle className="text-xl" style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }} /> <span style={ativosHoje >= 80 ? { color: '#fff' } : { color: '#23272a' }}>Detalhes</span>
         </button>
       </div>
       {/* Placeholder para expansão do gráfico de 15 dias */}
