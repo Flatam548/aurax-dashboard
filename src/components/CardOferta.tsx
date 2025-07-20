@@ -76,7 +76,7 @@ const CardOferta = ({
 
   return (
     <div className={`rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 font-inter
-      ${ativosHoje >= 80 ? 'fire-border animate-fire-glow bg-gradient-to-br from-yellow-100 via-yellow-50 to-orange-100' : 'bg-[#0e0e11] border border-[#2e2e2e] hover:border-[#a3ff12]'}
+      ${ativosHoje >= 80 ? 'fire-border animate-fire-glow bg-[#fffbe6]' : 'bg-[#23272a] border border-[#2e2e2e]'}
     `}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -85,11 +85,11 @@ const CardOferta = ({
               <FaFire className="text-orange-500 animate-bounce" size={18} />
             </span>
           ) : (
-            <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#a3ff12]' : 'bg-red-500'}`}></span>
+            <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#ccff00]' : 'bg-red-500'}`}></span>
           )}
-          <div className={`text-lg font-bold font-orbitron ${ativosHoje >= 80 ? 'text-orange-600 drop-shadow-[0_1px_2px_rgba(255,140,0,0.3)]' : 'text-white'}`}>{nome}</div>
+          <div className={`text-lg font-bold font-orbitron ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-white'}`}>{nome}</div>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? '' : 'bg-[#2e2e2e] text-[#a3ff12]'}`} style={ativosHoje >= 80 ? { background: corNeon, color: '#fff', textShadow: '0 0 6px ' + corNeon } : {}}>{props.categoria || tagSafe}</span>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? 'bg-[#ffe066] text-[#b45309]' : 'bg-[#2e2e2e] text-[#ccff00]'}`}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
           className="ml-2 p-1 rounded hover:bg-red-100/10 transition"
@@ -102,35 +102,35 @@ const CardOferta = ({
           </svg>
         </button>
       </div>
-      <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#a3ff12'} />
-      <div className={`flex gap-4 text-sm items-center ${ativosHoje >= 80 ? 'text-[#7c3a00]' : 'text-[#a3ff12]'}`}> 
-        <div>Hoje: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#7c3a00]' : 'text-white'}`}>{ativosHoje}</span></div>
-        <div>Ontem: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-[#9ca3af]'}`}>{ativosOntemReal}</span></div>
+      <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
+      <div className={`flex gap-4 text-sm items-center ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-[#ccff00]'}`}> 
+        <div>Hoje: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-white'}`}>{ativosHoje}</span></div>
+        <div>Ontem: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#7c3a00]' : 'text-[#9ca3af]'}`}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
-          {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#a3ff12]'} />}
-          <span className={variacaoNum < 0 ? (ativosHoje >= 80 ? 'text-[#ef4444] font-bold' : 'text-red-400 font-bold') : (ativosHoje >= 80 ? 'text-[#22c55e] font-bold' : 'text-[#a3ff12] font-bold')}>{variacaoPercentual}</span>
+          {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#ccff00]'} />}
+          <span className={variacaoNum < 0 ? (ativosHoje >= 80 ? 'text-[#ef4444] font-bold' : 'text-red-400 font-bold') : (ativosHoje >= 80 ? 'text-[#22c55e] font-bold' : 'text-[#ccff00] font-bold')}>{variacaoPercentual}</span>
         </div>
       </div>
       <div className="flex gap-2 text-xs items-center text-[#9ca3af]">
         <span>Criado em: {dataCriacao}</span>
-        <span className="ml-2">Pico 7d: <span className={`font-bold ${ativosHoje >= 80 ? 'text-orange-600' : 'text-[#a3ff12]'}`}>{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="ml-2">Pico 7d: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-[#ccff00]'}`}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#ff9800] hover:bg-[#ffb300] text-white' : 'border border-[#ccff00] text-[#ccff00] hover:bg-[#ccff00] hover:text-[#23272a]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#ff9800] hover:bg-[#ffb300] text-white' : 'border border-[#ccff00] text-[#ccff00] hover:bg-[#ccff00] hover:text-[#23272a]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
+          className={`${ativosHoje >= 80 ? 'bg-[#ff9800] hover:bg-[#ffb300] text-white' : 'border border-[#ccff00] text-[#ccff00] hover:bg-[#ccff00] hover:text-[#23272a]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaInfoCircle /> Detalhes
         </button>

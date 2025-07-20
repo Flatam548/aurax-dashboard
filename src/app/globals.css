@@ -2,6 +2,7 @@
 
 :root {
   --background: #0e0e11;
+  --sidebar: #18181b;
   --foreground: #fff;
   --primary: #ccff00;
   --secondary: #23272a;
@@ -29,8 +30,8 @@ input, select, textarea {
   border: 1px solid var(--muted);
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
 }
-
 input:focus, select:focus, textarea:focus {
   outline: 2px solid var(--primary);
   border-color: var(--primary);
@@ -41,17 +42,31 @@ button {
   font-weight: 600;
   border-radius: 0.5rem;
   transition: background 0.2s, color 0.2s;
-  background: var(--secondary-light);
+  background: transparent;
   color: var(--primary);
-  border: 1px solid var(--primary);
+  border: 1.5px solid var(--primary);
 }
 button:hover {
   background: var(--primary);
   color: var(--background);
 }
 
-.bg-white, .bg-[#fff], .bg-[#f3f4f6], .bg-[#e0e7ff], .bg-[#23234a] {
+/* Sidebar */
+.sidebar, .bg-[#18181b] {
+  background: var(--sidebar) !important;
+}
+.sidebar .active, .bg-[#2563eb] {
+  background: var(--primary) !important;
+  color: var(--sidebar) !important;
+}
+.sidebar .text-white, .sidebar .text-[#fff] {
+  color: #fff !important;
+}
+
+/* Topbar */
+.topbar, .bg-white, .bg-[#fff], .bg-[#f3f4f6], .bg-[#e0e7ff], .bg-[#23234a] {
   background: var(--secondary) !important;
+  color: #fff !important;
 }
 
 .text-black, .text-[#18181b], .text-[#23234a] {
@@ -110,14 +125,12 @@ button:hover {
   font-weight: 700 !important;
 }
 
-/* Métricas secundárias */
-.text-xs, .text-sm, .text-muted, .text-secondary {
+.metric-title, .text-xs, .text-sm, .text-muted, .text-secondary {
   color: var(--muted) !important;
 }
-
-/* Destaques */
-.text-primary, .text-lime, .text-lime-400, .text-lime-500 {
+.metric-value, .text-primary, .text-lime, .text-lime-400, .text-lime-500 {
   color: var(--primary) !important;
+  font-weight: 700 !important;
 }
 .bg-primary, .bg-lime, .bg-lime-400, .bg-lime-500 {
   background: var(--primary) !important;
