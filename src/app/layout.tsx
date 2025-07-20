@@ -14,11 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Aurax Dashboard',
+  title: 'Corp. Shelby - Miner',
   description: 'Sistema de acompanhamento de ofertas',
-  icons: {
-    icon: '/favicon.ico',
-  },
+  icon: '/favicon.ico',
 };
 
 export default function RootLayout({
