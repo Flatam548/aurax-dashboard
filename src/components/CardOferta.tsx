@@ -106,7 +106,7 @@ const CardOferta = ({
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
       <div className="flex gap-4 text-sm items-center" style={{ color: '#23272a', fontWeight: 700 }}>
-        <div><span style={{ color: '#23272a', fontWeight: 700 }}>Hoje:</span> <span style={{ color: '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
+        <div><span style={{ color: '#23272a', fontWeight: 700 }}>Hoje:</span> <span style={{ color: ativosHoje === 0 ? '#ff6b6b' : '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
         <div><span style={{ color: '#23272a', fontWeight: 700 }}>Ontem:</span> <span style={{ color: '#9ca3af', fontWeight: 700 }}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1" style={{ color: '#23272a', fontWeight: 700 }}>Variação:
           {variacaoNum < 0 ? <FaChevronDown style={{ color: '#ff6b6b', fontWeight: 700 }} /> : <FaChevronUp style={{ color: '#ccff00', fontWeight: 700 }} />}

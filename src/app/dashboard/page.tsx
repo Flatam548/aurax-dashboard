@@ -60,7 +60,6 @@ const Dashboard = () => {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [historicos7d, setHistoricos7d] = useState<Record<string, { valor: number }[]>>({});
   const [categoriaFiltro, setCategoriaFiltro] = useState<string | null>(null);
-  // Adicionar estado para texto de busca
   const [busca, setBusca] = useState('');
 
   useEffect(() => {
@@ -162,16 +161,21 @@ const Dashboard = () => {
     ...ofertas.filter(o => o.ativosHoje < 80)
   ];
 
+  // Filtrar ofertas pelo nome (case-insensitive, parcial)
+  const ofertasFiltradas = ofertasOrdenadas.filter(o =>
+    o.nome.toLowerCase().includes(busca.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-[#1a1a2e] flex">
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
-        <Topbar />
+        <Topbar busca={busca} setBusca={setBusca} />
         {/* Campo de busca REMOVIDO - agora só na Topbar */}
         <div className="w-full max-w-7xl flex justify-end mb-4">
           <button
             onClick={() => setModalOpen(true)}
-            className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] font-bold px-6 py-2 rounded-lg shadow hover:brightness-110 transition flex items-center gap-2 text-lg border border-[#ccff00]"
+            className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] font-bold px-6 py-2 rounded-lg flex items-center gap-2 text-lg border-2 border-[#ccff00]"
           >
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             Nova Oferta
@@ -249,33 +253,9 @@ const Dashboard = () => {
         ) : (
           <div className="w-full max-w-7xl flex justify-center">
             <div className="flex flex-wrap gap-8 justify-center">
-              {(categoriaFiltro ? ofertasOrdenadas.filter(oferta => {
-                const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
-                return categoria === categoriaFiltro;
-              }) : ofertasOrdenadas)
-              // Filtro de busca por nome
-              .filter(oferta => oferta.nome.toLowerCase().includes(busca.toLowerCase()))
-              .map((oferta, idx) => {
-                const categoria: string = ((oferta as OfertaDashboard).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
-                // Não tentar remover 'categoria' do objeto oferta, apenas sobrescrever na chamada
-                return (
-                  <CardOferta
-                    key={oferta.id || idx}
-                    nome={oferta.nome}
-                    tags={oferta.tags}
-                    ativosHoje={oferta.ativosHoje}
-                    ativosOntem={oferta.ativosOntem}
-                    variacao={oferta.variacao}
-                    dataCriacao={oferta.dataCriacao}
-                    urlMeta={oferta.urlMeta}
-                    urlSite={oferta.urlSite}
-                    id={oferta.id}
-                    categoria={categoria}
-                    historico7d={historicos7d[oferta.id || ''] || []}
-                    onExcluirOferta={async () => await excluirOferta(oferta.id ?? "")}
-                  />
-                );
-              })}
+              {ofertasFiltradas.map(oferta => (
+                <CardOferta key={oferta.id} {...oferta} />
+              ))}
             </div>
           </div>
         )}
