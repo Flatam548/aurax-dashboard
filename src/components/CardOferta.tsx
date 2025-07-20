@@ -75,8 +75,10 @@ const CardOferta = ({
   const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
 
   return (
-    <div className={`rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 font-inter
-      ${ativosHoje >= 80 ? 'fire-border animate-fire-glow bg-gradient-to-br from-[#ffb300] to-[#ff9800]' : 'bg-[#23272a] border border-[#2e2e2e]'}
+    <div className={`rounded-2xl flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-2xl hover:scale-[1.03] duration-200 font-inter mb-8
+      ${ativosHoje >= 80
+        ? 'fire-border animate-fire-glow bg-gradient-to-br from-[#ffb300] to-[#ff9800] shadow-[0_8px_32px_0_rgba(255,152,0,0.35)]'
+        : 'bg-[#262a32] border border-[#333] shadow-[0_4px_24px_0_rgba(44,255,0,0.10)]'}
     `}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
