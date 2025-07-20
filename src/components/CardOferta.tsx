@@ -75,7 +75,9 @@ const CardOferta = ({
   const diaPico = historicoSpark.findIndex(h => h.valor === pico7d);
 
   return (
-    <div className={`bg-white rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 ${ativosHoje >= 80 ? 'fire-border animate-fire-glow' : 'border border-[#e5e7eb] hover:border-[#2563eb]'}`}>
+    <div className={`rounded-2xl shadow p-6 flex flex-col gap-4 min-w-[380px] max-w-xs w-full transition hover:shadow-xl hover:scale-[1.03] duration-200 font-inter
+      ${ativosHoje >= 80 ? 'fire-border animate-fire-glow bg-gradient-to-br from-yellow-100 via-yellow-50 to-orange-100' : 'bg-[#0e0e11] border border-[#2e2e2e] hover:border-[#a3ff12]'}
+    `}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           {ativosHoje >= 80 ? (
@@ -83,11 +85,11 @@ const CardOferta = ({
               <FaFire className="text-orange-500 animate-bounce" size={18} />
             </span>
           ) : (
-            <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#00ff99]' : 'bg-red-500'}`}></span>
+            <span className={`inline-block w-3 h-3 rounded-full ${ativosHoje > 0 ? 'bg-[#a3ff12]' : 'bg-red-500'}`}></span>
           )}
-          <div className="text-lg font-bold font-orbitron" style={{ color: '#2563eb' }}>{nome}</div>
+          <div className={`text-lg font-bold font-orbitron ${ativosHoje >= 80 ? 'text-orange-600 drop-shadow-[0_1px_2px_rgba(255,140,0,0.3)]' : 'text-white'}`}>{nome}</div>
         </div>
-        <span className="px-3 py-1 rounded-full text-xs font-bold shadow-md" style={{ background: corNeon, color: '#fff', textShadow: '0 0 6px ' + corNeon }}>{props.categoria || tagSafe}</span>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${ativosHoje >= 80 ? '' : 'bg-[#2e2e2e] text-[#a3ff12]'}`} style={ativosHoje >= 80 ? { background: corNeon, color: '#fff', textShadow: '0 0 6px ' + corNeon } : {}}>{props.categoria || tagSafe}</span>
         <button
           onClick={() => setConfirmDelete(true)}
           className="ml-2 p-1 rounded hover:bg-red-100/10 transition"
@@ -100,35 +102,35 @@ const CardOferta = ({
           </svg>
         </button>
       </div>
-      <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={'#2563eb'} />
-      <div className="flex gap-4 text-sm items-center" style={{ color: '#2563eb' }}>
-        <div>Hoje: <span style={{ color: '#18181b' }} className="font-bold">{ativosHoje}</span></div>
-        <div>Ontem: <span style={{ color: '#18181b' }} className="font-bold">{ativosOntemReal}</span></div>
+      <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#a3ff12'} />
+      <div className={`flex gap-4 text-sm items-center ${ativosHoje >= 80 ? '' : 'text-[#a3ff12]'}`}> 
+        <div>Hoje: <span className="font-bold text-white">{ativosHoje}</span></div>
+        <div>Ontem: <span className="font-bold text-[#9ca3af]">{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
-          {variacaoNum < 0 ? <FaChevronDown className="text-red-400" /> : <FaChevronUp className="text-green-500" />}
-          <span className={variacaoNum < 0 ? "text-red-400 font-bold" : "text-green-500 font-bold"}>{variacaoPercentual}</span>
+          {variacaoNum < 0 ? <FaChevronDown className="text-red-400" /> : <FaChevronUp className="text-[#a3ff12]" />}
+          <span className={variacaoNum < 0 ? "text-red-400 font-bold" : "text-[#a3ff12] font-bold"}>{variacaoPercentual}</span>
         </div>
       </div>
-      <div className="flex gap-2 text-xs items-center" style={{ color: '#6b7280' }}>
+      <div className="flex gap-2 text-xs items-center text-[#9ca3af]">
         <span>Criado em: {dataCriacao}</span>
-        <span className="ml-2">Pico 7d: <span className="font-bold" style={{ color: '#2563eb' }}>{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="ml-2">Pico 7d: <span className={`font-bold ${ativosHoje >= 80 ? 'text-orange-600' : 'text-[#a3ff12]'}`}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-1 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
+          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaBook /> Biblioteca
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
+          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaGlobe /> Site
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
-          className="bg-[#2563eb] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm"
+          className={`${ativosHoje >= 80 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-orange-400 hover:to-yellow-500 text-white' : 'bg-[#2e2e2e] hover:bg-[#a3ff12] hover:text-[#0e0e11] text-[#a3ff12]'} px-3 py-2 rounded-lg font-bold font-inter flex items-center gap-2 transition text-sm`}
         >
           <FaInfoCircle /> Detalhes
         </button>
