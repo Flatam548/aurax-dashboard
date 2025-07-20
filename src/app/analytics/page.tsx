@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Label } from "recharts";
 import { createClient } from '@supabase/supabase-js';
 import { BarChart, Bar, Cell } from "recharts";
 
@@ -227,15 +227,15 @@ export default function AnalyticsPage() {
   console.log('chartData:', chartData);
 
   return (
-    <div className="min-h-screen bg-[#e0e7ff] flex">
+    <div className="min-h-screen bg-[#18181b] flex">
       <Sidebar />
       <main className="flex-1 ml-64 p-8 flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-8 font-orbitron" style={{ color: '#2563eb' }}>Análise de Ofertas - Evolução dos Anúncios Ativos (15 dias)</h1>
-        <div className="w-full max-w-5xl bg-white border border-[#e5e7eb] rounded-2xl p-8 shadow">
+        <h1 className="text-4xl font-bold mb-8 font-orbitron text-white text-center">Análise de Ofertas<br /><span className="text-lg font-normal text-[#9ca3af]">Evolução dos Anúncios Ativos (15 dias)</span></h1>
+        <div className="w-full max-w-5xl bg-[#23272a] border border-[#2e2e2e] rounded-2xl p-8 shadow">
           <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <label className="font-semibold text-lg" style={{ color: '#2563eb' }}>Selecione a oferta:</label>
+            <label className="font-semibold text-lg text-white">Selecione a oferta:</label>
             <select
-              className="bg-[#f3f4f6] text-[#18181b] px-4 py-2 rounded-lg border border-[#2563eb] focus:ring-2 focus:ring-[#2563eb] outline-none font-inter"
+              className="bg-[#2e2e2e] text-white px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none font-inter"
               value={selectedId || ''}
               onChange={e => setSelectedId(e.target.value)}
             >
@@ -245,74 +245,55 @@ export default function AnalyticsPage() {
             </select>
           </div>
           {loading ? (
-            <div className="text-[#18181b] text-lg">Carregando dados...</div>
+            <div className="text-white text-lg">Carregando dados...</div>
           ) : ofertas.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-[#6b7280] text-lg mb-4">Nenhuma oferta encontrada</div>
-              <div className="text-sm text-[#6b7280]">Adicione ofertas no dashboard para ver os dados de analytics</div>
+              <div className="text-[#9ca3af] text-lg mb-4">Nenhuma oferta encontrada</div>
+              <div className="text-sm text-[#9ca3af]">Adicione ofertas no dashboard para ver os dados de analytics</div>
             </div>
           ) : (
             <>
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 40 }}>
-                  <defs>
-                    <linearGradient id="colorAtivos" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#fff" stopOpacity={0.1}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" stroke="#2563eb" tick={{ fill: "#2563eb", fontWeight: 600 }} interval={0} />
-                  <YAxis stroke="#2563eb" tick={{ fill: "#2563eb", fontWeight: 600 }} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: "#fff", border: "1px solid #2563eb", color: "#18181b" }} labelFormatter={(label, payload) => {
+                  <CartesianGrid stroke="#2e2e2e" strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" stroke="#ccff00" tick={{ fill: "#ccff00", fontWeight: 700, fontSize: 16 }} interval={0} />
+                  <YAxis stroke="#ccff00" tick={{ fill: "#ccff00", fontWeight: 700, fontSize: 16 }} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: "#23272a", border: "1px solid #ccff00", color: "#fff" }} labelFormatter={(label, payload) => {
                     if (!payload || !payload.length) return label;
                     return `${label} (${payload[0].payload.dataReal})`;
                   }} />
-                  <Legend wrapperStyle={{ color: "#18181b" }} />
+                  <Legend wrapperStyle={{ color: "#fff", fontSize: 16 }} />
                   <Line
                     type="monotone"
                     dataKey="Ativos"
-                    stroke="#2563eb"
+                    stroke="#ccff00"
                     strokeWidth={4}
                     dot={({ cx, cy, payload }) => (
                       payload.isHoje ? (
-                        <circle cx={cx} cy={cy} r={10} fill="#F9F871" stroke="#2563eb" strokeWidth={4} />
+                        <circle cx={cx} cy={cy} r={10} fill="#fff" stroke="#ccff00" strokeWidth={4} />
                       ) : (
-                        <circle cx={cx} cy={cy} r={5} fill="#2563eb" stroke="#fff" strokeWidth={2} />
+                        <circle cx={cx} cy={cy} r={5} fill="#ccff00" stroke="#23272a" strokeWidth={2} />
                       )
                     )}
-                    activeDot={{ r: 12, fill: "#fff", stroke: "#2563eb", strokeWidth: 4 }}
+                    activeDot={{ r: 12, fill: "#23272a", stroke: "#ccff00", strokeWidth: 4 }}
                     fillOpacity={1}
-                    fill="url(#colorAtivos)"
                     connectNulls
                   />
-                  {chartData.length > 0 && (
-                    <XAxis
-                      dataKey="dataReal"
-                      axisLine={false}
-                      tickLine={false}
-                      interval={0}
-                      height={40}
-                      tick={{ fill: "#2563eb", fontSize: 12, fontWeight: 500, dy: 20 }}
-                      xAxisId="datas"
-                      allowDuplicatedCategory={false}
-                    />
-                  )}
                 </LineChart>
               </ResponsiveContainer>
               {/* Heatmap logo abaixo do gráfico */}
-              <div className="flex flex-col items-center w-full">
+              <div className="flex flex-col items-center w-full mt-4">
                 <Heatmap chartData={chartData} />
-                <div className="flex gap-4 justify-center mt-2 text-xs font-medium text-[#9ca3af]">
-                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#2e2e2e'}}></span> Baixo</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#9ca3af'}}></span> Médio</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#ccff00'}}></span> Alto</div>
-                  <div className="flex items-center gap-1"><span className="inline-block w-4 h-4 rounded" style={{background:'#23272a'}}></span> Sem ativos</div>
+                <div className="flex gap-6 justify-center mt-2 text-base font-medium text-[#9ca3af]">
+                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#2e2e2e'}}></span> Baixo</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#9ca3af'}}></span> Médio</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#ccff00'}}></span> Alto</div>
+                  <div className="flex items-center gap-1"><span className="inline-block w-6 h-6 rounded" style={{background:'#23272a'}}></span> Sem ativos</div>
                 </div>
               </div>
               <BarraHojeOntem chartData={chartData} />
               <Insights chartData={chartData} />
-              <div className="text-sm mt-4" style={{ color: '#6b7280' }}>
+              <div className="text-base mt-4 text-[#9ca3af] text-center">
                 {historico.length === 0 ? 
                   "Dados de exemplo exibidos. Execute o script de scraping para obter dados reais." :
                   "O gráfico mostra a evolução diária dos anúncios ativos nos primeiros 15 dias após o cadastro. As datas reais aparecem abaixo dos dias. O heatmap indica os dias mais 'quentes' e o gráfico de barras compara hoje vs ontem."
