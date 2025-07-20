@@ -103,12 +103,12 @@ const CardOferta = ({
         </button>
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#a3ff12'} />
-      <div className={`flex gap-4 text-sm items-center ${ativosHoje >= 80 ? '' : 'text-[#a3ff12]'}`}> 
-        <div>Hoje: <span className="font-bold text-white">{ativosHoje}</span></div>
-        <div>Ontem: <span className="font-bold text-[#9ca3af]">{ativosOntemReal}</span></div>
+      <div className={`flex gap-4 text-sm items-center ${ativosHoje >= 80 ? 'text-[#7c3a00]' : 'text-[#a3ff12]'}`}> 
+        <div>Hoje: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#7c3a00]' : 'text-white'}`}>{ativosHoje}</span></div>
+        <div>Ontem: <span className={`font-bold ${ativosHoje >= 80 ? 'text-[#b45309]' : 'text-[#9ca3af]'}`}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1">Variação:
-          {variacaoNum < 0 ? <FaChevronDown className="text-red-400" /> : <FaChevronUp className="text-[#a3ff12]" />}
-          <span className={variacaoNum < 0 ? "text-red-400 font-bold" : "text-[#a3ff12] font-bold"}>{variacaoPercentual}</span>
+          {variacaoNum < 0 ? <FaChevronDown className={ativosHoje >= 80 ? 'text-[#ef4444]' : 'text-red-400'} /> : <FaChevronUp className={ativosHoje >= 80 ? 'text-[#22c55e]' : 'text-[#a3ff12]'} />}
+          <span className={variacaoNum < 0 ? (ativosHoje >= 80 ? 'text-[#ef4444] font-bold' : 'text-red-400 font-bold') : (ativosHoje >= 80 ? 'text-[#22c55e] font-bold' : 'text-[#a3ff12] font-bold')}>{variacaoPercentual}</span>
         </div>
       </div>
       <div className="flex gap-2 text-xs items-center text-[#9ca3af]">
