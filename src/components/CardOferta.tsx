@@ -106,11 +106,11 @@ const CardOferta = ({
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
       <div className="flex gap-4 text-sm items-center text-black font-bold"> 
-        <div>Hoje: <span className="font-bold text-[#22c55e]">{ativosHoje}</span></div>
+        <div>Hoje: <span className="font-bold text-black">{ativosHoje}</span></div>
         <div>Ontem: <span className="font-bold text-black">{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1 text-black">Variação:
-          {variacaoNum < 0 ? <FaChevronDown className="text-red-500" /> : <FaChevronUp className="text-[#22c55e]" />}
-          <span className={variacaoNum < 0 ? 'text-red-500 font-bold' : 'text-[#22c55e] font-bold'}>{variacaoPercentual}</span>
+          {variacaoNum < 0 ? <FaChevronDown className="text-black" /> : <FaChevronUp className="text-black" />}
+          <span className="font-bold text-black">{variacaoPercentual}</span>
         </div>
       </div>
       <div className="flex gap-2 text-xs items-center text-black font-bold">
