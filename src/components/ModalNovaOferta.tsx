@@ -85,14 +85,14 @@ const ModalNovaOferta = ({ open, onClose, onCreate }: ModalNovaOfertaProps) => {
             </div>
             <div className="flex gap-2">
               <input value={tagInput} onChange={e => setTagInput(e.target.value)} onKeyDown={e => e.key === 'Enter' ? (addTag(), e.preventDefault()) : undefined} placeholder="Adicionar tag (máx 10)" className="bg-white text-[#23272a] px-4 py-2 rounded-lg flex-1 border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none" />
-              <button onClick={addTag} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-4 py-2 rounded-lg font-medium font-bold hover:brightness-110">Adicionar</button>
+              <button onClick={addTag} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-4 py-2 rounded-lg font-bold">Adicionar</button>
             </div>
           </div>
           <div>
             <label className="block text-[#23272a] mb-1">Idiomas (até 4):</label>
             <div className="flex flex-wrap gap-2">
               {idiomasDisponiveis.map(idioma => (
-                <button key={idioma} type="button" onClick={() => toggleIdioma(idioma)} className={`px-3 py-1 rounded-full text-xs font-medium border ${idiomas.includes(idioma) ? 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] border-transparent' : 'bg-white text-[#23272a] border-[#ccff00]'}`}>{idioma}</button>
+                <button key={idioma} type="button" onClick={() => toggleIdioma(idioma)} className={`px-3 py-1 rounded-full text-xs font-bold border ${idiomas.includes(idioma) ? 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] border-transparent' : 'bg-white text-[#23272a] border-[#ccff00]'}`}>{idioma}</button>
               ))}
             </div>
           </div>
@@ -100,7 +100,7 @@ const ModalNovaOferta = ({ open, onClose, onCreate }: ModalNovaOfertaProps) => {
           <input value={urlCheckout} onChange={e => setUrlCheckout(e.target.value)} placeholder="URL do checkout (opcional)" className="bg-white text-[#23272a] px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none" />
         </div>
         <div className="flex justify-end gap-4 mt-8">
-          <button onClick={onClose} className="bg-[#f3f4f6] text-[#23272a] px-6 py-2 rounded-lg font-semibold hover:bg-[#ccff00] hover:text-[#23272a] transition border border-[#ccff00]">Cancelar</button>
+          <button onClick={onClose} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold border-2 border-[#ccff00]">Cancelar</button>
           <button onClick={handleCreate} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold border-2 border-[#ccff00]">Criar Oferta</button>
         </div>
       </div>
