@@ -197,7 +197,7 @@ button:hover {
   filter: brightness(1.1);
 }
 
-.oferta-title {
+.oferta-title, .oferta-title * {
   color: #23272a !important;
   font-weight: 700 !important;
 }
