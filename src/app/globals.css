@@ -112,11 +112,28 @@ button:hover {
 }
 
 /* Cards, containers, modais, etc */
-.card, .rounded-2xl, .rounded-xl, .shadow, .border, .p-8, .p-6 {
-  background: var(--secondary) !important;
-  color: var(--foreground) !important;
-  border-color: var(--secondary-light) !important;
+.card {
+  background: #fff !important;
+  color: #23272a !important;
+  border-color: #ccff00 !important;
 }
+.rounded-2xl, .rounded-xl, .shadow, .border, .p-8, .p-6 {
+  /* Remover sobrescrita de fundo/texto escuro para permitir cards brancos */
+  /* background: unset !important; */
+  /* color: unset !important; */
+}
+
+/* Botões dos cards normais */
+.card button.bg-gradient-to-r {
+  background: linear-gradient(to right, #ccff00, #a3ff12) !important;
+  color: #23272a !important;
+  border: none !important;
+}
+.card button.bg-gradient-to-r:hover {
+  filter: brightness(1.1);
+}
+
+/* Cards em destaque continuam com fundo gradiente laranja e textos escuros */
 
 /* Títulos e métricas */
 .font-orbitron, .font-bold, .font-semibold {
