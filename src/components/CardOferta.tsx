@@ -106,41 +106,44 @@ const CardOferta = ({
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
       <div className="flex gap-4 text-sm items-center" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>
-        <div>Hoje: <span style={ativosHoje >= 80 ? {} : { color: '#ccff00 !important', fontWeight: 700 }}>{ativosHoje}</span></div>
-        <div>Ontem: <span style={ativosHoje >= 80 ? {} : { color: '#9ca3af !important', fontWeight: 700 }}>{ativosOntemReal}</span></div>
+        <div>Hoje: <span style={ativosHoje >= 80 ? {} : { color: '#ccff00', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', lineHeight: '1', letterSpacing: '0', verticalAlign: 'baseline', background: 'none', boxShadow: 'none', border: 'none', outline: 'none', textShadow: 'none', WebkitTextStroke: '0', MozOsxFontSmoothing: 'auto', WebkitFontSmoothing: 'auto', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', fontWeight: 700, padding: 0, margin: 0, display: 'inline', zIndex: 1, position: 'relative', color: '#ccff00 !important' }}>{ativosHoje}</span></div>
+        <div>Ontem: <span style={ativosHoje >= 80 ? {} : { color: '#9ca3af', fontWeight: 700, color: '#9ca3af !important' }}>{ativosOntemReal}</span></div>
         <div className="flex items-center gap-1" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Variação:
-          {variacaoNum < 0 ? <FaChevronDown style={ativosHoje >= 80 ? {} : { color: '#ff6b6b !important', fontWeight: 700 }} /> : <FaChevronUp style={ativosHoje >= 80 ? {} : { color: '#ccff00 !important', fontWeight: 700 }} />}
-          <span style={ativosHoje >= 80 ? {} : { color: variacaoNum < 0 ? '#ff6b6b !important' : '#ccff00 !important', fontWeight: 700 }}>{variacaoPercentual}</span>
+          {variacaoNum < 0 ? <FaChevronDown style={ativosHoje >= 80 ? {} : { color: '#ff6b6b', fontWeight: 700, color: '#ff6b6b !important' }} /> : <FaChevronUp style={ativosHoje >= 80 ? {} : { color: '#ccff00', fontWeight: 700, color: '#ccff00 !important' }} />}
+          <span style={ativosHoje >= 80 ? {} : { color: variacaoNum < 0 ? '#ff6b6b' : '#ccff00', fontWeight: 700, color: (variacaoNum < 0 ? '#ff6b6b !important' : '#ccff00 !important') }}>{variacaoPercentual}</span>
         </div>
       </div>
       <div className="flex gap-2 text-xs items-center" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>
         <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Criado em: {dataCriacao}</span>
-        <span className="ml-2" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Pico 7d: <span style={ativosHoje >= 80 ? {} : { color: '#00ffe0 !important', fontWeight: 700 }}>{pico7d}</span> (Dia {diaPico+1})</span>
+        <span className="ml-2" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Pico 7d: <span style={ativosHoje >= 80 ? {} : { color: '#00ffe0', fontWeight: 700, color: '#00ffe0 !important' }}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
       <div className="flex gap-3 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base btn-pulse'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
         >
-          <FaBook className="text-xl" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Biblioteca</span>
+          <FaBook className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Biblioteca</span>
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base btn-pulse'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
         >
-          <FaGlobe className="text-xl" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Site</span>
+          <FaGlobe className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Site</span>
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base btn-pulse'
+            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
             : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
+          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
         >
-          <FaInfoCircle className="text-xl" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Detalhes</span>
+          <FaInfoCircle className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Detalhes</span>
         </button>
       </div>
       {/* Placeholder para expansão do gráfico de 15 dias */}
