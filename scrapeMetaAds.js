@@ -8,15 +8,18 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function scrapeAnunciosAtivos(url) {
   const fs = require('fs');
-  const browser = await puppeteer.launch({ headless: false });
+  // Altere para headless: true para rodar em background
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
-  await new Promise(resolve => setTimeout(resolve, 7000)); // Aguarda 7 segundos extras
+  await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
+  await new Promise(resolve => setTimeout(resolve, 9000)); // Aguarda 9 segundos extras
 
   // Tenta selecionar o país "Brasil" caso a página peça
   try {
     await page.waitForSelector('div[role="button"]', { timeout: 10000 });
-    // Procura pelo botão com texto "Selecionar país" e clica
     const botoes = await page.$$('div[role="button"]');
     for (const botao of botoes) {
       const texto = await botao.evaluate(el => el.innerText);
@@ -25,8 +28,7 @@ async function scrapeAnunciosAtivos(url) {
         break;
       }
     }
-    // Aguarda o dropdown aparecer e seleciona "Brasil"
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     const opcoes = await page.$$('span');
     for (const opcao of opcoes) {
       const texto = await opcao.evaluate(el => el.innerText);
@@ -35,8 +37,7 @@ async function scrapeAnunciosAtivos(url) {
         break;
       }
     }
-    // Aguarda a página recarregar os resultados
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
   } catch (e) {
     console.log('Não foi necessário selecionar país ou houve erro:', e);
   }
@@ -45,8 +46,7 @@ async function scrapeAnunciosAtivos(url) {
   const html = await page.content();
   fs.writeFileSync('pagina.html', html);
 
-  // Aguarda mais um pouco e salva o HTML do main
-  await new Promise(resolve => setTimeout(resolve, 3000)); // espera mais 3 segundos
+  await new Promise(resolve => setTimeout(resolve, 3000));
   let mainText = '';
   let mainHTML = '';
   try {
@@ -64,19 +64,27 @@ async function scrapeAnunciosAtivos(url) {
     // Captura todos os headings e procura pelo que contém "resultados"
     const headings = await page.$$eval('div[role="heading"]', els => els.map(el => el.innerText));
     console.log('Headings encontrados:', headings);
-
-    const headingResultados = headings.find(txt => /resultados?/i.test(txt));
-    if (headingResultados) {
-      const regex = /~?(\d+) resultados?/i;
-      const match = headingResultados.match(regex);
-      console.log('Regex match:', match);
-      resultados = match ? parseInt(match[1], 10) : null;
+    let headingResultados = headings.find(txt => /resultados?/i.test(txt));
+    let regex = /~?(\d+) resultados?/i;
+    let match = headingResultados ? headingResultados.match(regex) : null;
+    if (!match) {
+      // Tenta buscar em spans ou divs próximas
+      const spans = await page.$$eval('span', els => els.map(el => el.innerText));
+      headingResultados = spans.find(txt => /resultados?/i.test(txt));
+      match = headingResultados ? headingResultados.match(regex) : null;
+    }
+    if (!match) {
+      // Busca em todo o texto do main
+      match = mainText.match(/~?(\d+) resultados?/i);
+    }
+    if (match) {
+      resultados = parseInt(match[1], 10);
       console.log('Resultados extraídos:', resultados);
     } else {
-      console.log('Nenhum heading com "resultados" encontrado.');
+      console.log('Nenhum heading ou span com "resultados" encontrado. Veja main.html para debug.');
     }
   } catch (e) {
-    console.log('Erro ao capturar headings:', e);
+    console.log('Erro ao capturar headings/spans:', e);
   }
 
   await browser.close();
@@ -84,6 +92,10 @@ async function scrapeAnunciosAtivos(url) {
 }
 
 async function atualizarAtivosHoje(idOferta, ativosHoje) {
+  if (typeof ativosHoje !== 'number' || isNaN(ativosHoje)) {
+    console.log(`AtivosHoje inválido para oferta ${idOferta}, não será atualizado.`);
+    return;
+  }
   // Busca o valor do dia anterior
   const ontem = new Date();
   ontem.setDate(ontem.getDate() - 1);
