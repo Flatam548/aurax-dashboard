@@ -2,7 +2,12 @@ import React from "react";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 
-export default function Topbar({ busca, setBusca }) {
+type TopbarProps = {
+  busca: string;
+  setBusca: (value: string) => void;
+};
+
+export default function Topbar({ busca, setBusca }: TopbarProps) {
   return (
     <header className="w-full bg-white rounded-xl shadow flex items-center justify-between px-8 py-4 mb-8 max-w-7xl mx-auto">
       <div className="flex-1 flex justify-center">
