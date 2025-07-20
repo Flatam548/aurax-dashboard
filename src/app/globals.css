@@ -3,8 +3,9 @@
 :root {
   --background: #0e0e11;
   --foreground: #fff;
-  --primary: #a3ff12;
-  --secondary: #2e2e2e;
+  --primary: #ccff00;
+  --secondary: #23272a;
+  --secondary-light: #2e2e2e;
   --muted: #9ca3af;
   --danger: #ff5252;
   --font-sans: 'Inter', 'Poppins', 'Rubik', Arial, Helvetica, sans-serif;
@@ -23,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 input, select, textarea {
-  background: var(--secondary);
+  background: var(--secondary-light);
   color: var(--foreground);
   border: 1px solid var(--muted);
   border-radius: 0.5rem;
@@ -40,6 +41,13 @@ button {
   font-weight: 600;
   border-radius: 0.5rem;
   transition: background 0.2s, color 0.2s;
+  background: var(--secondary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+button:hover {
+  background: var(--primary);
+  color: var(--background);
 }
 
 .bg-white, .bg-[#fff], .bg-[#f3f4f6], .bg-[#e0e7ff], .bg-[#23234a] {
@@ -59,7 +67,7 @@ button {
 }
 
 .border-[#e5e7eb], .border-[#2563eb], .border-blue-600, .border-blue-500 {
-  border-color: var(--secondary) !important;
+  border-color: var(--secondary-light) !important;
 }
 
 .bg-[#2563eb], .bg-blue-600, .bg-blue-500 {
@@ -72,7 +80,7 @@ button {
   color: #0e0e11 !important;
 }
 
-.text-[#a3ff12] {
+.text-[#a3ff12], .text-[#ccff00] {
   color: var(--primary) !important;
 }
 
@@ -82,6 +90,38 @@ button {
 
 .bg-[#1a1a2e], .bg-[#23234a] {
   background: var(--background) !important;
+}
+
+.bg-[#2e2e2e] {
+  background: var(--secondary-light) !important;
+}
+
+/* Cards, containers, modais, etc */
+.card, .rounded-2xl, .rounded-xl, .shadow, .border, .p-8, .p-6 {
+  background: var(--secondary) !important;
+  color: var(--foreground) !important;
+  border-color: var(--secondary-light) !important;
+}
+
+/* Títulos e métricas */
+.font-orbitron, .font-bold, .font-semibold {
+  color: #fff !important;
+  font-family: var(--font-sans);
+  font-weight: 700 !important;
+}
+
+/* Métricas secundárias */
+.text-xs, .text-sm, .text-muted, .text-secondary {
+  color: var(--muted) !important;
+}
+
+/* Destaques */
+.text-primary, .text-lime, .text-lime-400, .text-lime-500 {
+  color: var(--primary) !important;
+}
+.bg-primary, .bg-lime, .bg-lime-400, .bg-lime-500 {
+  background: var(--primary) !important;
+  color: var(--background) !important;
 }
 
 /* Mantém o destaque laranja dos cards com mais de 80 anúncios inalterado */
