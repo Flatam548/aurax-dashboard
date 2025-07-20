@@ -64,8 +64,8 @@ const ModalNovaOferta = ({ open, onClose, onCreate }: ModalNovaOfertaProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-white rounded-2xl p-8 w-full max-w-lg shadow-xl border-2 border-[#ccff00]">
-        <h2 className="text-2xl font-bold text-[#23272a] mb-1">Nova Oferta</h2>
-        <p className="text-sm text-[#23272a] mb-6">Cadastre uma nova oferta para monitoramento.</p>
+        <h2 className="text-2xl font-bold" style={{ color: '#23272a' }}>Nova Oferta</h2>
+        <p className="text-sm" style={{ color: '#23272a' }}>Cadastre uma nova oferta para monitoramento.</p>
         {erro && (
           <div className="mb-4 px-4 py-2 rounded-lg bg-red-600/80 text-white font-semibold animate-pulse">
             {erro}
@@ -100,7 +100,7 @@ const ModalNovaOferta = ({ open, onClose, onCreate }: ModalNovaOfertaProps) => {
           <input value={urlCheckout} onChange={e => setUrlCheckout(e.target.value)} placeholder="URL do checkout (opcional)" className="bg-white text-[#23272a] px-4 py-2 rounded-lg border border-[#ccff00] focus:ring-2 focus:ring-[#ccff00] outline-none" />
         </div>
         <div className="flex justify-end gap-4 mt-8">
-          <button onClick={onClose} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold border-2 border-[#ccff00]">Cancelar</button>
+          <button onClick={onClose} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold">Cancelar</button>
           <button onClick={handleCreate} className="bg-gradient-to-r from-[#ccff00] to-[#a3ff12] text-[#23272a] px-6 py-2 rounded-lg font-bold border-2 border-[#ccff00]">Criar Oferta</button>
         </div>
       </div>
