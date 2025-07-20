@@ -1,3 +1,4 @@
+// Teste de deploy após reconectar Vercel
 // Novo teste de commit para forçar deploy Vercel
 // Simulação de novo commit para forçar deploy Vercel
 // Forçar deploy Vercel - alteração de teste
