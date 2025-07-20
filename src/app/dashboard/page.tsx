@@ -12,7 +12,6 @@ interface OfertaDashboard extends Oferta {
 }
 import { supabase } from "../../lib/supabaseClient";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as PieTooltip } from "recharts";
-import Image from "next/image";
 
 const NEON_COLORS = ["#8000ff", "#00ffe0", "#00ff99", "#ff00cc", "#ff9900"];
 
@@ -68,12 +67,10 @@ const Dashboard = () => {
       const ontem = new Date();
       ontem.setDate(ontem.getDate() - 1);
       const dataOntem = ontem.toISOString().slice(0, 10);
-      let total = 0;
       for (const oferta of ofertas) {
         if (!oferta.id) continue;
         const res = await fetch(`/api/historicoOferta?id=${oferta.id}&data=${dataOntem}`);
         const data = await res.json();
-        total += data.ativos ?? 0;
       }
       // setAtivosOntemTotal(total); // This variable is no longer used
     }
@@ -254,7 +251,7 @@ const Dashboard = () => {
           <div className="w-full max-w-7xl flex justify-center">
             <div className="flex flex-wrap gap-8 justify-center">
               {ofertasFiltradas.map((oferta, idx) => {
-                const categoria = ((oferta as any).categoria || (oferta.tags && oferta.tags[0]) || 'Outro');
+                const categoria = ('categoria' in oferta && oferta.categoria) ? oferta.categoria : (oferta.tags && oferta.tags[0]) || 'Outro';
                 return (
                   <CardOferta
                     key={oferta.id || idx}

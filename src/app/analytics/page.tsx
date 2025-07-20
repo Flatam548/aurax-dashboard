@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Label } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
 import { createClient } from '@supabase/supabase-js';
 import { BarChart, Bar, Cell } from "recharts";
 
@@ -30,37 +30,6 @@ interface ChartDia {
   Ativos: number;
   dataStr: string;
   isHoje?: boolean;
-}
-
-// Função para gerar dados de exemplo quando não há histórico
-function gerarDadosExemplo(dataInicio: Date, diasPassados: number): ChartDia[] {
-  const chartData: ChartDia[] = [];
-  const hoje = new Date();
-  
-  for (let i = 0; i < diasPassados; i++) {
-    const dataDia = new Date(dataInicio);
-    dataDia.setDate(dataInicio.getDate() + i);
-    const dataStr = dataDia.toISOString().slice(0, 10);
-    
-    // Gera dados realistas baseados no dia
-    let ativos = 0;
-    if (i >= 2) { // Começa a ter dados a partir do 3º dia
-      const baseValue = Math.floor(Math.random() * 50) + 10; // 10-60 ativos base
-      const crescimento = Math.min(i * 0.3, 1.5); // Crescimento gradual
-      const variacao = (Math.random() - 0.5) * 0.4; // Variação de ±20%
-      ativos = Math.max(0, Math.floor(baseValue * (1 + crescimento) * (1 + variacao)));
-    }
-    
-    chartData.push({
-      dia: `Dia ${i + 1}`,
-      dataReal: dataDia.toLocaleDateString('pt-BR'),
-      Ativos: ativos,
-      dataStr,
-      isHoje: dataStr === hoje.toISOString().slice(0, 10)
-    });
-  }
-  
-  return chartData;
 }
 
 function Heatmap({ chartData }: { chartData: ChartDia[] }) {

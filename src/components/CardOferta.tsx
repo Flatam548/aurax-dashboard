@@ -10,7 +10,6 @@ const categoriaColors = {
 
 type SparklineProps = { data: { valor: number }[]; color: string; };
 function Sparkline({ data, color }: SparklineProps) {
-  const max = Math.max(...data.map(d => d.valor));
   const todayIdx = data.length - 1;
   return (
     <ResponsiveContainer width="100%" height={40}>
@@ -53,7 +52,6 @@ const CardOferta = ({
   const tagSafe = tags && tags.length > 0 ? tags[0] : "";
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [ativosOntemReal, setAtivosOntemReal] = useState<number>(ativosOntem || 0);
-  const corNeon = categoriaColors[props.categoria as keyof typeof categoriaColors] || categoriaColors.default;
   const historicoSpark = props.historico7d || Array(7).fill({ valor: 0 });
 
   useEffect(() => {
