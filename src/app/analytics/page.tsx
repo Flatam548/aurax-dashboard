@@ -167,7 +167,7 @@ export default function AnalyticsPage() {
         setLoading(false);
       }
     }
-    fetchData();{B980A5BC-397F-4F82-AC8D-5ED5D498D85E}.png
+    fetchData();
   }, []);
 
   // Garante que sempre haja uma oferta selecionada quando as ofertas mudam
