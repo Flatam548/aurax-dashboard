@@ -105,58 +105,56 @@ const CardOferta = ({
         </button>
       </div>
       <Sparkline data={historicoSpark.map((h, i) => ({ ...h, dia: i+1 }))} color={ativosHoje >= 80 ? '#ff9800' : '#ccff00'} />
-      <div className="flex gap-4 text-sm items-center" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>
-        <div>Hoje: <span style={ativosHoje >= 80 ? {} : { color: '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
-        <div>Ontem: <span style={ativosHoje >= 80 ? {} : { color: '#9ca3af', fontWeight: 700 }}>{ativosOntemReal}</span></div>
-        <div className="flex items-center gap-1" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Variação:
-          {variacaoNum < 0 ? <FaChevronDown style={ativosHoje >= 80 ? {} : { color: '#ff6b6b', fontWeight: 700 }} /> : <FaChevronUp style={ativosHoje >= 80 ? {} : { color: '#ccff00', fontWeight: 700 }} />}
-          <span style={ativosHoje >= 80 ? {} : { color: variacaoNum < 0 ? '#ff6b6b' : '#ccff00', fontWeight: 700 }}>{variacaoPercentual}</span>
+      <div className="flex gap-4 text-sm items-center" style={{ color: '#23272a', fontWeight: 700 }}>
+        <div>Hoje: <span style={{ color: '#ccff00', fontWeight: 700 }}>{ativosHoje}</span></div>
+        <div>Ontem: <span style={{ color: '#9ca3af', fontWeight: 700 }}>{ativosOntemReal}</span></div>
+        <div className="flex items-center gap-1" style={{ color: '#23272a', fontWeight: 700 }}>Variação:
+          {variacaoNum < 0 ? <FaChevronDown style={{ color: '#ff6b6b', fontWeight: 700 }} /> : <FaChevronUp style={{ color: '#ccff00', fontWeight: 700 }} />}
+          <span style={{ color: variacaoNum < 0 ? '#ff6b6b' : '#ccff00', fontWeight: 700 }}>{variacaoPercentual}</span>
         </div>
       </div>
-      <div className="flex gap-2 text-xs items-center" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>
-        <span style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Criado em: {dataCriacao}</span>
-        <span className="ml-2" style={ativosHoje >= 80 ? {} : { color: '#23272a', fontWeight: 700 }}>Pico 7d: <span style={ativosHoje >= 80 ? {} : { color: '#00ffe0', fontWeight: 700 }}>{pico7d}</span> (Dia {diaPico+1})</span>
+      <div className="flex gap-2 text-xs items-center" style={{ color: '#23272a', fontWeight: 700 }}>
+        <span style={{ color: '#23272a', fontWeight: 700 }}>Criado em: {dataCriacao}</span>
+        <span className="ml-2" style={{ color: '#23272a', fontWeight: 700 }}>Pico 7d: <span style={{ color: '#00ffe0', fontWeight: 700 }}>{pico7d}</span> (Dia {diaPico+1})</span>
       </div>
-      {/* Garantir que qualquer outro texto secundário também fique preto e bold nos cards normais */}
-      {ativosHoje < 80 && (
-        <style jsx>{`
-          .card-oferta-normal * {
-            color: #23272a !important;
-            font-weight: 700 !important;
-          }
-          .card-oferta-normal .valor-destaque {
-            color: inherit !important;
-            font-weight: inherit !important;
-          }
-        `}</style>
-      )}
+      {/* Garantir que qualquer outro texto secundário também fique preto e bold em todos os cards */}
+      <style jsx>{`
+        .card-oferta-normal *, .card-oferta-destaque * {
+          color: #23272a !important;
+          font-weight: 700 !important;
+        }
+        .card-oferta-normal .valor-destaque, .card-oferta-destaque .valor-destaque {
+          color: inherit !important;
+          font-weight: inherit !important;
+        }
+      `}</style>
       <div className="flex gap-3 mt-2 flex-wrap justify-between">
         <button
           onClick={() => urlMeta && window.open(urlMeta, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
-          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
+            ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
         >
-          <FaBook className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Biblioteca</span>
+          <FaBook className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Biblioteca</span>
         </button>
         <button
           onClick={() => urlSite && window.open(urlSite, "_blank")}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
-          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
+            ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
         >
-          <FaGlobe className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Site</span>
+          <FaGlobe className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Site</span>
         </button>
         <button
           onClick={() => window.location.href = `/details/${props.id}`}
           className={`${ativosHoje >= 80
-            ? 'bg-black text-white border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse'
-            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl'}`}
-          style={ativosHoje >= 80 ? { background: '#000 !important', color: '#fff !important', border: 'none !important', boxShadow: '0 2px 8px 0 #0002 !important', outline: 'none !important', fontWeight: 700, fontFamily: 'inherit', fontSize: '1em', transition: 'none', filter: 'none', textDecoration: 'none', fontStyle: 'normal', fontVariant: 'normal', padding: 0, margin: 0, zIndex: 1, position: 'relative' } : {}}
+            ? 'bg-black text-white h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 btn-pulse min-w-[140px] justify-center'
+            : 'bg-gradient-to-r from-[#ccff00] to-[#a3ff12] border-none shadow-lg h-12 px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition text-base hover:brightness-110 hover:shadow-xl min-w-[140px] justify-center'}`}
+          style={ativosHoje >= 80 ? { background: '#000', color: '#fff', border: 'none', boxShadow: 'none', outline: 'none', fontWeight: 700 } : {}}
         >
-          <FaInfoCircle className="text-xl" style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }} /> <span style={ativosHoje >= 80 ? { color: '#fff !important' } : { color: '#23272a', fontWeight: 700 }}>Detalhes</span>
+          <FaInfoCircle className="text-xl" style={{ color: '#fff' }} /> <span style={{ color: '#fff' }}>Detalhes</span>
         </button>
       </div>
       {/* Placeholder para expansão do gráfico de 15 dias */}
